@@ -30,7 +30,7 @@ define('WP_DEBUG', true);
 $referer = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 $referer .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-$ezdbdomain = "http://wklocal.netmusician.org/webkit1_0";
+$ezdbdomain = "https://ezdeebee.com/app";
 $cachebuster = rand(0, 10000);
 
 $ezdeebee_options = get_option('ezdeebee_options');
@@ -107,9 +107,10 @@ if ($_GET['ezdb_initconnector']) {
 			// add ezdb prefix to insert table commands
 			$sql = preg_replace('/INSERT INTO (.+)?\s\(/','INSERT INTO ezdb_$1 (', $sql);
 			
-
-			dbDelta($sql);
-	
+			$sqlarray = explode("\n", $sql);
+			
+			dbDelta($sqlarray);
+			
 			// update local last modified
 			if ($action == "insert") {
 				// insert new modification date
