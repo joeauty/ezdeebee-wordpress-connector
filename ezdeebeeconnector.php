@@ -30,7 +30,7 @@ define('WP_DEBUG', true);
 $referer = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 $referer .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-$ezdbdomain = "https://ezdeebee.com/app";
+$ezdbdomain = "http://wklocal.netmusician.org/webkit1_0";
 $cachebuster = rand(0, 10000);
 
 $ezdeebee_options = get_option('ezdeebee_options');
