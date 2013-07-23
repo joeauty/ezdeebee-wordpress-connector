@@ -227,5 +227,20 @@ function renderLocalCache() {
 	echo " />";
 }
 
+function ezdeebeeShortcode( $atts ) {
+	extract( shortcode_atts( array(
+		'table' => '',
+		'form' => '',
+	), $atts ) );
+	
+	if ($table) {
+		return '<div class="ezdbtemplate" id="ezdbtable_' . $table . '"></div>';
+	}
+	else if ($form) {
+		return '<div class="ezdbtemplate" id="ezdbform_' . $form . '"></div>';
+	}
+}
+
 add_action( 'admin_menu', 'initEzdeebee' );
+add_shortcode( 'ezdb', 'ezdeebeeShortcode' );
 ?>
