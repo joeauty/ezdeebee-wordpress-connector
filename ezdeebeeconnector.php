@@ -25,7 +25,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define('WP_DEBUG', true);
+//define('WP_DEBUG', true);
 
 $referer = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 $referer .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
