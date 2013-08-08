@@ -127,6 +127,7 @@ if ($_GET['ezdb_initconnector']) {
 
 //$yuisrc = ($_SERVER['HTTPS']) ? 'https://ezdeebee.com/app/nm_webkit/libs/yui3.5.1/build/yui/yui-min.js' : 'http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js';
 $yuisrc = plugins_url('ezdeebee_wpconnector') . '/yui/yui/yui-min.js';
+//
 
 wp_enqueue_script('YUI3.5.1', $yuisrc);
 
