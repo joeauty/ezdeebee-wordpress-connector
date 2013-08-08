@@ -3,7 +3,7 @@
 Plugin Name: Ezdeebee WordPress Connector
 Plugin URI: http://ezdeebee.com/wordpress
 Description: Ezdeebee WordPress Connector Plugin
-Version: 1.0
+Version: 1.0.1
 Author: Ezdeebee
 Author URI: http://ezdeebee.com
 License: GPL2
@@ -125,9 +125,7 @@ if ($_GET['ezdb_initconnector']) {
 	exit;
 }
 
-//$yuisrc = ($_SERVER['HTTPS']) ? 'https://ezdeebee.com/app/nm_webkit/libs/yui3.5.1/build/yui/yui-min.js' : 'http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js';
 $yuisrc = plugins_url('ezdeebee_wpconnector') . '/yui/yui/yui-min.js';
-//
 
 wp_enqueue_script('YUI3.5.1', $yuisrc);
 
