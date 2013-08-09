@@ -37,8 +37,13 @@ See [Ezdeebee support](http://ezdeebee.com/support)
 
 == Changelog ==
 
-* 1.0.1: use local Yahoo User Interface (YUI) library
-* 1.0.0: initial Ezdeebee WordPress connector release for Ezdeebee beta
+= 1.0.1 =
+
+* use local Yahoo User Interface (YUI) library
+
+= 1.0.0 =
+
+* initial Ezdeebee WordPress connector release for Ezdeebee beta
 
 == Upgrade notice ==
 
