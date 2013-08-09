@@ -22,9 +22,9 @@ The instructions here assume that you have an Ezdeebee account, and have a WordP
 
 1. This plugin is installed just like any other WordPress plugin, but before doing so, make sure you have an Ezdeebee account, and within the "Settings" section of your account note the site ID that has been assigned to you - you'll need this for later. You will also need to provide the domain name(s) for the website you wish to provide access to.
 1. Select the data collection you want to integrate with your website, click on the "Data Collection Operations/Settings" tab, followed by the "Connector Settings" button. From here you can establish the settings for the sortable tables and forms you would like to integrate with your site. You will need to enable access to this data collection here, as well as configure your tables/forms as desired.
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
+1. Upload `ezdeebee-wp-connector` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Once the plugin has been activated you'll see a new item in your WordPress Settings menu called "Ezdeebee Settings". On this page you'll need to provide your Ezdebee Site ID (see "Configuring Connector Access", above). If you wish to cache a local copy of your Ezdeebee data check the "Cache to Local Database" checkbox.
+1. Once the plugin has been activated you'll see a new item in your WordPress Settings menu called "Ezdeebee Settings". On this page you'll need to provide your Ezdebee Site ID (see "Configuring Connector Access", above, for obtaining this item). If you wish to cache a local copy of your Ezdeebee data check the "Cache to Local Database" checkbox.
 
 == Frequently asked questions ==
 
