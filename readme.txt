@@ -4,17 +4,17 @@ Donate link: http://ezdeebee.com
 Tags: database, database admin, custom, form, table, Ezdeebee
 Requires at least: 3.3
 Tested up to: 3.5.2
-Stable tag: 1.0.1
+Stable tag: 1.0.1-beta
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Ezdeebee is a cloud service for managing database-driven data, such as content you wish to display on your WordPress website or web applications.
+Ezdeebee is a cloud service for managing database-driven data, such as content you wish to display within your WordPress website or web applications.
 
 == Description ==
 
-Ezdeebee is the perfect tool for managing data, such as content you may wish to display on your website, or, if you are developer, data that you use in your applications. Ezdeedee is a cloud service, meaning you can access Ezdeebee from anywhere and from any device. Additionally, your data will be automatically backed up daily.
+Ezdeebee is the perfect tool for managing data, such as content you may wish to display on your website, or, if you are developer, data that you use in your applications. Ezdeedee is a cloud service, meaning you can access Ezdeebee from anywhere and from any device. With Ezdeebee you can easily collaborate with others without needing to install any special software.
 
-Using the Ezdeebee Connector WordPress plugin you can display the data in your Ezdeebee data collections, allow form submissions from your WordPress site to populate an Ezdeebee data collection, or else sync with an Ezdeebee data collection so that you have a local copy.
+Using this Ezdeebee Connector WordPress plugin you can display the data in your Ezdeebee data collections, allow form submissions from your WordPress site to populate an Ezdeebee data collection, or else sync with an Ezdeebee data collection so that you have a local copy you can query as needed.
 
 The instructions here assume that you have an Ezdeebee account, and have a WordPress site where you can install this plugin. If you don't have an Ezdeebee account you can request an invitation to Ezdeebee beta [here](http://ezdeebee.com/contact). You can learn more about Ezdeebee at [our website](http://ezdeebee.com).
 
@@ -37,11 +37,11 @@ See [Ezdeebee support](http://ezdeebee.com/support)
 
 == Changelog ==
 
-1.0.1: use local YUI install
+1.0.1: use local Yahoo User Interface (YUI) library
 1.0.0: initial Ezdeebee WordPress connector release for Ezdeebee beta
 
 == Upgrade notice ==
 
-Initial release
+Initial release, N/A
 
 
