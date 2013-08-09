@@ -21,10 +21,10 @@ The instructions here assume that you have an Ezdeebee account, and have a WordP
 == Installation ==
 
 1. This plugin is installed just like any other WordPress plugin, but before doing so, make sure you have an Ezdeebee account, and within the "Settings" section of your account note the site ID that has been assigned to you - you'll need this for later. You will also need to provide the domain name(s) for the website you wish to provide access to.
-2. Select the data collection you want to integrate with your website, click on the "Data Collection Operations/Settings" tab, followed by the "Connector Settings" button. From here you can establish the settings for the sortable tables and forms you would like to integrate with your site. You will need to enable access to this data collection here, as well as configure your tables/forms as desired.
-3. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-4. Activate the plugin through the 'Plugins' menu in WordPress
-5. Once the plugin has been activated you'll see a new item in your WordPress Settings menu called "Ezdeebee Settings". On this page you'll need to provide your Ezdebee Site ID (see "Configuring Connector Access", above). If you wish to cache a local copy of your Ezdeebee data check the "Cache to Local Database" checkbox.
+1. Select the data collection you want to integrate with your website, click on the "Data Collection Operations/Settings" tab, followed by the "Connector Settings" button. From here you can establish the settings for the sortable tables and forms you would like to integrate with your site. You will need to enable access to this data collection here, as well as configure your tables/forms as desired.
+1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Once the plugin has been activated you'll see a new item in your WordPress Settings menu called "Ezdeebee Settings". On this page you'll need to provide your Ezdebee Site ID (see "Configuring Connector Access", above). If you wish to cache a local copy of your Ezdeebee data check the "Cache to Local Database" checkbox.
 
 == Frequently asked questions ==
 
@@ -33,12 +33,12 @@ See [Ezdeebee support](http://ezdeebee.com/support)
 == Screenshots ==
 
 1. Sample data collection for a media library consisting of Blu-ray/DVD video and CD/MP3/vinyl audio. Includes fields for uploading cover artwork, and providing a whole host of additional information including genre and parental ratings. Data collections make use of image uploads, dropdown field types, as well as textareas with editors
-2. Sample custom table view of data from media library data collection, displayed on a WordPress site using this plugin
+1. Sample custom table view of data from media library data collection, displayed on a WordPress site using this plugin
 
 == Changelog ==
 
-1.0.1: use local Yahoo User Interface (YUI) library
-1.0.0: initial Ezdeebee WordPress connector release for Ezdeebee beta
+* 1.0.1: use local Yahoo User Interface (YUI) library
+* 1.0.0: initial Ezdeebee WordPress connector release for Ezdeebee beta
 
 == Upgrade notice ==
 
