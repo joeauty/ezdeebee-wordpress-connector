@@ -30,8 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 $referer = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 $referer .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-//$ezdbdomain = "https://ezdeebee.com/app";
-$ezdbdomain = "http://wklocal.netmusician.org/webkit1_0";
+$ezdbdomain = "https://ezdeebee.com/app";
 $cachebuster = rand(0, 10000);
 
 $ezdeebee_options = get_option('ezdeebee_options');
