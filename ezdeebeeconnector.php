@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Ezdeebee WordPress Connector
-Plugin URI: http://ezdeebee.com/wordpress
+Plugin URI: http://wordpress.org/plugins/ezdeebee-wp-connector
 Description: Ezdeebee WordPress Connector Plugin
 Version: 1.1.0
 Author: Ezdeebee
