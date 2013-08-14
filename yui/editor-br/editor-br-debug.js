@@ -1,4 +1,11 @@
-YUI.add('editor-br', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('editor-br', function (Y, NAME) {
 
 
 
@@ -28,21 +35,19 @@ YUI.add('editor-br', function(Y) {
                 e.halt();
                 return;
             }
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 var host = this.get(HOST), inst = host.getInstance(),
-                    sel = new inst.EditorSelection(),
-                    last = '';
+                    sel = new inst.EditorSelection();
 
                 if (sel) {
                     if (Y.UA.ie) {
                         if (!sel.anchorNode || (!sel.anchorNode.test(LI) && !sel.anchorNode.ancestor(LI))) {
-                            var host = this.get(HOST);
                             host.execCommand('inserthtml', inst.EditorSelection.CURSOR);
                             e.halt();
                         }
                     }
                     if (Y.UA.webkit) {
-                        if (!sel.anchorNode.test(LI) && !sel.anchorNode.ancestor(LI)) {
+                        if (!sel.anchorNode || (!sel.anchorNode.test(LI) && !sel.anchorNode.ancestor(LI))) {
                             host.frame._execCommand('insertlinebreak', null);
                             e.halt();
                         }
@@ -83,9 +88,9 @@ YUI.add('editor-br', function(Y) {
                     * Dropping in the empty textnode and then removing it causes FF to redraw and
                     * remove the "ghost cursors"
                     */
-                    var inst = this.get(HOST).getInstance();
-                    var d = e.changedNode;
-                    var t = inst.config.doc.createTextNode(' ');
+                    var inst = this.get(HOST).getInstance(),
+                        d = e.changedNode,
+                        t = inst.config.doc.createTextNode(' ');
                     d.appendChild(t);
                     d.removeChild(t);
                     break;
@@ -121,11 +126,11 @@ YUI.add('editor-br', function(Y) {
             }
         }
     });
-    
+
     Y.namespace('Plugin');
-    
+
     Y.Plugin.EditorBR = EditorBR;
 
 
 
-}, '@VERSION@' ,{skinnable:false, requires:['editor-base']});
+}, '3.11.0', {"requires": ["editor-base"]});

@@ -1,4 +1,11 @@
-YUI.add('highlight-base', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('highlight-base', function (Y, NAME) {
 
 /**
 Provides methods for highlighting strings within other strings by wrapping
@@ -309,4 +316,4 @@ Highlight = {
 Y.Highlight = Highlight;
 
 
-}, '@VERSION@' ,{requires:['array-extras', 'classnamemanager', 'escape', 'text-wordbreak']});
+}, '3.11.0', {"requires": ["array-extras", "classnamemanager", "escape", "text-wordbreak"]});

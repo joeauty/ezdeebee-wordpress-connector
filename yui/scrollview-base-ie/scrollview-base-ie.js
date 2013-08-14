@@ -1,4 +1,11 @@
-YUI.add('scrollview-base-ie', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('scrollview-base-ie', function (Y, NAME) {
 
 /**
  * IE specific support for the scrollview-base module.
@@ -10,7 +17,7 @@ Y.mix(Y.ScrollView.prototype, {
 
     /**
      * Internal method to fix text selection in IE
-     * 
+     *
      * @method _fixIESelect
      * @for ScrollView
      * @private
@@ -51,5 +58,4 @@ Y.mix(Y.ScrollView.prototype, {
     }
 }, true);
 
-
-}, '@VERSION@' ,{requires:['scrollview-base']});
+}, '3.11.0', {"requires": ["scrollview-base"]});

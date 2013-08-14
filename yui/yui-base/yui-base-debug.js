@@ -1,53 +1,66 @@
-/**
- * The YUI module contains the components required for building the YUI seed
- * file.  This includes the script loading mechanism, a simple queue, and
- * the core utilities for the library.
- * @module yui
- * @submodule yui-base
- */
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
 
+/**
+The YUI module contains the components required for building the YUI seed file.
+This includes the script loading mechanism, a simple queue, and the core
+utilities for the library.
+
+@module yui
+@main yui
+@submodule yui-base
+**/
+
+/*jshint eqeqeq: false*/
 if (typeof YUI != 'undefined') {
     YUI._YUI = YUI;
 }
 
 /**
-The YUI global namespace object.  If YUI is already defined, the
-existing YUI object will not be overwritten so that defined
-namespaces are preserved.  It is the constructor for the object
-the end user interacts with.  As indicated below, each instance
-has full custom event support, but only if the event system
-is available.  This is a self-instantiable factory function.  You
-can invoke it directly like this:
+The YUI global namespace object. This is the constructor for all YUI instances.
 
-     YUI().use('*', function(Y) {
-         // ready
-     });
+This is a self-instantiable factory function, meaning you don't need to precede
+it with the `new` operator. You can invoke it directly like this:
+
+    YUI().use('*', function (Y) {
+        // Y is a new YUI instance.
+    });
 
 But it also works like this:
 
-     var Y = YUI();
+    var Y = YUI();
 
-Configuring the YUI object:
+The `YUI` constructor accepts an optional config object, like this:
 
     YUI({
         debug: true,
         combine: false
-    }).use('node', function(Y) {
-        //Node is ready to use
+    }).use('node', function (Y) {
+        // Y.Node is ready to use.
     });
 
-See the API docs for the <a href="config.html">Config</a> class
-for the complete list of supported configuration properties accepted
-by the YUI constuctor.
+See the API docs for the <a href="config.html">Config</a> class for the complete
+list of supported configuration properties accepted by the YUI constuctor.
+
+If a global `YUI` object is already defined, the existing YUI object will not be
+overwritten, to ensure that defined namespaces are preserved.
+
+Each YUI instance has full custom event support, but only if the event system is
+available.
 
 @class YUI
+@uses EventTarget
 @constructor
 @global
-@uses EventTarget
-@param [o]* {Object} 0..n optional configuration objects.  these values
-are store in Y.config.  See <a href="config.html">Config</a> for the list of supported
-properties.
-*/
+@param {Object} [config]* Zero or more optional configuration objects. Config
+    values are stored in the `Y.config` property. See the
+    <a href="config.html">Config</a> docs for the list of supported properties.
+**/
+
     /*global YUI*/
     /*global YUI_config*/
     var YUI = function() {
@@ -67,61 +80,59 @@ properties.
             Y._init();
 
             /**
-                YUI.GlobalConfig is a master configuration that might span
-                multiple contexts in a non-browser environment.  It is applied
-                first to all instances in all contexts.
-                @property GlobalConfig
-                @type {Object}
-                @global
-                @static
-                @example
+            Master configuration that might span multiple contexts in a non-
+            browser environment. It is applied first to all instances in all
+            contexts.
 
+            @example
 
-                    YUI.GlobalConfig = {
-                        filter: 'debug'
-                    };
+                YUI.GlobalConfig = {
+                    filter: 'debug'
+                };
 
-                    YUI().use('node', function(Y) {
-                        //debug files used here
-                    });
+                YUI().use('node', function (Y) {
+                    // debug files used here
+                });
 
-                    YUI({
-                        filter: 'min'
-                    }).use('node', function(Y) {
-                        //min files used here
-                    });
+                YUI({
+                    filter: 'min'
+                }).use('node', function (Y) {
+                    // min files used here
+                });
 
-            */
+            @property {Object} GlobalConfig
+            @global
+            @static
+            **/
             if (YUI.GlobalConfig) {
                 Y.applyConfig(YUI.GlobalConfig);
             }
 
             /**
-                YUI_config is a page-level config.  It is applied to all
-                instances created on the page.  This is applied after
-                YUI.GlobalConfig, and before the instance level configuration
-                objects.
-                @global
-                @property YUI_config
-                @type {Object}
-                @example
+            Page-level config applied to all YUI instances created on the
+            current page. This is applied after `YUI.GlobalConfig` and before
+            any instance-level configuration.
 
+            @example
 
-                    //Single global var to include before YUI seed file
-                    YUI_config = {
-                        filter: 'debug'
-                    };
+                // Single global var to include before YUI seed file
+                YUI_config = {
+                    filter: 'debug'
+                };
 
-                    YUI().use('node', function(Y) {
-                        //debug files used here
-                    });
+                YUI().use('node', function (Y) {
+                    // debug files used here
+                });
 
-                    YUI({
-                        filter: 'min'
-                    }).use('node', function(Y) {
-                        //min files used here
-                    });
-            */
+                YUI({
+                    filter: 'min'
+                }).use('node', function (Y) {
+                    // min files used here
+                });
+
+            @property {Object} YUI_config
+            @global
+            **/
             if (gconf) {
                 Y.applyConfig(gconf);
             }
@@ -135,7 +146,7 @@ properties.
         if (l) {
             // Each instance can accept one or more configuration objects.
             // These are applied after YUI.GlobalConfig and YUI_Config,
-            // overriding values set in those config files if there is a '
+            // overriding values set in those config files if there is a
             // matching property.
             for (; i < l; i++) {
                 Y.applyConfig(args[i]);
@@ -152,9 +163,14 @@ properties.
 (function() {
 
     var proto, prop,
-        VERSION = '@VERSION@',
+        VERSION = '3.11.0',
         PERIOD = '.',
         BASE = 'http://yui.yahooapis.com/',
+        /*
+            These CSS class names can't be generated by
+            getClassName since it is not available at the
+            time they are being used.
+        */
         DOC_LABEL = 'yui3-js-enabled',
         CSS_STAMP_EL = 'yui3-css-stamp',
         NOOP = function() {},
@@ -194,7 +210,11 @@ properties.
             }
         },
         getLoader = function(Y, o) {
-            var loader = Y.Env._loader;
+            var loader = Y.Env._loader,
+                lCore = [ 'loader-base' ],
+                G_ENV = YUI.Env,
+                mods = G_ENV.mods;
+
             if (loader) {
                 //loader._config(Y.config);
                 loader.ignoreRegistered = false;
@@ -206,7 +226,10 @@ properties.
                 loader = new Y.Loader(Y.config);
                 Y.Env._loader = loader;
             }
-            YUI.Env.core = Y.Array.dedupe([].concat(YUI.Env.core, [ 'loader-base', 'loader-rollup', 'loader-yui3' ]));
+            if (mods && mods.loader) {
+                lCore = [].concat(lCore, YUI.Env.loaderExtras);
+            }
+            YUI.Env.core = Y.Array.dedupe([].concat(YUI.Env.core, lCore));
 
             return loader;
         },
@@ -232,19 +255,19 @@ if (docEl && docClass.indexOf(DOC_LABEL) == -1) {
 }
 
 if (VERSION.indexOf('@') > -1) {
-    VERSION = '3.3.0'; // dev time hack for cdn test
+    VERSION = '3.5.0'; // dev time hack for cdn test
 }
 
 proto = {
     /**
-     * Applies a new configuration object to the YUI instance config.
-     * This will merge new group/module definitions, and will also
-     * update the loader cache if necessary.  Updating Y.config directly
-     * will not update the cache.
-     * @method applyConfig
-     * @param {Object} o the configuration object.
-     * @since 3.2.0
-     */
+    Applies a new configuration object to the config of this YUI instance. This
+    will merge new group/module definitions, and will also update the loader
+    cache if necessary. Updating `Y.config` directly will not update the cache.
+
+    @method applyConfig
+    @param {Object} o the configuration object.
+    @since 3.2.0
+    **/
     applyConfig: function(o) {
 
         o = o || NOOP;
@@ -283,21 +306,25 @@ proto = {
         }
 
     },
+
     /**
-    * Old way to apply a config to the instance (calls `applyConfig` under the hood)
-    * @private
-    * @method _config
-    * @param {Object} o The config to apply
-    */
+    Old way to apply a config to this instance (calls `applyConfig` under the
+    hood).
+
+    @private
+    @method _config
+    @param {Object} o The config to apply
+    **/
     _config: function(o) {
         this.applyConfig(o);
     },
 
     /**
-     * Initialize this YUI instance
-     * @private
-     * @method _init
-     */
+    Initializes this YUI instance.
+
+    @private
+    @method _init
+    **/
     _init: function() {
         var filter, el,
             Y = this,
@@ -306,15 +333,20 @@ proto = {
             prop;
 
         /**
-         * The version number of the YUI instance.
-         * @property version
-         * @type string
-         */
+        The version number of this YUI instance.
+
+        This value is typically updated by a script when a YUI release is built,
+        so it may not reflect the correct version number when YUI is run from
+        the development source tree.
+
+        @property {String} version
+        **/
         Y.version = VERSION;
 
         if (!Env) {
             Y.Env = {
-                core: ['get','features','intl-base','yui-log','yui-later'],
+                core: ['get', 'features', 'intl-base', 'yui-log', 'yui-later'],
+                loaderExtras: ['loader-rollup', 'loader-yui3'],
                 mods: {}, // flat module map
                 versions: {}, // version module map
                 base: BASE,
@@ -376,7 +408,7 @@ proto = {
                         path = {
                             filter: filter,
                             path: path
-                        }
+                        };
                     }
                     return path;
                 },
@@ -411,7 +443,7 @@ proto = {
             if (G_ENV && Y !== YUI) {
                 Env._yidx = ++G_ENV._yidx;
                 Env._guidp = ('yui_' + VERSION + '_' +
-                             Env._yidx + '_' + time).replace(/\./g, '_');
+                             Env._yidx + '_' + time).replace(/[^a-z0-9_]+/g, '_');
             } else if (YUI._YUI) {
 
                 G_ENV = YUI._YUI.Env;
@@ -444,7 +476,8 @@ proto = {
             throwFail: true,
             useBrowserConsole: true,
             useNativeES5: true,
-            win: win
+            win: win,
+            global: Function('return this')()
         };
 
         //Register the CSS stamp element
@@ -452,7 +485,13 @@ proto = {
             el = doc.createElement('div');
             el.innerHTML = '<div id="' + CSS_STAMP_EL + '" style="position: absolute !important; visibility: hidden !important"></div>';
             YUI.Env.cssStampEl = el.firstChild;
-            docEl.insertBefore(YUI.Env.cssStampEl, docEl.firstChild);
+            if (doc.body) {
+                doc.body.appendChild(YUI.Env.cssStampEl);
+            } else {
+                docEl.insertBefore(YUI.Env.cssStampEl, docEl.firstChild);
+            }
+        } else if (doc && doc.getElementById(CSS_STAMP_EL) && !YUI.Env.cssStampEl) {
+            YUI.Env.cssStampEl = doc.getElementById(CSS_STAMP_EL);
         }
 
         Y.config.lang = Y.config.lang || 'en-US';
@@ -468,16 +507,16 @@ proto = {
     },
 
     /**
-     * Finishes the instance setup. Attaches whatever modules were defined
-     * when the yui modules was registered.
-     * @method _setup
-     * @private
-     */
-    _setup: function(o) {
+    Finishes the instance setup. Attaches whatever YUI modules were defined
+    at the time that this instance was created.
+
+    @method _setup
+    @private
+    **/
+    _setup: function() {
         var i, Y = this,
             core = [],
             mods = YUI.Env.mods,
-            //extras = Y.config.core || ['get','features','intl-base','yui-log','yui-later'];
             extras = Y.config.core || [].concat(YUI.Env.core); //Clone it..
 
         for (i = 0; i < extras.length; i++) {
@@ -497,15 +536,17 @@ proto = {
     },
 
     /**
-     * Executes a method on a YUI instance with
-     * the specified id if the specified method is whitelisted.
-     * @method applyTo
-     * @param id {String} the YUI instance id.
-     * @param method {String} the name of the method to exectute.
-     * Ex: 'Object.keys'.
-     * @param args {Array} the arguments to apply to the method.
-     * @return {Object} the return value from the applied method or null.
-     */
+    Executes the named method on the specified YUI instance if that method is
+    whitelisted.
+
+    @method applyTo
+    @param {String} id YUI instance id.
+    @param {String} method Name of the method to execute. For example:
+        'Object.keys'.
+    @param {Array} args Arguments to apply to the method.
+    @return {Mixed} Return value from the applied method, or `null` if the
+        specified instance was not found or the method was not whitelisted.
+    **/
     applyTo: function(id, method, args) {
         if (!(method in APPLY_TO_AUTH)) {
             this.log(method + ': applyTo not allowed', 'warn', 'yui');
@@ -529,40 +570,53 @@ proto = {
     },
 
 /**
-Registers a module with the YUI global.  The easiest way to create a
-first-class YUI module is to use the YUI component build tool.
+Registers a YUI module and makes it available for use in a `YUI().use()` call or
+as a dependency for other modules.
 
-http://yuilibrary.com/projects/builder
+The easiest way to create a first-class YUI module is to use
+<a href="http://yui.github.com/shifter/">Shifter</a>, the YUI component build
+tool.
 
-The build system will produce the `YUI.add` wrapper for you module, along
+Shifter will automatically wrap your module code in a `YUI.add()` call along
 with any configuration info required for the module.
-@method add
-@param name {String} module name.
-@param fn {Function} entry point into the module that is used to bind module to the YUI instance.
-@param {YUI} fn.Y The YUI instance this module is executed in.
-@param {String} fn.name The name of the module
-@param version {String} version string.
-@param details {Object} optional config data:
-@param details.requires {Array} features that must be present before this module can be attached.
-@param details.optional {Array} optional features that should be present if loadOptional
- is defined.  Note: modules are not often loaded this way in YUI 3,
- but this field is still useful to inform the user that certain
- features in the component will require additional dependencies.
-@param details.use {Array} features that are included within this module which need to
- be attached automatically when this module is attached.  This
- supports the YUI 3 rollup system -- a module with submodules
- defined will need to have the submodules listed in the 'use'
- config.  The YUI component build tool does this for you.
-@return {YUI} the YUI instance.
+
 @example
 
-    YUI.add('davglass', function(Y, name) {
-        Y.davglass = function() {
-            alert('Dav was here!');
+    YUI.add('davglass', function (Y) {
+        Y.davglass = function () {
+            Y.log('Dav was here!');
         };
-    }, '3.4.0', { requires: ['yui-base', 'harley-davidson', 'mt-dew'] });
+    }, '3.4.0', {
+        requires: ['harley-davidson', 'mt-dew']
+    });
 
-*/
+@method add
+@param {String} name Module name.
+@param {Function} fn Function containing module code. This function will be
+    executed whenever the module is attached to a specific YUI instance.
+
+    @param {YUI} fn.Y The YUI instance to which this module is attached.
+    @param {String} fn.name Name of the module
+
+@param {String} version Module version number. This is currently used only for
+    informational purposes, and is not used internally by YUI.
+
+@param {Object} [config] Module config.
+    @param {Array} [config.requires] Array of other module names that must be
+        attached before this module can be attached.
+    @param {Array} [config.optional] Array of optional module names that should
+        be attached before this module is attached if they've already been
+        loaded. If the `loadOptional` YUI option is `true`, optional modules
+        that have not yet been loaded will be loaded just as if they were hard
+        requirements.
+    @param {Array} [config.use] Array of module names that are included within
+        or otherwise provided by this module, and which should be attached
+        automatically when this module is attached. This makes it possible to
+        create "virtual rollup" modules that simply attach a collection of other
+        modules or submodules.
+
+@return {YUI} This YUI instance.
+**/
     add: function(name, fn, version, details) {
         details = details || {};
         var env = YUI.Env,
@@ -572,7 +626,9 @@ with any configuration info required for the module.
                 version: version,
                 details: details
             },
-            loader,
+            //Instance hash so we don't apply it to the same instance twice
+            applied = {},
+            loader, inst,
             i, versions = env.versions;
 
         env.mods[name] = mod;
@@ -581,10 +637,14 @@ with any configuration info required for the module.
 
         for (i in instances) {
             if (instances.hasOwnProperty(i)) {
-                loader = instances[i].Env._loader;
-                if (loader) {
-                    if (!loader.moduleInfo[name] || loader.moduleInfo[name].temp) {
-                        loader.addModule(details, name);
+                inst = instances[i];
+                if (!applied[inst.id]) {
+                    applied[inst.id] = true;
+                    loader = inst.Env._loader;
+                    if (loader) {
+                        if (!loader.moduleInfo[name] || loader.moduleInfo[name].temp) {
+                            loader.addModule(details, name);
+                        }
                     }
                 }
             }
@@ -594,21 +654,24 @@ with any configuration info required for the module.
     },
 
     /**
-     * Executes the function associated with each required
-     * module, binding the module to the YUI instance.
-     * @param {Array} r The array of modules to attach
-     * @param {Boolean} [moot=false] Don't throw a warning if the module is not attached
-     * @method _attach
-     * @private
-     */
+    Executes the callback function associated with each required module,
+    attaching the module to this YUI instance.
+
+    @method _attach
+    @param {Array} r The array of modules to attach
+    @param {Boolean} [moot=false] If `true`, don't throw a warning if the module
+        is not attached.
+    @private
+    **/
     _attach: function(r, moot) {
         var i, name, mod, details, req, use, after,
             mods = YUI.Env.mods,
             aliases = YUI.Env.aliases,
             Y = this, j,
+            cache = YUI.Env._renderedMods,
             loader = Y.Env._loader,
             done = Y.Env._attached,
-            len = r.length, loader,
+            len = r.length, loader, def, go,
             c = [];
 
         //Check for conditional modules (in a second+ instance) and add their requirements
@@ -618,12 +681,15 @@ with any configuration info required for the module.
             mod = mods[name];
             c.push(name);
             if (loader && loader.conditions[name]) {
-                Y.Object.each(loader.conditions[name], function(def) {
-                    var go = def && ((def.ua && Y.UA[def.ua]) || (def.test && def.test(Y)));
-                    if (go) {
-                        c.push(def.name);
+                for (j in loader.conditions[name]) {
+                    if (loader.conditions[name].hasOwnProperty(j)) {
+                        def = loader.conditions[name][j];
+                        go = def && ((def.ua && Y.UA[def.ua]) || (def.test && def.test(Y)));
+                        if (go) {
+                            c.push(def.name);
+                        }
                     }
-                });
+                }
             }
         }
         r = c;
@@ -634,7 +700,7 @@ with any configuration info required for the module.
                 name = r[i];
                 mod = mods[name];
 
-                if (aliases && aliases[name]) {
+                if (aliases && aliases[name] && !mod) {
                     Y._attach(aliases[name]);
                     continue;
                 }
@@ -665,10 +731,31 @@ with any configuration info required for the module.
                             Y.Env._missed.splice(j, 1);
                         }
                     }
+                    /*
+                        If it's a temp module, we need to redo it's requirements if it's already loaded
+                        since it may have been loaded by another instance and it's dependencies might
+                        have been redefined inside the fetched file.
+                    */
+                    if (loader && cache && cache[name] && cache[name].temp) {
+                        loader.getRequires(cache[name]);
+                        req = [];
+                        for (j in loader.moduleInfo[name].expanded_map) {
+                            if (loader.moduleInfo[name].expanded_map.hasOwnProperty(j)) {
+                                req.push(j);
+                            }
+                        }
+                        Y._attach(req);
+                    }
+
                     details = mod.details;
                     req = details.requires;
                     use = details.use;
                     after = details.after;
+                    //Force Intl load if there is a language (Loader logic) @todo fix this shit
+                    if (details.lang) {
+                        req = req || [];
+                        req.unshift('intl');
+                    }
 
                     if (req) {
                         for (j = 0; j < req.length; j++) {
@@ -693,11 +780,15 @@ with any configuration info required for the module.
                     }
 
                     if (mod.fn) {
-                        try {
-                            mod.fn(Y, name);
-                        } catch (e) {
-                            Y.error('Attach error: ' + name, e, name);
-                            return false;
+                            if (Y.config.throwFail) {
+                                mod.fn(Y, name);
+                            } else {
+                                try {
+                                    mod.fn(Y, name);
+                                } catch (e) {
+                                    Y.error('Attach error: ' + name, e, name);
+                                return false;
+                            }
                         }
                     }
 
@@ -722,59 +813,110 @@ with any configuration info required for the module.
     },
 
     /**
-     * Attaches one or more modules to the YUI instance.  When this
-     * is executed, the requirements are analyzed, and one of
-     * several things can happen:
-     *
-     *  * All requirements are available on the page --  The modules
-     *   are attached to the instance.  If supplied, the use callback
-     *   is executed synchronously.
-     *
-     *  * Modules are missing, the Get utility is not available OR
-     *   the 'bootstrap' config is false -- A warning is issued about
-     *   the missing modules and all available modules are attached.
-     *
-     *  * Modules are missing, the Loader is not available but the Get
-     *   utility is and boostrap is not false -- The loader is bootstrapped
-     *   before doing the following....
-     *
-     *  * Modules are missing and the Loader is available -- The loader
-     *   expands the dependency tree and fetches missing modules.  When
-     *   the loader is finshed the callback supplied to use is executed
-     *   asynchronously.
-     *
-     * @method use
-     * @param modules* {String|Array} 1-n modules to bind (uses arguments array).
-     * @param [callback] {Function} callback function executed when
-     * the instance has the required functionality.  If included, it
-     * must be the last parameter.
-     * @param callback.Y {YUI} The `YUI` instance created for this sandbox
-     * @param callback.data {Object} Object data returned from `Loader`.
-     *
-     * @example
-     *      // loads and attaches dd and its dependencies
-     *      YUI().use('dd', function(Y) {});
-     *
-     *      // loads and attaches dd and node as well as all of their dependencies (since 3.4.0)
-     *      YUI().use(['dd', 'node'], function(Y) {});
-     *
-     *      // attaches all modules that are available on the page
-     *      YUI().use('*', function(Y) {});
-     *
-     *      // intrinsic YUI gallery support (since 3.1.0)
-     *      YUI().use('gallery-yql', function(Y) {});
-     *
-     *      // intrinsic YUI 2in3 support (since 3.1.0)
-     *      YUI().use('yui2-datatable', function(Y) {});
-     *
-     * @return {YUI} the YUI instance.
-     */
+    Delays the `use` callback until another event has taken place such as
+    `window.onload`, `domready`, `contentready`, or `available`.
+
+    @private
+    @method _delayCallback
+    @param {Function} cb The original `use` callback.
+    @param {String|Object} until Either an event name ('load', 'domready', etc.)
+        or an object containing event/args keys for contentready/available.
+    @return {Function}
+    **/
+    _delayCallback: function(cb, until) {
+
+        var Y = this,
+            mod = ['event-base'];
+
+        until = (Y.Lang.isObject(until) ? until : { event: until });
+
+        if (until.event === 'load') {
+            mod.push('event-synthetic');
+        }
+
+        Y.log('Delaying use callback until: ' + until.event, 'info', 'yui');
+        return function() {
+            Y.log('Use callback fired, waiting on delay', 'info', 'yui');
+            var args = arguments;
+            Y._use(mod, function() {
+                Y.log('Delayed use wrapper callback after dependencies', 'info', 'yui');
+                Y.on(until.event, function() {
+                    args[1].delayUntil = until.event;
+                    Y.log('Delayed use callback done after ' + until.event, 'info', 'yui');
+                    cb.apply(Y, args);
+                }, until.args);
+            });
+        };
+    },
+
+    /**
+    Attaches one or more modules to this YUI instance. When this is executed,
+    the requirements of the desired modules are analyzed, and one of several
+    things can happen:
+
+
+      * All required modules have already been loaded, and just need to be
+        attached to this YUI instance. In this case, the `use()` callback will
+        be executed synchronously after the modules are attached.
+
+      * One or more modules have not yet been loaded, or the Get utility is not
+        available, or the `bootstrap` config option is `false`. In this case,
+        a warning is issued indicating that modules are missing, but all
+        available modules will still be attached and the `use()` callback will
+        be executed synchronously.
+
+      * One or more modules are missing and the Loader is not available but the
+        Get utility is, and `bootstrap` is not `false`. In this case, the Get
+        utility will be used to load the Loader, and we will then proceed to
+        the following state:
+
+      * One or more modules are missing and the Loader is available. In this
+        case, the Loader will be used to resolve the dependency tree for the
+        missing modules and load them and their dependencies. When the Loader is
+        finished loading modules, the `use()` callback will be executed
+        asynchronously.
+
+    @example
+
+        // Loads and attaches dd and its dependencies.
+        YUI().use('dd', function (Y) {
+            // ...
+        });
+
+        // Loads and attaches dd and node as well as all of their dependencies.
+        YUI().use(['dd', 'node'], function (Y) {
+            // ...
+        });
+
+        // Attaches all modules that have already been loaded.
+        YUI().use('*', function (Y) {
+            // ...
+        });
+
+        // Attaches a gallery module.
+        YUI().use('gallery-yql', function (Y) {
+            // ...
+        });
+
+        // Attaches a YUI 2in3 module.
+        YUI().use('yui2-datatable', function (Y) {
+            // ...
+        });
+
+    @method use
+    @param {String|Array} modules* One or more module names to attach.
+    @param {Function} [callback] Callback function to be executed once all
+        specified modules and their dependencies have been attached.
+    @param {YUI} callback.Y The YUI instance created for this sandbox.
+    @param {Object} callback.status Object containing `success`, `msg` and
+        `data` properties.
+    @chainable
+    **/
     use: function() {
         var args = SLICE.call(arguments, 0),
             callback = args[args.length - 1],
             Y = this,
             i = 0,
-            a = [],
             name,
             Env = Y.Env,
             provisioned = true;
@@ -782,6 +924,9 @@ with any configuration info required for the module.
         // The last argument supplied to use can be a load complete callback
         if (Y.Lang.isFunction(callback)) {
             args.pop();
+            if (Y.config.delayUntil) {
+                callback = Y._delayCallback(callback, Y.config.delayUntil);
+            }
         } else {
             callback = null;
         }
@@ -817,43 +962,53 @@ with any configuration info required for the module.
 
         return Y;
     },
+
     /**
-    * Notify handler from Loader for attachment/load errors
-    * @method _notify
-    * @param callback {Function} The callback to pass to the `Y.config.loadErrorFn`
-    * @param response {Object} The response returned from Loader
-    * @param args {Array} The aruments passed from Loader
-    * @private
-    */
+    Handles Loader notifications about attachment/load errors.
+
+    @method _notify
+    @param {Function} callback Callback to pass to `Y.config.loadErrorFn`.
+    @param {Object} response Response returned from Loader.
+    @param {Array} args Arguments passed from Loader.
+    @private
+    **/
     _notify: function(callback, response, args) {
         if (!response.success && this.config.loadErrorFn) {
             this.config.loadErrorFn.call(this, this, callback, response, args);
         } else if (callback) {
-            try {
+            if (this.Env._missed && this.Env._missed.length) {
+                response.msg = 'Missing modules: ' + this.Env._missed.join();
+                response.success = false;
+            }
+            if (this.config.throwFail) {
                 callback(this, response);
-            } catch (e) {
-                this.error('use callback error', e, args);
+            } else {
+                try {
+                    callback(this, response);
+                } catch (e) {
+                    this.error('use callback error', e, args);
+                }
             }
         }
     },
 
     /**
-    * This private method is called from the `use` method queue. To ensure that only one set of loading
-    * logic is performed at a time.
-    * @method _use
-    * @private
-    * @param args* {String} 1-n modules to bind (uses arguments array).
-    * @param *callback {Function} callback function executed when
-    * the instance has the required functionality.  If included, it
-    * must be the last parameter.
-    */
+    Called from the `use` method queue to ensure that only one set of loading
+    logic is performed at a time.
+
+    @method _use
+    @param {String} args* One or more modules to attach.
+    @param {Function} [callback] Function to call once all required modules have
+        been attached.
+    @private
+    **/
     _use: function(args, callback) {
 
         if (!this.Array) {
             this._attach(['yui-base']);
         }
 
-        var len, loader, handleBoot, handleRLS,
+        var len, loader, handleBoot,
             Y = this,
             G_ENV = YUI.Env,
             mods = G_ENV.mods,
@@ -866,20 +1021,22 @@ with any configuration info required for the module.
             config = Y.config,
             boot = config.bootstrap,
             missing = [],
+            i,
             r = [],
             ret = true,
             fetchCSS = config.fetchCSS,
             process = function(names, skip) {
 
-                var i = 0, a = [];
+                var i = 0, a = [], name, len, m, req, use;
 
                 if (!names.length) {
                     return;
                 }
 
                 if (aliases) {
-                    for (i = 0; i < names.length; i++) {
-                        if (aliases[names[i]]) {
+                    len = names.length;
+                    for (i = 0; i < len; i++) {
+                        if (aliases[names[i]] && !mods[names[i]]) {
                             a = [].concat(a, aliases[names[i]]);
                         } else {
                             a.push(names[i]);
@@ -888,19 +1045,22 @@ with any configuration info required for the module.
                     names = a;
                 }
 
-                YArray.each(names, function(name) {
+                len = names.length;
 
-                    // add this module to full list of things to attach
+                for (i = 0; i < len; i++) {
+                    name = names[i];
                     if (!skip) {
                         r.push(name);
                     }
 
                     // only attach a module once
                     if (used[name]) {
-                        return;
+                        continue;
                     }
 
-                    var m = mods[name], req, use;
+                    m = mods[name];
+                    req = null;
+                    use = null;
 
                     if (m) {
                         used[name] = true;
@@ -925,7 +1085,8 @@ with any configuration info required for the module.
                     if (use && use.length) {
                         process(use, 1);
                     }
-                });
+                }
+
             },
 
             handleLoader = function(fromLoader) {
@@ -946,7 +1107,7 @@ with any configuration info required for the module.
                     process(data);
                     redo = missing.length;
                     if (redo) {
-                        if (missing.sort().join() ==
+                        if ([].concat(missing).sort().join() ==
                                 origMissing.sort().join()) {
                             redo = false;
                         }
@@ -981,16 +1142,22 @@ with any configuration info required for the module.
 
         // YUI().use('*'); // bind everything available
         if (firstArg === '*') {
-            ret = Y._attach(Y.Object.keys(mods));
+            args = [];
+            for (i in mods) {
+                if (mods.hasOwnProperty(i)) {
+                    args.push(i);
+                }
+            }
+            ret = Y._attach(args);
             if (ret) {
                 handleLoader();
             }
             return Y;
         }
 
-        if (mods['loader'] && !Y.Loader) {
+        if ((mods.loader || mods['loader-base']) && !Y.Loader) {
             Y.log('Loader was found in meta, but it is not attached. Attaching..', 'info', 'yui');
-            Y._attach(['loader']);
+            Y._attach(['loader' + ((!mods.loader) ? '-base' : '')]);
         }
 
         // Y.log('before loader requirements: ' + args, 'info', 'yui');
@@ -998,6 +1165,7 @@ with any configuration info required for the module.
         // use loader to expand dependencies and sort the
         // requirements if it is available.
         if (boot && Y.Loader && args.length) {
+            Y.log('Using loader to expand dependencies', 'info', 'yui');
             loader = getLoader(Y);
             loader.require(args);
             loader.ignoreRegistered = true;
@@ -1007,14 +1175,13 @@ with any configuration info required for the module.
             loader._boot = false;
         }
 
-        // process each requirement and any additional requirements
-        // the module metadata specifies
         process(args);
 
         len = missing.length;
 
+
         if (len) {
-            missing = Y.Object.keys(YArray.hash(missing));
+            missing = YArray.dedupe(missing);
             len = missing.length;
 Y.log('Modules missing: ' + missing + ', ' + missing.length, 'info', 'yui');
         }
@@ -1030,7 +1197,7 @@ Y.log('Modules missing: ' + missing + ', ' + missing.length, 'info', 'yui');
             loader.context = Y;
             loader.data = args;
             loader.ignoreRegistered = false;
-            loader.require(args);
+            loader.require(missing);
             loader.insert(null, (fetchCSS) ? null : 'js');
 
         } else if (boot && len && Y.Get && !Env.bootstrapped) {
@@ -1071,37 +1238,43 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
 
 
     /**
-    Adds a namespace object onto the YUI global if called statically.
+    Utility method for safely creating namespaces if they don't already exist.
+    May be called statically on the YUI global object or as a method on a YUI
+    instance.
 
-        // creates YUI.your.namespace.here as nested objects
-        YUI.namespace("your.namespace.here");
+    When called statically, a namespace will be created on the YUI global
+    object:
 
-    If called as a method on a YUI <em>instance</em>, it creates the
-    namespace on the instance.
+        // Create `YUI.your.namespace.here` as nested objects, preserving any
+        // objects that already exist instead of overwriting them.
+        YUI.namespace('your.namespace.here');
 
-         // creates Y.property.package
-         Y.namespace("property.package");
+    When called as a method on a YUI instance, a namespace will be created on
+    that instance:
 
-    Dots in the input string cause `namespace` to create nested objects for
-    each token. If any part of the requested namespace already exists, the
-    current object will be left in place.  This allows multiple calls to
-    `namespace` to preserve existing namespaced properties.
+        // Creates `Y.property.package`.
+        Y.namespace('property.package');
 
-    If the first token in the namespace string is "YAHOO", the token is
-    discarded.
+    Dots in the input string cause `namespace` to create nested objects for each
+    token. If any part of the requested namespace already exists, the current
+    object will be left in place and will not be overwritten. This allows
+    multiple calls to `namespace` to preserve existing namespaced properties.
+
+    If the first token in the namespace string is "YAHOO", that token is
+    discarded. This is legacy behavior for backwards compatibility with YUI 2.
 
     Be careful with namespace tokens. Reserved words may work in some browsers
     and not others. For instance, the following will fail in some browsers
     because the supported version of JavaScript reserves the word "long":
 
-         Y.namespace("really.long.nested.namespace");
+        Y.namespace('really.long.nested.namespace');
 
-    <em>Note: If you pass multiple arguments to create multiple namespaces, only
-    the last one created is returned from this function.</em>
+    Note: If you pass multiple arguments to create multiple namespaces, only the
+    last one created is returned from this function.
 
     @method namespace
-    @param  {String} namespace* namespaces to create.
-    @return {Object}  A reference to the last namespace object created.
+    @param {String} namespace* One or more namespaces to create.
+    @return {Object} Reference to the last namespace object created.
     **/
     namespace: function() {
         var a = arguments, o, i = 0, j, d, arg;
@@ -1130,18 +1303,22 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
     dump: function (o) { return ''+o; },
 
     /**
-     * Report an error.  The reporting mechanism is controlled by
-     * the `throwFail` configuration attribute.  If throwFail is
-     * not specified, the message is written to the Logger, otherwise
-     * a JS error is thrown. If an `errorFn` is specified in the config
-     * it must return `true` to keep the error from being thrown.
-     * @method error
-     * @param msg {String} the error message.
-     * @param e {Error|String} Optional JS error that was caught, or an error string.
-     * @param src Optional additional info (passed to `Y.config.errorFn` and `Y.message`)
-     * and `throwFail` is specified, this error will be re-thrown.
-     * @return {YUI} this YUI instance.
-     */
+    Reports an error.
+
+    The reporting mechanism is controlled by the `throwFail` configuration
+    attribute. If `throwFail` is falsy, the message is logged. If `throwFail` is
+    truthy, a JS exception is thrown.
+
+    If an `errorFn` is specified in the config it must return `true` to indicate
+    that the exception was handled and keep it from being thrown.
+
+    @method error
+    @param {String} msg Error message.
+    @param {Error|String} [e] JavaScript error object or an error string.
+    @param {String} [src] Source of the error (such as the name of the module in
+        which the error occurred).
+    @chainable
+    **/
     error: function(msg, e, src) {
         //TODO Add check for window.onerror here
 
@@ -1151,7 +1328,7 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
             ret = Y.config.errorFn.apply(Y, arguments);
         }
 
-        if (Y.config.throwFail && !ret) {
+        if (!ret) {
             throw (e || new Error(msg));
         } else {
             Y.message(msg, 'error', ''+src); // don't scrub this one
@@ -1161,26 +1338,35 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
     },
 
     /**
-     * Generate an id that is unique among all YUI instances
-     * @method guid
-     * @param pre {String} optional guid prefix.
-     * @return {String} the guid.
-     */
+    Generates an id string that is unique among all YUI instances in this
+    execution context.
+
+    @method guid
+    @param {String} [pre] Prefix.
+    @return {String} Unique id.
+    **/
     guid: function(pre) {
         var id = this.Env._guidp + '_' + (++this.Env._uidx);
         return (pre) ? (pre + id) : id;
     },
 
     /**
-     * Returns a `guid` associated with an object.  If the object
-     * does not have one, a new one is created unless `readOnly`
-     * is specified.
-     * @method stamp
-     * @param o {Object} The object to stamp.
-     * @param readOnly {Boolean} if `true`, a valid guid will only
-     * be returned if the object has one assigned to it.
-     * @return {String} The object's guid or null.
-     */
+    Returns a unique id associated with the given object and (if *readOnly* is
+    falsy) stamps the object with that id so it can be identified in the future.
+
+    Stamping an object involves adding a `_yuid` property to it that contains
+    the object's id. One exception to this is that in Internet Explorer, DOM
+    nodes have a `uniqueID` property that contains a browser-generated unique
+    id, which will be used instead of a YUI-generated id when available.
+
+    @method stamp
+    @param {Object} o Object to stamp.
+    @param {Boolean} readOnly If truthy and the given object has not already
+        been stamped, the object will not be modified and `null` will be
+        returned.
+    @return {String} Object's unique id, or `null` if *readOnly* was truthy and
+        the given object was not already stamped.
+    **/
     stamp: function(o, readOnly) {
         var uid;
         if (!o) {
@@ -1209,10 +1395,11 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
     },
 
     /**
-     * Destroys the YUI instance
-     * @method destroy
-     * @since 3.3.0
-     */
+    Destroys this YUI instance.
+
+    @method destroy
+    @since 3.3.0
+    **/
     destroy: function() {
         var Y = this;
         if (Y.Event) {
@@ -1224,14 +1411,17 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
     }
 
     /**
-     * instanceof check for objects that works around
-     * memory leak in IE when the item tested is
-     * window/document
-     * @method instanceOf
-     * @param o {Object} The object to check.
-     * @param type {Object} The class to check against.
-     * @since 3.3.0
-     */
+    Safe `instanceof` wrapper that works around a memory leak in IE when the
+    object being tested is `window` or `document`.
+
+    Unless you are testing objects that may be `window` or `document`, you
+    should use the native `instanceof` operator instead of this method.
+
+    @method instanceOf
+    @param {Object} o Object to check.
+    @param {Object} type Class to check against.
+    @since 3.3.0
+    **/
 };
 
     YUI.prototype = proto;
@@ -1244,37 +1434,40 @@ Y.log('Fetching loader: ' + config.base + config.loaderPath, 'info', 'yui');
     }
 
     /**
-Static method on the Global YUI object to apply a config to all YUI instances.
-It's main use case is "mashups" where several third party scripts are trying to write to
-a global YUI config at the same time. This way they can all call `YUI.applyConfig({})` instead of
-overwriting other scripts configs.
-@static
-@since 3.5.0
-@method applyConfig
-@param {Object} o the configuration object.
-@example
+    Applies a configuration to all YUI instances in this execution context.
 
-    YUI.applyConfig({
-        modules: {
-            davglass: {
-                fullpath: './davglass.js'
+    The main use case for this method is in "mashups" where several third-party
+    scripts need to write to a global YUI config, but cannot share a single
+    centrally-managed config object. This way they can all call
+    `YUI.applyConfig({})` instead of overwriting the single global config.
+
+    @example
+
+        YUI.applyConfig({
+            modules: {
+                davglass: {
+                    fullpath: './davglass.js'
+                }
             }
-        }
-    });
+        });
 
-    YUI.applyConfig({
-        modules: {
-            foo: {
-                fullpath: './foo.js'
+        YUI.applyConfig({
+            modules: {
+                foo: {
+                    fullpath: './foo.js'
+                }
             }
-        }
-    });
+        });
 
-    YUI().use('davglass', function(Y) {
-        //Module davglass will be available here..
-    });
+        YUI().use('davglass', function (Y) {
+            // Module davglass will be available here.
+        });
 
-    */
+    @method applyConfig
+    @param {Object} o Configuration object to apply.
+    @static
+    @since 3.5.0
+    **/
     YUI.applyConfig = function(o) {
         if (!o) {
             return;
@@ -1308,528 +1501,614 @@ overwriting other scripts configs.
     // Support the CommonJS method for exporting our single global
     if (typeof exports == 'object') {
         exports.YUI = YUI;
+        /**
+        * Set a method to be called when `Get.script` is called in Node.js
+        * `Get` will open the file, then pass it's content and it's path
+        * to this method before attaching it. Commonly used for code coverage
+        * instrumentation. <strong>Calling this multiple times will only
+        * attach the last hook method</strong>. This method is only
+        * available in Node.js.
+        * @method setLoadHook
+        * @static
+        * @param {Function} fn The function to set
+        * @param {String} fn.data The content of the file
+        * @param {String} fn.path The file path of the file
+        */
+        YUI.setLoadHook = function(fn) {
+            YUI._getLoadHook = fn;
+        };
+        /**
+        * Load hook for `Y.Get.script` in Node.js, see `YUI.setLoadHook`
+        * @method _getLoadHook
+        * @private
+        * @param {String} data The content of the file
+        * @param {String} path The file path of the file
+        */
+        YUI._getLoadHook = null;
     }
 
 }());
 
 
 /**
- * The config object contains all of the configuration options for
- * the `YUI` instance.  This object is supplied by the implementer
- * when instantiating a `YUI` instance.  Some properties have default
- * values if they are not supplied by the implementer.  This should
- * not be updated directly because some values are cached.  Use
- * `applyConfig()` to update the config object on a YUI instance that
- * has already been configured.
- *
- * @class config
- * @static
- */
+Config object that contains all of the configuration options for
+this `YUI` instance.
+
+This object is supplied by the implementer when instantiating YUI. Some
+properties have default values if they are not supplied by the implementer.
+
+This object should not be updated directly because some values are cached. Use
+`applyConfig()` to update the config object on a YUI instance that has already
+been configured.
+
+@class config
+@static
+**/
 
 /**
- * Allows the YUI seed file to fetch the loader component and library
- * metadata to dynamically load additional dependencies.
- *
- * @property bootstrap
- * @type boolean
- * @default true
- */
+If `true` (the default), YUI will "bootstrap" the YUI Loader and module metadata
+if they're needed to load additional dependencies and aren't already available.
+
+Setting this to `false` will prevent YUI from automatically loading the Loader
+and module metadata, so you will need to manually ensure that they're available
+or handle dependency resolution yourself.
+
+@property {Boolean} bootstrap
+@default true
+**/
 
 /**
- * Turns on writing Ylog messages to the browser console.
- *
- * @property debug
- * @type boolean
- * @default true
- */
+If `true`, `Y.log()` messages will be written to the browser's debug console
+when available and when `useBrowserConsole` is also `true`.
+
+@property {Boolean} debug
+@default true
+**/
 
 /**
- * Log to the browser console if debug is on and the browser has a
- * supported console.
- *
- * @property useBrowserConsole
- * @type boolean
- * @default true
- */
+Log messages to the browser console if `debug` is `true` and the browser has a
+supported console.
+
+@property {Boolean} useBrowserConsole
+@default true
+**/
 
 /**
- * A hash of log sources that should be logged.  If specified, only
- * log messages from these sources will be logged.
- *
- * @property logInclude
- * @type object
- */
+A hash of log sources that should be logged. If specified, only messages from
+these sources will be logged. Others will be discarded.
+
+@property {Object} logInclude
+@type object
+**/
 
 /**
- * A hash of log sources that should be not be logged.  If specified,
- * all sources are logged if not on this list.
- *
- * @property logExclude
- * @type object
- */
+A hash of log sources that should be not be logged. If specified, all sources
+will be logged *except* those on this list.
+
+@property {Object} logExclude
+**/
 
 /**
- * Set to true if the yui seed file was dynamically loaded in
- * order to bootstrap components relying on the window load event
- * and the `domready` custom event.
- *
- * @property injected
- * @type boolean
- * @default false
- */
+When the YUI seed file is dynamically loaded after the `window.onload` event has
+fired, set this to `true` to tell YUI that it shouldn't wait for `window.onload`
+to occur.
+
+This ensures that components that rely on `window.onload` and the `domready`
+custom event will work as expected even when YUI is dynamically injected.
+
+@property {Boolean} injected
+@default false
+**/
 
 /**
- * If `throwFail` is set, `Y.error` will generate or re-throw a JS Error.
- * Otherwise the failure is logged.
- *
- * @property throwFail
- * @type boolean
- * @default true
- */
+If `true`, `Y.error()` will generate or re-throw a JavaScript error. Otherwise,
+errors are merely logged silently.
+
+@property {Boolean} throwFail
+@default true
+**/
 
 /**
- * The window/frame that this instance should operate in.
- *
- * @property win
- * @type Window
- * @default the window hosting YUI
- */
+Reference to the global object for this execution context.
+
+In a browser, this is the current `window` object. In Node.js, this is the
+Node.js `global` object.
+
+@property {Object} global
+**/
 
 /**
- * The document associated with the 'win' configuration.
- *
- * @property doc
- * @type Document
- * @default the document hosting YUI
- */
+The browser window or frame that this YUI instance should operate in.
+
+When running in Node.js, this property is `undefined`, since there is no
+`window` object. Use `global` to get a reference to the global object that will
+work in both browsers and Node.js.
+
+@property {Window} win
+**/
 
 /**
- * A list of modules that defines the YUI core (overrides the default list).
- *
- * @property core
- * @type Array
- * @default [ get,features,intl-base,yui-log,yui-later,loader-base, loader-rollup, loader-yui3 ]
- */
+The browser `document` object associated with this YUI instance's `win` object.
+
+When running in Node.js, this property is `undefined`, since there is no
+`document` object.
+
+@property {Document} doc
+**/
 
 /**
- * A list of languages in order of preference. This list is matched against
- * the list of available languages in modules that the YUI instance uses to
- * determine the best possible localization of language sensitive modules.
- * Languages are represented using BCP 47 language tags, such as "en-GB" for
- * English as used in the United Kingdom, or "zh-Hans-CN" for simplified
- * Chinese as used in China. The list can be provided as a comma-separated
- * list or as an array.
- *
- * @property lang
- * @type string|string[]
- */
+A list of modules that defines the YUI core (overrides the default list).
+
+@property {Array} core
+@type Array
+@default ['get', 'features', 'intl-base', 'yui-log', 'yui-later', 'loader-base', 'loader-rollup', 'loader-yui3']
+**/
 
 /**
- * The default date format
- * @property dateFormat
- * @type string
- * @deprecated use configuration in `DataType.Date.format()` instead.
- */
+A list of languages to use in order of preference.
+
+This list is matched against the list of available languages in modules that the
+YUI instance uses to determine the best possible localization of language
+sensitive modules.
+
+Languages are represented using BCP 47 language tags, such as "en-GB" for
+English as used in the United Kingdom, or "zh-Hans-CN" for simplified Chinese as
+used in China. The list may be provided as a comma-separated string or as an
+array.
+
+@property {String|String[]} lang
+**/
 
 /**
- * The default locale
- * @property locale
- * @type string
- * @deprecated use `config.lang` instead.
- */
+Default date format.
+
+@property {String} dateFormat
+@deprecated Use configuration in `DataType.Date.format()` instead.
+**/
 
 /**
- * The default interval when polling in milliseconds.
- * @property pollInterval
- * @type int
- * @default 20
- */
+Default locale.
+
+@property {String} locale
+@deprecated Use `config.lang` instead.
+**/
 
 /**
- * The number of dynamic nodes to insert by default before
- * automatically removing them.  This applies to script nodes
- * because removing the node will not make the evaluated script
- * unavailable.  Dynamic CSS is not auto purged, because removing
- * a linked style sheet will also remove the style definitions.
- * @property purgethreshold
- * @type int
- * @default 20
- */
+Default generic polling interval in milliseconds.
+
+@property {Number} pollInterval
+@default 20
+**/
 
 /**
- * The default interval when polling in milliseconds.
- * @property windowResizeDelay
- * @type int
- * @default 40
- */
+The number of dynamic `<script>` nodes to insert by default before automatically
+removing them when loading scripts.
+
+This applies only to script nodes because removing the node will not make the
+evaluated script unavailable. Dynamic CSS nodes are not auto purged, because
+removing a linked style sheet will also remove the style definitions.
+
+@property {Number} purgethreshold
+@default 20
+**/
 
 /**
- * Base directory for dynamic loading
- * @property base
- * @type string
- */
+Delay in milliseconds to wait after a window `resize` event before firing the
+event. If another `resize` event occurs before this delay has elapsed, the
+delay will start over to ensure that `resize` events are throttled.
 
-/*
- * The secure base dir (not implemented)
- * For dynamic loading.
- * @property secureBase
- * @type string
- */
+@property {Number} windowResizeDelay
+@default 40
+**/
 
 /**
- * The YUI combo service base dir. Ex: `http://yui.yahooapis.com/combo?`
- * For dynamic loading.
- * @property comboBase
- * @type string
- */
+Base directory for dynamic loading.
+
+@property {String} base
+**/
 
 /**
- * The root path to prepend to module path for the combo service.
- * Ex: 3.0.0b1/build/
- * For dynamic loading.
- * @property root
- * @type string
- */
+Base URL for a dynamic combo handler. This will be used to make combo-handled
+module requests if `combine` is set to `true.
+
+@property {String} comboBase
+@default "http://yui.yahooapis.com/combo?"
+**/
 
 /**
- * A filter to apply to result urls.  This filter will modify the default
- * path for all modules.  The default path for the YUI library is the
- * minified version of the files (e.g., event-min.js).  The filter property
- * can be a predefined filter or a custom filter.  The valid predefined
- * filters are:
- * <dl>
- *  <dt>DEBUG</dt>
- *  <dd>Selects the debug versions of the library (e.g., event-debug.js).
- *      This option will automatically include the Logger widget</dd>
- *  <dt>RAW</dt>
- *  <dd>Selects the non-minified version of the library (e.g., event.js).</dd>
- * </dl>
- * You can also define a custom filter, which must be an object literal
- * containing a search expression and a replace string:
- *
- *      myFilter: {
- *          'searchExp': "-min\\.js",
- *          'replaceStr': "-debug.js"
- *      }
- *
- * For dynamic loading.
- *
- * @property filter
- * @type string|object
- */
+Root path to prepend to each module path when creating a combo-handled request.
+
+This is updated for each YUI release to point to a specific version of the
+library; for example: "3.8.0/build/".
+
+@property {String} root
+**/
 
 /**
- * The `skin` config let's you configure application level skin
- * customizations.  It contains the following attributes which
- * can be specified to override the defaults:
- *
- *      // The default skin, which is automatically applied if not
- *      // overriden by a component-specific skin definition.
- *      // Change this in to apply a different skin globally
- *      defaultSkin: 'sam',
- *
- *      // This is combined with the loader base property to get
- *      // the default root directory for a skin.
- *      base: 'assets/skins/',
- *
- *      // Any component-specific overrides can be specified here,
- *      // making it possible to load different skins for different
- *      // components.  It is possible to load more than one skin
- *      // for a given component as well.
- *      overrides: {
- *          slider: ['capsule', 'round']
- *      }
- *
- * For dynamic loading.
- *
- *  @property skin
- */
+Filter to apply to module urls. This filter will modify the default path for all
+modules.
+
+The default path for the YUI library is the minified version of the files (e.g.,
+event-min.js). The filter property can be a predefined filter or a custom
+filter. The valid predefined filters are:
+
+  - **debug**: Loads debug versions of modules (e.g., event-debug.js).
+  - **raw**: Loads raw, non-minified versions of modules without debug logging
+    (e.g., event.js).
+
+You can also define a custom filter, which must be an object literal containing
+a search regular expression and a replacement string:
+
+    myFilter: {
+        searchExp : "-min\\.js",
+        replaceStr: "-debug.js"
+    }
+
+@property {Object|String} filter
+**/
 
 /**
- * Hash of per-component filter specification.  If specified for a given
- * component, this overrides the filter config.
- *
- * For dynamic loading.
- *
- * @property filters
- */
+Skin configuration and customizations.
+
+@property {Object} skin
+@param {String} [skin.defaultSkin='sam'] Default skin name. This skin will be
+    applied automatically to skinnable components if not overridden by a
+    component-specific skin name.
+@param {String} [skin.base='assets/skins/'] Default base path for a skin,
+    relative to Loader's `base` path.
+@param {Object} [skin.overrides] Component-specific skin name overrides. Specify
+    a component name as the key and, as the value, a string or array of strings
+    for a skin or skins that should be loaded for that component instead of the
+    `defaultSkin`.
+**/
 
 /**
- * Use the YUI combo service to reduce the number of http connections
- * required to load your dependencies.  Turning this off will
- * disable combo handling for YUI and all module groups configured
- * with a combo service.
- *
- * For dynamic loading.
- *
- * @property combine
- * @type boolean
- * @default true if 'base' is not supplied, false if it is.
- */
+Hash of per-component filter specifications. If specified for a given component,
+this overrides the global `filter` config.
+
+@property {Object} filters
+**/
 
 /**
- * A list of modules that should never be dynamically loaded
- *
- * @property ignore
- * @type string[]
- */
+If `true`, YUI will use a combo handler to load multiple modules in as few
+requests as possible.
+
+The YUI CDN (which YUI uses by default) supports combo handling, but other
+servers may not. If the server from which you're loading YUI does not support
+combo handling, set this to `false`.
+
+Providing a value for the `base` config property will cause `combine` to default
+to `false` instead of `true`.
+
+@property {Boolean} combine
+@default true
+*/
 
 /**
- * A list of modules that should always be loaded when required, even if already
- * present on the page.
- *
- * @property force
- * @type string[]
- */
+Array of module names that should never be dynamically loaded.
+
+@property {String[]} ignore
+**/
 
 /**
- * Node or id for a node that should be used as the insertion point for new
- * nodes.  For dynamic loading.
- *
- * @property insertBefore
- * @type string
- */
+Array of module names that should always be loaded when required, even if
+already present on the page.
+
+@property {String[]} force
+**/
 
 /**
- * Object literal containing attributes to add to dynamically loaded script
- * nodes.
- * @property jsAttributes
- * @type string
- */
+DOM element or id that should be used as the insertion point for dynamically
+added `<script>` and `<link>` nodes.
+
+@property {HTMLElement|String} insertBefore
+**/
 
 /**
- * Object literal containing attributes to add to dynamically loaded link
- * nodes.
- * @property cssAttributes
- * @type string
- */
+Object hash containing attributes to add to dynamically added `<script>` nodes.
+
+@property {Object} jsAttributes
+**/
 
 /**
- * Number of milliseconds before a timeout occurs when dynamically
- * loading nodes. If not set, there is no timeout.
- * @property timeout
- * @type int
- */
+Object hash containing attributes to add to dynamically added `<link>` nodes.
+
+@property {Object} cssAttributes
+**/
 
 /**
- * Callback for the 'CSSComplete' event.  When dynamically loading YUI
- * components with CSS, this property fires when the CSS is finished
- * loading but script loading is still ongoing.  This provides an
- * opportunity to enhance the presentation of a loading page a little
- * bit before the entire loading process is done.
- *
- * @property onCSS
- * @type function
- */
+Timeout in milliseconds before a dynamic JS or CSS request will be considered a
+failure. If not set, no timeout will be enforced.
+
+@property {Number} timeout
+**/
 
 /**
- * A hash of module definitions to add to the list of YUI components.
- * These components can then be dynamically loaded side by side with
- * YUI via the `use()` method. This is a hash, the key is the module
- * name, and the value is an object literal specifying the metdata
- * for the module.  See `Loader.addModule` for the supported module
- * metadata fields.  Also see groups, which provides a way to
- * configure the base and combo spec for a set of modules.
- *
- *      modules: {
- *          mymod1: {
- *              requires: ['node'],
- *              fullpath: '/mymod1/mymod1.js'
- *          },
- *          mymod2: {
- *              requires: ['mymod1'],
- *              fullpath: '/mymod2/mymod2.js'
- *          },
- *          mymod3: '/js/mymod3.js',
- *          mycssmod: '/css/mycssmod.css'
- *      }
- *
- *
- * @property modules
- * @type object
- */
+Callback for the 'CSSComplete' event. When dynamically loading YUI components
+with CSS, this property fires when the CSS is finished loading.
+
+This provides an opportunity to enhance the presentation of a loading page a
+little bit before the entire loading process is done.
+
+@property {Function} onCSS
+**/
 
 /**
- * Aliases are dynamic groups of modules that can be used as
- * shortcuts.
- *
- *      YUI({
- *          aliases: {
- *              davglass: [ 'node', 'yql', 'dd' ],
- *              mine: [ 'davglass', 'autocomplete']
- *          }
- *      }).use('mine', function(Y) {
- *          //Node, YQL, DD &amp; AutoComplete available here..
- *      });
- *
- * @property aliases
- * @type object
- */
+A hash of module definitions to add to the list of available YUI modules. These
+modules can then be dynamically loaded via the `use()` method.
+
+This is a hash in which keys are module names and values are objects containing
+module metadata.
+
+See `Loader.addModule()` for the supported module metadata fields. Also see
+`groups`, which provides a way to configure the base and combo spec for a set of
+modules.
+
+@example
+
+    modules: {
+        mymod1: {
+            requires: ['node'],
+            fullpath: '/mymod1/mymod1.js'
+        },
+
+        mymod2: {
+            requires: ['mymod1'],
+            fullpath: '/mymod2/mymod2.js'
+        },
+
+        mymod3: '/js/mymod3.js',
+        mycssmod: '/css/mycssmod.css'
+    }
+
+@property {Object} modules
+**/
 
 /**
- * A hash of module group definitions.  It for each group you
- * can specify a list of modules and the base path and
- * combo spec to use when dynamically loading the modules.
- *
- *      groups: {
- *          yui2: {
- *              // specify whether or not this group has a combo service
- *              combine: true,
- *
- *              // The comboSeperator to use with this group's combo handler
- *              comboSep: ';',
- *
- *              // The maxURLLength for this server
- *              maxURLLength: 500,
- *
- *              // the base path for non-combo paths
- *              base: 'http://yui.yahooapis.com/2.8.0r4/build/',
- *
- *              // the path to the combo service
- *              comboBase: 'http://yui.yahooapis.com/combo?',
- *
- *              // a fragment to prepend to the path attribute when
- *              // when building combo urls
- *              root: '2.8.0r4/build/',
- *
- *              // the module definitions
- *              modules:  {
- *                  yui2_yde: {
- *                      path: "yahoo-dom-event/yahoo-dom-event.js"
- *                  },
- *                  yui2_anim: {
- *                      path: "animation/animation.js",
- *                      requires: ['yui2_yde']
- *                  }
- *              }
- *          }
- *      }
- *
- * @property groups
- * @type object
- */
+Aliases are dynamic groups of modules that can be used as shortcuts.
+
+@example
+
+    YUI({
+        aliases: {
+            davglass: [ 'node', 'yql', 'dd' ],
+            mine: [ 'davglass', 'autocomplete']
+        }
+    }).use('mine', function (Y) {
+        // Node, YQL, DD & AutoComplete available here.
+    });
+
+@property {Object} aliases
+**/
 
 /**
- * The loader 'path' attribute to the loader itself.  This is combined
- * with the 'base' attribute to dynamically load the loader component
- * when boostrapping with the get utility alone.
+A hash of module group definitions.
+
+For each group you can specify a list of modules and the base path and
+combo spec to use when dynamically loading the modules.
+
+@example
+
+    groups: {
+        yui2: {
+            // specify whether or not this group has a combo service
+            combine: true,
+
+            // The comboSeperator to use with this group's combo handler
+            comboSep: ';',
+
+            // The maxURLLength for this server
+            maxURLLength: 500,
+
+            // the base path for non-combo paths
+            base: 'http://yui.yahooapis.com/2.8.0r4/build/',
+
+            // the path to the combo service
+            comboBase: 'http://yui.yahooapis.com/combo?',
+
+            // a fragment to prepend to the path attribute when
+            // when building combo urls
+            root: '2.8.0r4/build/',
+
+            // the module definitions
+            modules:  {
+                yui2_yde: {
+                    path: "yahoo-dom-event/yahoo-dom-event.js"
+                },
+                yui2_anim: {
+                    path: "animation/animation.js",
+                    requires: ['yui2_yde']
+                }
+            }
+        }
+    }
+
+@property {Object} groups
+**/
+
+/**
+Path to the Loader JS file, relative to the `base` path.
+
+This is used to dynamically bootstrap the Loader when it's needed and isn't yet
+available.
+
+@property {String} loaderPath
+@default "loader/loader-min.js"
+**/
+
+/**
+If `true`, YUI will attempt to load CSS dependencies and skins. Set this to
+`false` to prevent YUI from loading any CSS, or set it to the string `"force"`
+to force CSS dependencies to be loaded even if their associated JS modules are
+already loaded.
+
+@property {Boolean|String} fetchCSS
+@default true
+**/
+
+/**
+Default gallery version used to build gallery module urls.
+
+@property {String} gallery
+@since 3.1.0
+**/
+
+/**
+Default YUI 2 version used to build YUI 2 module urls.
+
+This is used for intrinsic YUI 2 support via the 2in3 project. Also see the
+`2in3` config for pulling different revisions of the wrapped YUI 2 modules.
+
+@property {String} yui2
+@default "2.9.0"
+@since 3.1.0
+**/
+
+/**
+Revision number of YUI 2in3 modules that should be used when loading YUI 2in3.
+
+@property {String} 2in3
+@default "4"
+@since 3.1.0
+**/
+
+/**
+Alternate console log function that should be used in environments without a
+supported native console. This function is executed with the YUI instance as its
+`this` object.
+
+@property {Function} logFn
+@since 3.1.0
+**/
+
+/**
+The minimum log level to log messages for. Log levels are defined
+incrementally. Messages greater than or equal to the level specified will
+be shown. All others will be discarded. The order of log levels in
+increasing priority is:
+
+    debug
+    info
+    warn
+    error
+
+@property {String} logLevel
+@default 'debug'
+@since 3.10.0
+**/
+
+/**
+Callback to execute when `Y.error()` is called. It receives the error message
+and a JavaScript error object if one was provided.
+
+This function is executed with the YUI instance as its `this` object.
+
+Returning `true` from this function will prevent an exception from being thrown.
+
+@property {Function} errorFn
+@param {String} errorFn.msg Error message
+@param {Object} [errorFn.err] Error object (if one was provided).
+@since 3.2.0
+**/
+
+/**
+A callback to execute when Loader fails to load one or more resources.
+
+This could be because of a script load failure. It could also be because a
+module fails to register itself when the `requireRegistration` config is `true`.
+
+If this function is defined, the `use()` callback will only be called when the
+loader succeeds. Otherwise, `use()` will always executes unless there was a
+JavaScript error when attaching a module.
+
+@property {Function} loadErrorFn
+@since 3.3.0
+**/
+
+/**
+If `true`, Loader will expect all loaded scripts to be first-class YUI modules
+that register themselves with the YUI global, and will trigger a failure if a
+loaded script does not register a YUI module.
+
+@property {Boolean} requireRegistration
+@default false
+@since 3.3.0
+**/
+
+/**
+Cache serviced use() requests.
+
+@property {Boolean} cacheUse
+@default true
+@since 3.3.0
+@deprecated No longer used.
+**/
+
+/**
+Whether or not YUI should use native ES5 functionality when available for
+features like `Y.Array.each()`, `Y.Object()`, etc.
+
+When `false`, YUI will always use its own fallback implementations instead of
+relying on ES5 functionality, even when ES5 functionality is available.
+
+@property {Boolean} useNativeES5
+@default true
+@since 3.5.0
+**/
+
+/**
+ * Leverage native JSON stringify if the browser has a native
+ * implementation.  In general, this is a good idea.  See the Known Issues
+ * section in the JSON user guide for caveats.  The default value is true
+ * for browsers with native JSON support.
  *
- * @property loaderPath
- * @type string
- * @default loader/loader-min.js
- */
-
-/**
- * Specifies whether or not YUI().use(...) will attempt to load CSS
- * resources at all.  Any truthy value will cause CSS dependencies
- * to load when fetching script.  The special value 'force' will
- * cause CSS dependencies to be loaded even if no script is needed.
- *
- * @property fetchCSS
- * @type boolean|string
- * @default true
- */
-
-/**
- * The default gallery version to build gallery module urls
- * @property gallery
- * @type string
- * @since 3.1.0
- */
-
-/**
- * The default YUI 2 version to build yui2 module urls.  This is for
- * intrinsic YUI 2 support via the 2in3 project.  Also see the '2in3'
- * config for pulling different revisions of the wrapped YUI 2
- * modules.
- * @since 3.1.0
- * @property yui2
- * @type string
- * @default 2.9.0
- */
-
-/**
- * The 2in3 project is a deployment of the various versions of YUI 2
- * deployed as first-class YUI 3 modules.  Eventually, the wrapper
- * for the modules will change (but the underlying YUI 2 code will
- * be the same), and you can select a particular version of
- * the wrapper modules via this config.
- * @since 3.1.0
- * @property 2in3
- * @type string
- * @default 4
- */
-
-/**
- * Alternative console log function for use in environments without
- * a supported native console.  The function is executed in the
- * YUI instance context.
- * @since 3.1.0
- * @property logFn
- * @type Function
- */
-
-/**
- * A callback to execute when Y.error is called.  It receives the
- * error message and an javascript error object if Y.error was
- * executed because a javascript error was caught.  The function
- * is executed in the YUI instance context. Returning `true` from this
- * function will stop the Error from being thrown.
- *
- * @since 3.2.0
- * @property errorFn
- * @type Function
- */
-
-/**
- * A callback to execute when the loader fails to load one or
- * more resource.  This could be because of a script load
- * failure.  It can also fail if a javascript module fails
- * to register itself, but only when the 'requireRegistration'
- * is true.  If this function is defined, the use() callback will
- * only be called when the loader succeeds, otherwise it always
- * executes unless there was a javascript error when attaching
- * a module.
- *
- * @since 3.3.0
- * @property loadErrorFn
- * @type Function
- */
-
-/**
- * When set to true, the YUI loader will expect that all modules
- * it is responsible for loading will be first-class YUI modules
- * that register themselves with the YUI global.  If this is
- * set to true, loader will fail if the module registration fails
- * to happen after the script is loaded.
- *
- * @since 3.3.0
- * @property requireRegistration
- * @type boolean
- * @default false
- */
-
-/**
- * Cache serviced use() requests.
- * @since 3.3.0
- * @property cacheUse
- * @type boolean
- * @default true
- * @deprecated no longer used
- */
-
-/**
- * Whether or not YUI should use native ES5 functionality when available for
- * features like `Y.Array.each()`, `Y.Object()`, etc. When `false`, YUI will
- * always use its own fallback implementations instead of relying on ES5
- * functionality, even when it's available.
- *
- * @method useNativeES5
+ * @property useNativeJSONStringify
  * @type Boolean
  * @default true
- * @since 3.5.0
+ * @since 3.8.0
  */
-YUI.add('yui-base', function(Y) {
+
+ /**
+ * Leverage native JSON parse if the browser has a native implementation.
+ * In general, this is a good idea.  See the Known Issues section in the
+ * JSON user guide for caveats.  The default value is true for browsers with
+ * native JSON support.
+ *
+ * @property useNativeJSONParse
+ * @type Boolean
+ * @default true
+ * @since 3.8.0
+ */
+
+/**
+Delay the `use` callback until a specific event has passed (`load`, `domready`, `contentready` or `available`)
+
+@property {Object|String} delayUntil
+@since 3.6.0
+@example
+
+You can use `load` or `domready` strings by default:
+
+    YUI({
+        delayUntil: 'domready'
+    }, function (Y) {
+        // This will not execute until 'domeready' occurs.
+    });
+
+Or you can delay until a node is available (with `available` or `contentready`):
+
+    YUI({
+        delayUntil: {
+            event: 'available',
+            args : '#foo'
+        }
+    }, function (Y) {
+        // This will not execute until a node matching the selector "#foo" is
+        // available in the DOM.
+    });
+
+**/
+YUI.add('yui-base', function (Y, NAME) {
 
 /*
  * YUI stub
@@ -1868,9 +2147,15 @@ TYPES = {
     '[object Error]'   : 'error'
 },
 
-SUBREGEX        = /\{\s*([^|}]+?)\s*(?:\|([^}]*))?\s*\}/g,
-TRIMREGEX       = /^\s+|\s+$/g,
-NATIVE_FN_REGEX = /\{\s*\[(?:native code|function)\]\s*\}/i;
+SUBREGEX         = /\{\s*([^|}]+?)\s*(?:\|([^}]*))?\s*\}/g,
+
+WHITESPACE       = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF",
+WHITESPACE_CLASS = "[\x09-\x0D\x20\xA0\u1680\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]+",
+TRIM_LEFT_REGEX  = new RegExp("^" + WHITESPACE_CLASS),
+TRIM_RIGHT_REGEX = new RegExp(WHITESPACE_CLASS + "$"),
+TRIMREGEX        = new RegExp(TRIM_LEFT_REGEX.source + "|" + TRIM_RIGHT_REGEX.source, "g"),
+
+NATIVE_FN_REGEX  = /\{\s*\[(?:native code|function)\]\s*\}/i;
 
 // -- Protected Methods --------------------------------------------------------
 
@@ -2094,7 +2379,7 @@ L.sub = function(s, o) {
  * @param s {string} the string to trim.
  * @return {string} the trimmed string.
  */
-L.trim = STRING_PROTO.trim ? function(s) {
+L.trim = L._isNative(STRING_PROTO.trim) && !WHITESPACE.trim() ? function(s) {
     return s && s.trim ? s.trim() : s;
 } : function (s) {
     try {
@@ -2111,10 +2396,10 @@ L.trim = STRING_PROTO.trim ? function(s) {
  * @param s {string} the string to trim.
  * @return {string} the trimmed string.
  */
-L.trimLeft = STRING_PROTO.trimLeft ? function (s) {
+L.trimLeft = L._isNative(STRING_PROTO.trimLeft) && !WHITESPACE.trimLeft() ? function (s) {
     return s.trimLeft();
 } : function (s) {
-    return s.replace(/^\s+/, '');
+    return s.replace(TRIM_LEFT_REGEX, '');
 };
 
 /**
@@ -2124,10 +2409,10 @@ L.trimLeft = STRING_PROTO.trimLeft ? function (s) {
  * @param s {string} the string to trim.
  * @return {string} the trimmed string.
  */
-L.trimRight = STRING_PROTO.trimRight ? function (s) {
+L.trimRight = L._isNative(STRING_PROTO.trimRight) && !WHITESPACE.trimRight() ? function (s) {
     return s.trimRight();
 } : function (s) {
-    return s.replace(/\s+$/, '');
+    return s.replace(TRIM_RIGHT_REGEX, '');
 };
 
 /**
@@ -2201,6 +2486,7 @@ pass `true` as the value of the _force_ parameter.
 function YArray(thing, startIndex, force) {
     var len, result;
 
+    /*jshint expr: true*/
     startIndex || (startIndex = 0);
 
     if (force || YArray.test(thing)) {
@@ -2228,16 +2514,34 @@ Dedupes an array of strings, returning an array that's guaranteed to contain
 only one copy of a given string.
 
 This method differs from `Array.unique()` in that it's optimized for use only
-with strings, whereas `unique` may be used with other types (but is slower).
-Using `dedupe()` with non-string values may result in unexpected behavior.
+with arrays consisting entirely of strings or entirely of numbers, whereas
+`unique` may be used with other value types (but is slower).
+
+Using `dedupe()` with values other than strings or numbers, or with arrays
+containing a mix of strings and numbers, may result in unexpected behavior.
 
 @method dedupe
-@param {String[]} array Array of strings to dedupe.
-@return {Array} Deduped copy of _array_.
+@param {String[]|Number[]} array Array of strings or numbers to dedupe.
+@return {Array} Copy of _array_ containing no duplicate values.
 @static
 @since 3.4.0
 **/
-YArray.dedupe = function (array) {
+YArray.dedupe = Lang._isNative(Object.create) ? function (array) {
+    var hash    = Object.create(null),
+        results = [],
+        i, item, len;
+
+    for (i = 0, len = array.length; i < len; ++i) {
+        item = array[i];
+
+        if (!hash[item]) {
+            hash[item] = 1;
+            results.push(item);
+        }
+    }
+
+    return results;
+} : function (array) {
     var hash    = {},
         results = [],
         i, item, len;
@@ -2436,10 +2740,10 @@ YArray.test = function (obj) {
         result = 1;
     } else if (Lang.isObject(obj)) {
         try {
-            // indexed, but no tagName (element) or alert (window),
+            // indexed, but no tagName (element) or scrollTo/document (window. From DOM.isWindow test which we can't use here),
             // or functions without apply/call (Safari
             // HTMLElementCollection bug).
-            if ('length' in obj && !obj.tagName && !obj.alert && !obj.apply) {
+            if ('length' in obj && !obj.tagName && !(obj.scrollTo && obj.document) && !obj.apply) {
                 result = 2;
             }
         } catch (ex) {}
@@ -2573,13 +2877,15 @@ string `[object Object]` when used as a cache key.
 @for YUI
 **/
 Y.cached = function (source, cache, refetch) {
+    /*jshint expr: true*/
     cache || (cache = {});
 
     return function (arg) {
         var key = arguments.length > 1 ?
                 Array.prototype.join.call(arguments, CACHED_DELIMITER) :
                 String(arg);
-
+        
+        /*jshint eqeqeq: false*/
         if (!(key in cache) || (refetch && cache[key] == refetch)) {
             cache[key] = source.apply(source, arguments);
         }
@@ -2630,13 +2936,20 @@ use `clone()`.
 @return {Object} A new merged object.
 **/
 Y.merge = function () {
-    var args   = arguments,
-        i      = 0,
-        len    = args.length,
-        result = {};
+    var i      = 0,
+        len    = arguments.length,
+        result = {},
+        key,
+        obj;
 
     for (; i < len; ++i) {
-        Y.mix(result, args[i], true);
+        obj = arguments[i];
+
+        for (key in obj) {
+            if (hasOwn.call(obj, key)) {
+                result[key] = obj[key];
+            }
+        }
     }
 
     return result;
@@ -2870,7 +3183,7 @@ hasEnumBug = O._hasEnumBug = !{valueOf: 0}.propertyIsEnumerable('valueOf'),
 
 /**
  * `true` if this browser incorrectly considers the `prototype` property of
- * functions to be enumerable. Currently known to affect Opera 11.50.
+ * functions to be enumerable. Currently known to affect Opera 11.50 and Android 2.3.x.
  *
  * @property _hasProtoEnumBug
  * @type Boolean
@@ -2914,7 +3227,9 @@ O.hasKey = owns;
  * as the order in which they were defined.
  *
  * This method is an alias for the native ES5 `Object.keys()` method if
- * available.
+ * available and non-buggy. The Opera 11.50 and Android 2.3.x versions of 
+ * `Object.keys()` have an inconsistency as they consider `prototype` to be 
+ * enumerable, so a non-native shim is used to rectify the difference.
  *
  * @example
  *
@@ -2926,7 +3241,7 @@ O.hasKey = owns;
  * @return {String[]} Array of keys.
  * @static
  */
-O.keys = Lang._isNative(Object.keys) ? Object.keys : function (obj) {
+O.keys = Lang._isNative(Object.keys) && !hasProtoEnumBug ? Object.keys : function (obj) {
     if (!Lang.isObject(obj)) {
         throw new TypeError('Object.keys called on a non-object');
     }
@@ -3201,7 +3516,7 @@ YUI.Env.parseUA = function(subUA) {
     var numberify = function(s) {
             var c = 0;
             return parseFloat(s.replace(/\./g, function() {
-                return (c++ == 1) ? '' : '.';
+                return (c++ === 1) ? '' : '.';
             }));
         },
 
@@ -3309,6 +3624,13 @@ YUI.Env.parseUA = function(subUA) {
          */
         air: 0,
         /**
+         * PhantomJS version number or 0.  Only populated if webkit is detected.
+         * Example: 1.0
+         * @property phantomjs
+         * @type float
+         */
+        phantomjs: 0,
+        /**
          * Detects Apple iPad's OS version
          * @property ipad
          * @type float
@@ -3332,7 +3654,7 @@ YUI.Env.parseUA = function(subUA) {
         /**
          * General truthy check for iPad, iPhone or iPod
          * @property ios
-         * @type float
+         * @type Boolean
          * @default null
          * @static
          */
@@ -3397,7 +3719,21 @@ YUI.Env.parseUA = function(subUA) {
          * @default 0
          * @static
          */
-        nodejs: 0
+        nodejs: 0,
+        /**
+        * Window8/IE10 Application host environment
+        * @property winjs
+        * @type Boolean
+        * @static
+        */
+        winjs: !!((typeof Windows !== "undefined") && Windows.System),
+        /**
+        * Are touch/msPointer events available on this device
+        * @property touchEnabled
+        * @type Boolean
+        * @static
+        */
+        touchEnabled: false
     },
 
     ua = subUA || nav && nav.userAgent,
@@ -3450,6 +3786,13 @@ YUI.Env.parseUA = function(subUA) {
         if (m && m[1]) {
             o.webkit = numberify(m[1]);
             o.safari = o.webkit;
+
+            if (/PhantomJS/.test(ua)) {
+                m = ua.match(/PhantomJS\/([^\s]*)/);
+                if (m && m[1]) {
+                    o.phantomjs = numberify(m[1]);
+                }
+            }
 
             // Mobile browser check
             if (/ Mobile\//.test(ua) || (/iPad|iPod|iPhone/).test(ua)) {
@@ -3505,17 +3848,25 @@ YUI.Env.parseUA = function(subUA) {
                 }
             }
 
-            m = ua.match(/(Chrome|CrMo)\/([^\s]*)/);
-            if (m && m[1] && m[2]) {
-                o.chrome = numberify(m[2]); // Chrome
-                o.safari = 0; //Reset safari back to 0
-                if (m[1] === 'CrMo') {
-                    o.mobile = 'chrome';
-                }
+            m = ua.match(/OPR\/(\d+\.\d+)/);
+
+            if (m && m[1]) {
+                // Opera 15+ with Blink (pretends to be both Chrome and Safari)
+                o.opera = numberify(m[1]);
             } else {
-                m = ua.match(/AdobeAIR\/([^\s]*)/);
-                if (m) {
-                    o.air = m[0]; // Adobe AIR 1.0 or better
+                m = ua.match(/(Chrome|CrMo|CriOS)\/([^\s]*)/);
+
+                if (m && m[1] && m[2]) {
+                    o.chrome = numberify(m[2]); // Chrome
+                    o.safari = 0; //Reset safari back to 0
+                    if (m[1] === 'CrMo') {
+                        o.mobile = 'chrome';
+                    }
+                } else {
+                    m = ua.match(/AdobeAIR\/([^\s]*)/);
+                    if (m) {
+                        o.air = m[0]; // Adobe AIR 1.0 or better
+                    }
                 }
             }
         }
@@ -3545,16 +3896,21 @@ YUI.Env.parseUA = function(subUA) {
                     o.mobile = m[0]; // ex: Opera Mini/2.0.4509/1316
                 }
             } else { // not opera or webkit
-                m = ua.match(/MSIE\s([^;]*)/);
-                if (m && m[1]) {
-                    o.ie = numberify(m[1]);
+                m = ua.match(/MSIE ([^;]*)|Trident.*; rv ([0-9.]+)/);
+
+                if (m && (m[1] || m[2])) {
+                    o.ie = numberify(m[1] || m[2]);
                 } else { // not opera, webkit, or ie
                     m = ua.match(/Gecko\/([^\s]*)/);
+
                     if (m) {
                         o.gecko = 1; // Gecko detected, look for revision
                         m = ua.match(/rv:([^\s\)]*)/);
                         if (m && m[1]) {
                             o.gecko = numberify(m[1]);
+                            if (/Mobile|Tablet/.test(ua)) {
+                                o.mobile = "ffos";
+                            }
                         }
                     }
                 }
@@ -3562,15 +3918,21 @@ YUI.Env.parseUA = function(subUA) {
         }
     }
 
+    //Check for known properties to tell if touch events are enabled on this device or if
+    //the number of MSPointer touchpoints on this device is greater than 0.
+    if (win && nav && !(o.chrome && o.chrome < 6)) {
+        o.touchEnabled = (("ontouchstart" in win) || (("msMaxTouchPoints" in nav) && (nav.msMaxTouchPoints > 0)));
+    }
+
     //It was a parsed UA, do not assign the global value.
     if (!subUA) {
 
-        if (typeof process == 'object') {
+        if (typeof process === 'object') {
 
             if (process.versions && process.versions.node) {
                 //NodeJS
                 o.os = process.platform;
-                o.nodejs = process.versions.node;
+                o.nodejs = numberify(process.versions.node);
             }
         }
 
@@ -3618,6 +3980,7 @@ Y.UA.compareVersions = function (a, b) {
         aPart = parseInt(aParts[i], 10);
         bPart = parseInt(bParts[i], 10);
 
+        /*jshint expr: true*/
         isNaN(aPart) && (aPart = 0);
         isNaN(bPart) && (bPart = 0);
 
@@ -3634,25 +3997,30 @@ Y.UA.compareVersions = function (a, b) {
 };
 YUI.Env.aliases = {
     "anim": ["anim-base","anim-color","anim-curve","anim-easing","anim-node-plugin","anim-scroll","anim-xy"],
-    "app": ["app-base","app-transitions","model","model-list","router","view"],
+    "anim-shape-transform": ["anim-shape"],
+    "app": ["app-base","app-content","app-transitions","lazy-model-list","model","model-list","model-sync-rest","router","view","view-node-map"],
     "attribute": ["attribute-base","attribute-complex"],
+    "attribute-events": ["attribute-observable"],
     "autocomplete": ["autocomplete-base","autocomplete-sources","autocomplete-list","autocomplete-plugin"],
+    "axes": ["axis-numeric","axis-category","axis-time","axis-stacked"],
+    "axes-base": ["axis-numeric-base","axis-category-base","axis-time-base","axis-stacked-base"],
     "base": ["base-base","base-pluginhost","base-build"],
     "cache": ["cache-base","cache-offline","cache-plugin"],
+    "charts": ["charts-base"],
     "collection": ["array-extras","arraylist","arraylist-add","arraylist-filter","array-invoke"],
+    "color": ["color-base","color-hsl","color-harmony"],
     "controller": ["router"],
     "dataschema": ["dataschema-base","dataschema-json","dataschema-xml","dataschema-array","dataschema-text"],
     "datasource": ["datasource-local","datasource-io","datasource-get","datasource-function","datasource-cache","datasource-jsonschema","datasource-xmlschema","datasource-arrayschema","datasource-textschema","datasource-polling"],
-    "datatable": ["datatable-core","datatable-head","datatable-body","datatable-base","datatable-column-widths","datatable-message","datatable-mutable","datatable-sort","datatable-datasource"],
-    "datatable-deprecated": ["datatable-base-deprecated","datatable-datasource-deprecated","datatable-sort-deprecated","datatable-scroll-deprecated"],
-    "datatype": ["datatype-number","datatype-date","datatype-xml"],
-    "datatype-date": ["datatype-date-parse","datatype-date-format"],
+    "datatable": ["datatable-core","datatable-table","datatable-head","datatable-body","datatable-base","datatable-column-widths","datatable-message","datatable-mutable","datatable-sort","datatable-datasource"],
+    "datatype": ["datatype-date","datatype-number","datatype-xml"],
+    "datatype-date": ["datatype-date-parse","datatype-date-format","datatype-date-math"],
     "datatype-number": ["datatype-number-parse","datatype-number-format"],
     "datatype-xml": ["datatype-xml-parse","datatype-xml-format"],
     "dd": ["dd-ddm-base","dd-ddm","dd-ddm-drop","dd-drag","dd-proxy","dd-constrain","dd-drop","dd-scroll","dd-delegate"],
     "dom": ["dom-base","dom-screen","dom-style","selector-native","selector"],
     "editor": ["frame","editor-selection","exec-command","editor-base","editor-para","editor-br","editor-bidi","editor-tab","createlink-base"],
-    "event": ["event-base","event-delegate","event-synthetic","event-mousewheel","event-mouseenter","event-key","event-focus","event-resize","event-hover","event-outside","event-touch","event-move","event-flick","event-valuechange"],
+    "event": ["event-base","event-delegate","event-synthetic","event-mousewheel","event-mouseenter","event-key","event-focus","event-resize","event-hover","event-outside","event-touch","event-move","event-flick","event-valuechange","event-tap"],
     "event-custom": ["event-custom-base","event-custom-complex"],
     "event-gestures": ["event-flick","event-move"],
     "handlebars": ["handlebars-compiler"],
@@ -3667,13 +4035,14 @@ YUI.Env.aliases = {
     "recordset": ["recordset-base","recordset-sort","recordset-filter","recordset-indexer"],
     "resize": ["resize-base","resize-proxy","resize-constrain"],
     "slider": ["slider-base","slider-value-range","clickable-rail","range-slider"],
+    "template": ["template-base","template-micro"],
     "text": ["text-accentfold","text-wordbreak"],
     "widget": ["widget-base","widget-htmlparser","widget-skin","widget-uievents"]
 };
 
 
-}, '@VERSION@' );
-YUI.add('get', function(Y) {
+}, '3.11.0', {"use": ["get", "features", "intl-base", "yui-log", "yui-later"]});
+YUI.add('get', function (Y, NAME) {
 
 /*jslint boss:true, expr:true, laxbreak: true */
 
@@ -4198,14 +4567,18 @@ Y.Get = Get = {
         // feasible to load test files on every pageview just to perform a
         // feature test. I'm sorry if this makes you sad.
         return (this._env = {
+
             // True if this is a browser that supports disabling async mode on
             // dynamically created script nodes. See
             // https://developer.mozilla.org/En/HTML/Element/Script#Attributes
-            async: doc && doc.createElement('script').async === true,
+
+            // IE10 doesn't return true for the MDN feature test, so setting it explicitly,
+            // because it is async by default, and allows you to disable async by setting it to false
+            async: (doc && doc.createElement('script').async === true) || (ua.ie >= 10),
 
             // True if this browser fires an event when a dynamically injected
             // link node fails to load. This is currently true for Firefox 9+
-            // and WebKit 535.24+.
+            // and WebKit 535.24+
             cssFail: ua.gecko >= 9 || ua.compareVersions(ua.webkit, 535.24) >= 0,
 
             // True if this browser fires an event when a dynamically injected
@@ -4222,7 +4595,7 @@ Y.Get = Get = {
             // True if this browser preserves script execution order while
             // loading scripts in parallel as long as the script node's `async`
             // attribute is set to false to explicitly disable async execution.
-            preservesScriptOrder: !!(ua.gecko || ua.opera)
+            preservesScriptOrder: !!(ua.gecko || ua.opera || (ua.ie && ua.ie >= 10))
         });
     },
 
@@ -4316,6 +4689,8 @@ Y.Get = Get = {
         options || (options = {});
         options.type = type;
 
+        options._onFinish = Get._onTransactionFinish;
+
         if (!this._env) {
             this._getEnv();
         }
@@ -4332,6 +4707,11 @@ Y.Get = Get = {
         return transaction;
     },
 
+    _onTransactionFinish : function() {
+        Get._pending = null;
+        Get._next();
+    },
+
     _next: function () {
         var item;
 
@@ -4343,13 +4723,7 @@ Y.Get = Get = {
 
         if (item) {
             this._pending = item;
-
-            item.transaction.execute(function () {
-                item.callback && item.callback.apply(this, arguments);
-
-                Get._pending = null;
-                Get._next();
-            });
+            item.transaction.execute(item.callback);
         }
     },
 
@@ -4415,7 +4789,7 @@ Get.Transaction = Transaction = function (requests, options) {
 
     self._callbacks = []; // callbacks to call after execution finishes
     self._queue     = [];
-    self._waiting   = 0;
+    self._reqsWaiting   = 0;
 
     // Deprecated pre-3.5.0 properties.
     self.tId = self.id; // Use `id` instead.
@@ -4513,7 +4887,7 @@ Transaction.prototype = {
         this._pendingCSS = null;
         this._pollTimer  = clearTimeout(this._pollTimer);
         this._queue      = [];
-        this._waiting    = 0;
+        this._reqsWaiting    = 0;
 
         this.errors.push({error: msg || 'Aborted'});
         this._finish();
@@ -4563,8 +4937,10 @@ Transaction.prototype = {
             }, self.options.timeout);
         }
 
+        self._reqsWaiting = requests.length;
+
         for (i = 0, len = requests.length; i < len; ++i) {
-            req = self.requests[i];
+            req = requests[i];
 
             if (req.async || req.type === 'css') {
                 // No need to queue CSS or fully async JS.
@@ -4651,6 +5027,10 @@ Transaction.prototype = {
         if (options.onEnd) {
             options.onEnd.call(thisObj, data);
         }
+
+        if (options._onFinish) {
+            options._onFinish();
+        }
     },
 
     _getEventData: function (req) {
@@ -4671,7 +5051,7 @@ Transaction.prototype = {
     _getInsertBefore: function (req) {
         var doc = req.doc,
             el  = req.insertBefore,
-            cache, cachedNode, docStamp;
+            cache, docStamp;
 
         if (el) {
             return typeof el === 'string' ? doc.getElementById(el) : el;
@@ -4741,7 +5121,6 @@ Transaction.prototype = {
             self._progress(null, req);
         }
 
-
         // Deal with script asynchronicity.
         if (isScript) {
             node.setAttribute('src', req.url);
@@ -4785,8 +5164,8 @@ Transaction.prototype = {
         }
 
         // Inject the node.
-        if (isScript && ua.ie && ua.ie < 9) {
-            // Script on IE6, 7, and 8.
+        if (isScript && ua.ie && (ua.ie < 9 || (document.documentMode && document.documentMode < 9))) {
+            // Script on IE < 9, and IE 9+ when in IE 8 or older modes, including quirks mode.
             node.onreadystatechange = function () {
                 if (/loaded|complete/.test(node.readyState)) {
                     node.onreadystatechange = null;
@@ -4799,8 +5178,22 @@ Transaction.prototype = {
         } else {
             // Script or CSS on everything else. Using DOM 0 events because that
             // evens the playing field with older IEs.
-            node.onerror = onError;
-            node.onload  = onLoad;
+
+            if (ua.ie >= 10) {
+
+                // We currently need to introduce a timeout for IE10, since it
+                // calls onerror/onload synchronously for 304s - messing up existing
+                // program flow.
+
+                // Remove this block if the following bug gets fixed by GA
+                /*jshint maxlen: 1500 */
+                // https://connect.microsoft.com/IE/feedback/details/763871/dynamically-loaded-scripts-with-304s-responses-interrupt-the-currently-executing-js-thread-onload
+                node.onerror = function() { setTimeout(onError, 0); };
+                node.onload  = function() { setTimeout(onLoad, 0); };
+            } else {
+                node.onerror = onError;
+                node.onload  = onLoad;
+            }
 
             // If this browser doesn't fire an event when CSS fails to load,
             // fail after a timeout to avoid blocking the transaction queue.
@@ -4808,8 +5201,6 @@ Transaction.prototype = {
                 cssTimeout = setTimeout(onError, req.timeout || 3000);
             }
         }
-
-        this._waiting += 1;
 
         this.nodes.push(node);
         insertBefore.parentNode.insertBefore(node, insertBefore);
@@ -4826,7 +5217,7 @@ Transaction.prototype = {
         // for anything to load, then we're done!
         if (this._queue.length) {
             this._insert(this._queue.shift());
-        } else if (!this._waiting) {
+        } else if (!this._reqsWaiting) {
             this._finish();
         }
     },
@@ -4934,14 +5325,15 @@ Transaction.prototype = {
             this._pending = null;
         }
 
-        this._waiting -= 1;
+        this._reqsWaiting -= 1;
+
         this._next();
     }
 };
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
-YUI.add('features', function(Y) {
+}, '3.11.0', {"requires": ["yui-base"]});
+YUI.add('features', function (Y, NAME) {
 
 var feature_tests = {};
 
@@ -4957,21 +5349,21 @@ Contains the core of YUI's feature test architecture.
 */
 
 Y.mix(Y.namespace('Features'), {
-    
+
     /**
     * Object hash of all registered feature tests
     * @property tests
     * @type Object
     */
     tests: feature_tests,
-    
+
     /**
     * Add a test to the system
-    * 
+    *
     *   ```
     *   Y.Features.add("load", "1", {});
     *   ```
-    * 
+    *
     * @method add
     * @param {String} cat The category, right now only 'load' is supported
     * @param {String} name The number sequence of the test, how it's reported in the URL or config: 1, 2, 3
@@ -5056,29 +5448,27 @@ Y.mix(Y.namespace('Features'), {
 // Y.Features.test("load", "1");
 // caps=1:1;2:0;3:1;
 
-/* This file is auto-generated by src/loader/scripts/meta_join.py */
+/* This file is auto-generated by (yogi.js loader --mix --yes) */
+/*jshint maxlen:900, eqeqeq: false */
 var add = Y.Features.add;
-// io-nodejs
+// app-transitions-native
 add('load', '0', {
-    "name": "io-nodejs", 
-    "trigger": "io-base", 
-    "ua": "nodejs"
-});
-// graphics-canvas-default
-add('load', '1', {
-    "name": "graphics-canvas-default", 
-    "test": function(Y) {
-    var DOCUMENT = Y.config.doc,
-        useCanvas = Y.config.defaultGraphicEngine && Y.config.defaultGraphicEngine == "canvas",
-		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
-        svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
-    return (!svg || useCanvas) && (canvas && canvas.getContext && canvas.getContext("2d"));
-}, 
-    "trigger": "graphics"
+    "name": "app-transitions-native",
+    "test": function (Y) {
+    var doc  = Y.config.doc,
+        node = doc ? doc.documentElement : null;
+
+    if (node && node.style) {
+        return ('MozTransition' in node.style || 'WebkitTransition' in node.style || 'transition' in node.style);
+    }
+
+    return false;
+},
+    "trigger": "app-transitions"
 });
 // autocomplete-list-keys
-add('load', '2', {
-    "name": "autocomplete-list-keys", 
+add('load', '1', {
+    "name": "autocomplete-list-keys",
     "test": function (Y) {
     // Only add keyboard support to autocomplete-list if this doesn't appear to
     // be an iOS or Android-based mobile device.
@@ -5092,82 +5482,18 @@ add('load', '2', {
     // no point loading the -keys module even when a bluetooth keyboard may be
     // available.
     return !(Y.UA.ios || Y.UA.android);
-}, 
+},
     "trigger": "autocomplete-list"
 });
-// graphics-svg
-add('load', '3', {
-    "name": "graphics-svg", 
-    "test": function(Y) {
-    var DOCUMENT = Y.config.doc,
-        useSVG = !Y.config.defaultGraphicEngine || Y.config.defaultGraphicEngine != "canvas",
-		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
-        svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
-    
-    return svg && (useSVG || !canvas);
-}, 
-    "trigger": "graphics"
-});
-// editor-para-ie
-add('load', '4', {
-    "name": "editor-para-ie", 
-    "trigger": "editor-para", 
-    "ua": "ie", 
-    "when": "instead"
-});
-// graphics-vml-default
-add('load', '5', {
-    "name": "graphics-vml-default", 
-    "test": function(Y) {
-    var DOCUMENT = Y.config.doc,
-		canvas = DOCUMENT && DOCUMENT.createElement("canvas");
-    return (DOCUMENT && !DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (!canvas || !canvas.getContext || !canvas.getContext("2d")));
-}, 
-    "trigger": "graphics"
-});
-// graphics-svg-default
-add('load', '6', {
-    "name": "graphics-svg-default", 
-    "test": function(Y) {
-    var DOCUMENT = Y.config.doc,
-        useSVG = !Y.config.defaultGraphicEngine || Y.config.defaultGraphicEngine != "canvas",
-		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
-        svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
-    
-    return svg && (useSVG || !canvas);
-}, 
-    "trigger": "graphics"
-});
-// history-hash-ie
-add('load', '7', {
-    "name": "history-hash-ie", 
-    "test": function (Y) {
-    var docMode = Y.config.doc && Y.config.doc.documentMode;
-
-    return Y.UA.ie && (!('onhashchange' in Y.config.win) ||
-            !docMode || docMode < 8);
-}, 
-    "trigger": "history-hash"
-});
-// transition-timer
-add('load', '8', {
-    "name": "transition-timer", 
-    "test": function (Y) {
-    var DOCUMENT = Y.config.doc,
-        node = (DOCUMENT) ? DOCUMENT.documentElement: null,
-        ret = true;
-
-    if (node && node.style) {
-        ret = !('MozTransition' in node.style || 'WebkitTransition' in node.style);
-    } 
-
-    return ret;
-}, 
-    "trigger": "transition"
+// dd-gestures
+add('load', '2', {
+    "name": "dd-gestures",
+    "trigger": "dd-drag",
+    "ua": "touchEnabled"
 });
 // dom-style-ie
-add('load', '9', {
-    "name": "dom-style-ie", 
+add('load', '3', {
+    "name": "dom-style-ie",
     "test": function (Y) {
 
     var testFeature = Y.Features.test,
@@ -5193,90 +5519,230 @@ add('load', '9', {
             !testFeature('style', 'computedStyle'));
 
     return ret;
-}, 
+},
     "trigger": "dom-style"
 });
-// selector-css2
-add('load', '10', {
-    "name": "selector-css2", 
-    "test": function (Y) {
-    var DOCUMENT = Y.config.doc,
-        ret = DOCUMENT && !('querySelectorAll' in DOCUMENT);
-
-    return ret;
-}, 
-    "trigger": "selector"
-});
-// widget-base-ie
-add('load', '11', {
-    "name": "widget-base-ie", 
-    "trigger": "widget-base", 
-    "ua": "ie"
+// editor-para-ie
+add('load', '4', {
+    "name": "editor-para-ie",
+    "trigger": "editor-para",
+    "ua": "ie",
+    "when": "instead"
 });
 // event-base-ie
-add('load', '12', {
-    "name": "event-base-ie", 
+add('load', '5', {
+    "name": "event-base-ie",
     "test": function(Y) {
     var imp = Y.config.doc && Y.config.doc.implementation;
     return (imp && (!imp.hasFeature('Events', '2.0')));
-}, 
+},
     "trigger": "node-base"
 });
-// dd-gestures
-add('load', '13', {
-    "name": "dd-gestures", 
-    "test": function(Y) {
-    return ((Y.config.win && ("ontouchstart" in Y.config.win)) && !(Y.UA.chrome && Y.UA.chrome < 6));
-}, 
-    "trigger": "dd-drag"
-});
-// scrollview-base-ie
-add('load', '14', {
-    "name": "scrollview-base-ie", 
-    "trigger": "scrollview-base", 
-    "ua": "ie"
-});
-// app-transitions-native
-add('load', '15', {
-    "name": "app-transitions-native", 
-    "test": function (Y) {
-    var doc  = Y.config.doc,
-        node = doc ? doc.documentElement : null;
-
-    if (node && node.style) {
-        return ('MozTransition' in node.style || 'WebkitTransition' in node.style);
-    }
-
-    return false;
-}, 
-    "trigger": "app-transitions"
-});
 // graphics-canvas
-add('load', '16', {
-    "name": "graphics-canvas", 
+add('load', '6', {
+    "name": "graphics-canvas",
     "test": function(Y) {
     var DOCUMENT = Y.config.doc,
         useCanvas = Y.config.defaultGraphicEngine && Y.config.defaultGraphicEngine == "canvas",
 		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
         svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
     return (!svg || useCanvas) && (canvas && canvas.getContext && canvas.getContext("2d"));
-}, 
+},
+    "trigger": "graphics"
+});
+// graphics-canvas-default
+add('load', '7', {
+    "name": "graphics-canvas-default",
+    "test": function(Y) {
+    var DOCUMENT = Y.config.doc,
+        useCanvas = Y.config.defaultGraphicEngine && Y.config.defaultGraphicEngine == "canvas",
+		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
+        svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+    return (!svg || useCanvas) && (canvas && canvas.getContext && canvas.getContext("2d"));
+},
+    "trigger": "graphics"
+});
+// graphics-svg
+add('load', '8', {
+    "name": "graphics-svg",
+    "test": function(Y) {
+    var DOCUMENT = Y.config.doc,
+        useSVG = !Y.config.defaultGraphicEngine || Y.config.defaultGraphicEngine != "canvas",
+		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
+        svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+    
+    return svg && (useSVG || !canvas);
+},
+    "trigger": "graphics"
+});
+// graphics-svg-default
+add('load', '9', {
+    "name": "graphics-svg-default",
+    "test": function(Y) {
+    var DOCUMENT = Y.config.doc,
+        useSVG = !Y.config.defaultGraphicEngine || Y.config.defaultGraphicEngine != "canvas",
+		canvas = DOCUMENT && DOCUMENT.createElement("canvas"),
+        svg = (DOCUMENT && DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+    
+    return svg && (useSVG || !canvas);
+},
     "trigger": "graphics"
 });
 // graphics-vml
-add('load', '17', {
-    "name": "graphics-vml", 
+add('load', '10', {
+    "name": "graphics-vml",
     "test": function(Y) {
     var DOCUMENT = Y.config.doc,
 		canvas = DOCUMENT && DOCUMENT.createElement("canvas");
     return (DOCUMENT && !DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (!canvas || !canvas.getContext || !canvas.getContext("2d")));
-}, 
+},
     "trigger": "graphics"
 });
+// graphics-vml-default
+add('load', '11', {
+    "name": "graphics-vml-default",
+    "test": function(Y) {
+    var DOCUMENT = Y.config.doc,
+		canvas = DOCUMENT && DOCUMENT.createElement("canvas");
+    return (DOCUMENT && !DOCUMENT.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (!canvas || !canvas.getContext || !canvas.getContext("2d")));
+},
+    "trigger": "graphics"
+});
+// history-hash-ie
+add('load', '12', {
+    "name": "history-hash-ie",
+    "test": function (Y) {
+    var docMode = Y.config.doc && Y.config.doc.documentMode;
+
+    return Y.UA.ie && (!('onhashchange' in Y.config.win) ||
+            !docMode || docMode < 8);
+},
+    "trigger": "history-hash"
+});
+// io-nodejs
+add('load', '13', {
+    "name": "io-nodejs",
+    "trigger": "io-base",
+    "ua": "nodejs"
+});
+// json-parse-shim
+add('load', '14', {
+    "name": "json-parse-shim",
+    "test": function (Y) {
+    var _JSON = Y.config.global.JSON,
+        Native = Object.prototype.toString.call(_JSON) === '[object JSON]' && _JSON,
+        nativeSupport = Y.config.useNativeJSONParse !== false && !!Native;
+
+    function workingNative( k, v ) {
+        return k === "ok" ? true : v;
+    }
+    
+    // Double check basic functionality.  This is mainly to catch early broken
+    // implementations of the JSON API in Firefox 3.1 beta1 and beta2
+    if ( nativeSupport ) {
+        try {
+            nativeSupport = ( Native.parse( '{"ok":false}', workingNative ) ).ok;
+        }
+        catch ( e ) {
+            nativeSupport = false;
+        }
+    }
+
+    return !nativeSupport;
+},
+    "trigger": "json-parse"
+});
+// json-stringify-shim
+add('load', '15', {
+    "name": "json-stringify-shim",
+    "test": function (Y) {
+    var _JSON = Y.config.global.JSON,
+        Native = Object.prototype.toString.call(_JSON) === '[object JSON]' && _JSON,
+        nativeSupport = Y.config.useNativeJSONStringify !== false && !!Native;
+
+    // Double check basic native functionality.  This is primarily to catch broken
+    // early JSON API implementations in Firefox 3.1 beta1 and beta2.
+    if ( nativeSupport ) {
+        try {
+            nativeSupport = ( '0' === Native.stringify(0) );
+        } catch ( e ) {
+            nativeSupport = false;
+        }
+    }
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
-YUI.add('intl-base', function(Y) {
+    return !nativeSupport;
+},
+    "trigger": "json-stringify"
+});
+// scrollview-base-ie
+add('load', '16', {
+    "name": "scrollview-base-ie",
+    "trigger": "scrollview-base",
+    "ua": "ie"
+});
+// selector-css2
+add('load', '17', {
+    "name": "selector-css2",
+    "test": function (Y) {
+    var DOCUMENT = Y.config.doc,
+        ret = DOCUMENT && !('querySelectorAll' in DOCUMENT);
+
+    return ret;
+},
+    "trigger": "selector"
+});
+// transition-timer
+add('load', '18', {
+    "name": "transition-timer",
+    "test": function (Y) {
+    var DOCUMENT = Y.config.doc,
+        node = (DOCUMENT) ? DOCUMENT.documentElement: null,
+        ret = true;
+
+    if (node && node.style) {
+        ret = !('MozTransition' in node.style || 'WebkitTransition' in node.style || 'transition' in node.style);
+    }
+
+    return ret;
+},
+    "trigger": "transition"
+});
+// widget-base-ie
+add('load', '19', {
+    "name": "widget-base-ie",
+    "trigger": "widget-base",
+    "ua": "ie"
+});
+// yql-jsonp
+add('load', '20', {
+    "name": "yql-jsonp",
+    "test": function (Y) {
+    /* Only load the JSONP module when not in nodejs or winjs
+    TODO Make the winjs module a CORS module
+    */
+    return (!Y.UA.nodejs && !Y.UA.winjs);
+},
+    "trigger": "yql",
+    "when": "after"
+});
+// yql-nodejs
+add('load', '21', {
+    "name": "yql-nodejs",
+    "trigger": "yql",
+    "ua": "nodejs",
+    "when": "after"
+});
+// yql-winjs
+add('load', '22', {
+    "name": "yql-winjs",
+    "trigger": "yql",
+    "ua": "winjs",
+    "when": "after"
+});
+
+}, '3.11.0', {"requires": ["yui-base"]});
+YUI.add('intl-base', function (Y, NAME) {
 
 /**
  * The Intl utility provides a central location for managing sets of
@@ -5363,12 +5829,13 @@ Y.mix(Y.namespace('Intl'), {
 });
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
-YUI.add('yui-log', function(Y) {
+}, '3.11.0', {"requires": ["yui-base"]});
+YUI.add('yui-log', function (Y, NAME) {
 
 /**
  * Provides console log capability and exposes a custom event for
- * console implementations. This module is a `core` YUI module, <a href="../classes/YUI.html#method_log">it's documentation is located under the YUI class</a>.
+ * console implementations. This module is a `core` YUI module,
+ * <a href="../classes/YUI.html#method_log">it's documentation is located under the YUI class</a>.
  *
  * @module yui
  * @submodule yui-log
@@ -5378,9 +5845,9 @@ var INSTANCE = Y,
     LOGEVENT = 'yui:log',
     UNDEFINED = 'undefined',
     LEVELS = { debug: 1,
-               info: 1,
-               warn: 1,
-               error: 1 };
+               info: 2,
+               warn: 4,
+               error: 8 };
 
 /**
  * If the 'debug' config is true, a 'yui:log' event will be
@@ -5402,7 +5869,7 @@ var INSTANCE = Y,
  * @return {YUI}      YUI instance.
  */
 INSTANCE.log = function(msg, cat, src, silent) {
-    var bail, excl, incl, m, f,
+    var bail, excl, incl, m, f, minlevel,
         Y = INSTANCE,
         c = Y.config,
         publisher = (Y.fire) ? Y : YUI.Env.globalEvents;
@@ -5410,7 +5877,8 @@ INSTANCE.log = function(msg, cat, src, silent) {
     // or the event call stack contains a consumer of the yui:log event
     if (c.debug) {
         // apply source filters
-        if (src) {
+        src = src || "";
+        if (typeof src !== "undefined") {
             excl = c.logExclude;
             incl = c.logInclude;
             if (incl && !(src in incl)) {
@@ -5420,23 +5888,32 @@ INSTANCE.log = function(msg, cat, src, silent) {
             } else if (excl && (src in excl)) {
                 bail = excl[src];
             }
+
+            // Determine the current minlevel as defined in configuration
+            Y.config.logLevel = Y.config.logLevel || 'debug';
+            minlevel = LEVELS[Y.config.logLevel.toLowerCase()];
+
+            if (cat in LEVELS && LEVELS[cat] < minlevel) {
+                // Skip this message if the we don't meet the defined minlevel
+                bail = 1;
+            }
         }
         if (!bail) {
             if (c.useBrowserConsole) {
                 m = (src) ? src + ': ' + msg : msg;
                 if (Y.Lang.isFunction(c.logFn)) {
                     c.logFn.call(Y, msg, cat, src);
-                } else if (typeof console != UNDEFINED && console.log) {
+                } else if (typeof console !== UNDEFINED && console.log) {
                     f = (cat && console[cat] && (cat in LEVELS)) ? cat : 'log';
                     console[f](m);
-                } else if (typeof opera != UNDEFINED) {
+                } else if (typeof opera !== UNDEFINED) {
                     opera.postError(m);
                 }
             }
 
             if (publisher && !silent) {
 
-                if (publisher == Y && (!publisher.getEvent(LOGEVENT))) {
+                if (publisher === Y && (!publisher.getEvent(LOGEVENT))) {
                     publisher.publish(LOGEVENT, {
                         broadcast: 2
                     });
@@ -5472,11 +5949,12 @@ INSTANCE.message = function() {
 };
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
-YUI.add('yui-later', function(Y) {
+}, '3.11.0', {"requires": ["yui-base"]});
+YUI.add('yui-later', function (Y, NAME) {
 
 /**
- * Provides a setTimeout/setInterval wrapper. This module is a `core` YUI module, <a href="../classes/YUI.html#method_later">it's documentation is located under the YUI class</a>.
+ * Provides a setTimeout/setInterval wrapper. This module is a `core` YUI module,
+ * <a href="../classes/YUI.html#method_later">it's documentation is located under the YUI class</a>.
  *
  * @module yui
  * @submodule yui-later
@@ -5549,8 +6027,5 @@ Y.Lang.later = Y.later;
 
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
-
-
-YUI.add('yui', function(Y){}, '@VERSION@' ,{use:['yui-base','get','features','intl-base','yui-log','yui-later']});
-
+}, '3.11.0', {"requires": ["yui-base"]});
+YUI.add('yui', function (Y, NAME) {}, '3.11.0', {"use": ["get", "features", "intl-base", "yui-log", "yui-later"]});

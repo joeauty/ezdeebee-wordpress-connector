@@ -1,4 +1,11 @@
-YUI.add('recordset-indexer', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('recordset-indexer', function (Y, NAME) {
 
 /**
  * Provides the ability to store multiple custom hash tables referencing records in the recordset.
@@ -224,4 +231,4 @@ Y.namespace("Plugin").RecordsetIndexer = RecordsetIndexer;
 
 
 
-}, '@VERSION@' ,{requires:['recordset-base','plugin']});
+}, '3.11.0', {"requires": ["recordset-base", "plugin"]});

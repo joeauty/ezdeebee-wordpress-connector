@@ -1,4 +1,11 @@
-YUI.add('widget-stack', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('widget-stack', function (Y, NAME) {
 
 /**
  * Provides stackable (z-index) support for Widgets through an extension.
@@ -53,15 +60,7 @@ YUI.add('widget-stack', function(Y) {
      * @class WidgetStack
      * @param {Object} User configuration object
      */
-    function Stack(config) {
-        this._stackNode = this.get(BOUNDING_BOX);
-        this._stackHandles = {};
-
-        // WIDGET METHOD OVERLAP
-        Y.after(this._renderUIStack, this, RENDER_UI);
-        Y.after(this._syncUIStack, this, SYNC_UI);
-        Y.after(this._bindUIStack, this, BIND_UI);
-    }
+    function Stack(config) {}
 
     // Static Properties
     /**
@@ -141,6 +140,16 @@ YUI.add('widget-stack', function(Y) {
     Stack.SHIM_TEMPLATE = '<iframe class="' + Stack.SHIM_CLASS_NAME + '" frameborder="0" title="Widget Stacking Shim" src="javascript:false" tabindex="-1" role="presentation"></iframe>';
 
     Stack.prototype = {
+
+        initializer : function() {
+            this._stackNode = this.get(BOUNDING_BOX);
+            this._stackHandles = {};
+
+            // WIDGET METHOD OVERLAP
+            Y.after(this._renderUIStack, this, RENDER_UI);
+            Y.after(this._syncUIStack, this, SYNC_UI);
+            Y.after(this._bindUIStack, this, BIND_UI);
+        },
 
         /**
          * Synchronizes the UI to match the Widgets stack state. This method in
@@ -435,4 +444,4 @@ YUI.add('widget-stack', function(Y) {
     Y.WidgetStack = Stack;
 
 
-}, '@VERSION@' ,{requires:['base-build', 'widget']});
+}, '3.11.0', {"requires": ["base-build", "widget"], "skinnable": true});

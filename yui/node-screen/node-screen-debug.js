@@ -1,4 +1,11 @@
-YUI.add('node-screen', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('node-screen', function (Y, NAME) {
 
 /**
  * Extended Node interface for managing regions and screen positioning.
@@ -26,7 +33,7 @@ Y.each([
 
     /**
      * Document width 
-     * @config winHeight
+     * @config docWidth
      * @type {Int}
      */
     'docWidth',
@@ -226,7 +233,7 @@ Y.Node.prototype.intersect = function(node2, altRegion) {
  * @param {Node|Object} node2 The node or region to compare with.
  * @param {Boolean} all Whether or not all of the node must be in the region.
  * @param {Object} altRegion An alternate region to use (rather than this node's).
- * @return {Object} An object representing the intersection of the regions.
+ * @return {Boolean} True if in region, false if not.
  */
 Y.Node.prototype.inRegion = function(node2, all, altRegion) {
     var node1 = Y.Node.getDOMNode(this);
@@ -237,4 +244,4 @@ Y.Node.prototype.inRegion = function(node2, all, altRegion) {
 };
 
 
-}, '@VERSION@' ,{requires:['node-base', 'dom-screen']});
+}, '3.11.0', {"requires": ["dom-screen", "node-base"]});

@@ -1,4 +1,11 @@
-YUI.add('recordset-base', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('recordset-base', function (Y, NAME) {
 
 /**
  * Provides a wrapper around a standard javascript object. Can be inserted into a Recordset instance.
@@ -647,4 +654,4 @@ Y.Recordset = Recordset;
 
 
 
-}, '@VERSION@' ,{requires:['base','arraylist']});
+}, '3.11.0', {"requires": ["base", "arraylist"]});

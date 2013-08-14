@@ -1,4 +1,11 @@
-YUI.add('datatable-column-widths', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datatable-column-widths', function (Y, NAME) {
 
 /**
 Adds basic, programmatic column width support to DataTable via column
@@ -100,7 +107,7 @@ To add a liner to all columns, either provide a custom `bodyView` to the
 DataTable constructor or update the default `bodyView`'s `CELL_TEMPLATE` like
 so:
 
-<pre><code>table.on('renderBody', function (e) {
+<pre><code>table.on('table:renderBody', function (e) {
     e.view.CELL_TEMPLATE = e.view.CELL_TEMPLATE.replace(/\{content\}/,
             '&lt;div class="yui3-datatable-liner">{content}&lt;/div>');
 });
@@ -171,10 +178,9 @@ Y.mix(ColumnWidths.prototype, {
         return this;
     },
 
-    //----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Protected properties and methods
-    //----------------------------------------------------------------------------
-
+    //--------------------------------------------------------------------------
     /**
     Renders the table's `<colgroup>` and populates the `_colgroupNode` property.
 
@@ -194,12 +200,8 @@ Y.mix(ColumnWidths.prototype, {
     @protected
     @since 3.5.0
     **/
-    initializer: function (config) {
-        this.after('renderTable', function (e) {
-            this._uiSetColumns();
-
-            this.after('columnsChange', this._uiSetColumns);
-        });
+    initializer: function () {
+        this.after(['renderView', 'columnsChange'], this._uiSetColumnWidths);
     },
 
     /**
@@ -226,7 +228,7 @@ Y.mix(ColumnWidths.prototype, {
         // cells' calculated width.
         var colgroup  = this._colgroupNode,
             col       = colgroup && colgroup.all('col').item(colIndex),
-            firstRow, cell, getCStyle;
+            cell, getCStyle;
 
         if (col) {
             if (width && isNumber(width)) {
@@ -238,12 +240,11 @@ Y.mix(ColumnWidths.prototype, {
             // Adjust the width for browsers that make
             // td.style.width === col.style.width
             if  (width && Y.Features.test('table', 'badColWidth')) {
-                firstRow = this._tbodyNode && this._tbodyNode.one('tr');
-                cell     = firstRow && firstRow.all('td').item(colIndex);
-                
+                cell = this.getCell([0, colIndex]);
+
                 if (cell) {
                     getCStyle = function (prop) {
-                        return parseInt(cell.getComputedStyle(prop), 10)|0;
+                        return parseInt(cell.getComputedStyle(prop), 10)||0;
                     };
 
                     col.setStyle('width',
@@ -264,11 +265,15 @@ Y.mix(ColumnWidths.prototype, {
     attribute without children.  It is assumed that these are the columns that
     have data cells renderered for them.
 
-    @method _uiSetColumns
+    @method _uiSetColumnWidths
     @protected
     @since 3.5.0
     **/
-    _uiSetColumns: function () {
+    _uiSetColumnWidths: function () {
+        if (!this.view) {
+            return;
+        }
+
         var template = this.COL_TEMPLATE,
             colgroup = this._colgroupNode,
             columns  = this._displayColumns,
@@ -298,4 +303,4 @@ Y.DataTable.ColumnWidths = ColumnWidths;
 Y.Base.mix(Y.DataTable, [ColumnWidths]);
 
 
-}, '@VERSION@' ,{requires:['datatable-base']});
+}, '3.11.0', {"requires": ["datatable-base"]});

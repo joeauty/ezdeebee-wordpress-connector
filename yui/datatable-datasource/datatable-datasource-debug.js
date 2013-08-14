@@ -1,4 +1,11 @@
-YUI.add('datatable-datasource', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datatable-datasource', function (Y, NAME) {
 
 /**
  * Plugs DataTable with DataSource integration.
@@ -59,7 +66,7 @@ Y.mix(DataTableDataSource, {
         datasource: {
             setter: "_setDataSource"
         },
-        
+
         /**
         * @attribute initialRequest
         * @description Request sent to DataSource immediately upon initialization.
@@ -99,7 +106,7 @@ Y.extend(DataTableDataSource, Y.Plugin.Base, {
     * @param request {Object} DataSource request.
     * @private
     */
-    _setInitialRequest: function(request) {
+    _setInitialRequest: function(/* request */) {
     },
 
     /////////////////////////////////////////////////////////////////////////////
@@ -177,4 +184,4 @@ Y.extend(DataTableDataSource, Y.Plugin.Base, {
 Y.namespace("Plugin").DataTableDataSource = DataTableDataSource;
 
 
-}, '@VERSION@' ,{requires:['datatable-base','plugin','datasource-local']});
+}, '3.11.0', {"requires": ["datatable-base", "plugin", "datasource-local"]});

@@ -3,7 +3,7 @@
 Plugin Name: Ezdeebee WordPress Connector
 Plugin URI: http://ezdeebee.com/wordpress
 Description: Ezdeebee WordPress Connector Plugin
-Version: 1.0.1
+Version: 1.1.0
 Author: Ezdeebee
 Author URI: http://ezdeebee.com
 License: GPL2
@@ -30,7 +30,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 $referer = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 $referer .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-$ezdbdomain = "https://ezdeebee.com/app";
+//$ezdbdomain = "https://ezdeebee.com/app";
+$ezdbdomain = "http://wklocal.netmusician.org/webkit1_0";
 $cachebuster = rand(0, 10000);
 
 $ezdeebee_options = get_option('ezdeebee_options');
@@ -55,17 +56,20 @@ if ($_GET['ezdb_initconnector']) {
 		// cURL SQL regen commands
 		
 		$resultsjson = json_decode($result);
-		$regdbID = $resultsjson->dbmeta[0]->regdbID;
+		$tablename = $resultsjson->tablename;
+		$regdbID = $resultsjson->regdbID;
 		
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
 		// create modifications table, if necessary
-		$sql = "CREATE TABLE IF NOT EXISTS `ezdb__modifications` (
+		$sql = "CREATE TABLE `ezdb__modifications` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `registereddb` int(11) DEFAULT NULL,
+		  `connector_id` int(11) DEFAULT NULL,
+		  `tablename` varchar(255) NOT NULL,
 		  `lastmodified` datetime DEFAULT NULL,
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1;";
+		
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 		
 		// get remote last modified date
@@ -87,7 +91,7 @@ if ($_GET['ezdb_initconnector']) {
 		$locallastmodified = strtotime($query[0]->lastmodified);
 		$action = ($wpdb->num_rows) ? 'update' : 'insert';
 
-		if (!$wpdb->num_rows || $locallastmodified < $remotelastmodified) {
+		if (!$wpdb->num_rows || $locallastmodified < $remotelastmodified || !$query[0]->tablename || !$query[0]->connector_id) {
 			// do sync
 			$url = $ezdbdomain . '/dbmanager/' . $ezdeebee_options['ezdeebee_site_id'] . '/dump';
 			$ch = curl_init();
@@ -114,11 +118,11 @@ if ($_GET['ezdb_initconnector']) {
 			// update local last modified
 			if ($action == "insert") {
 				// insert new modification date
-				$wpdb->insert( 'ezdb__modifications', array('lastmodified' => date('Y-m-d H:i:s', $remotelastmodified), 'registereddb' => $regdbID));
+				$wpdb->insert( 'ezdb__modifications', array('lastmodified' => date('Y-m-d H:i:s', $remotelastmodified), 'connector_id' => $_GET['ezdeebee_cid'], 'tablename' => $tablename, 'registereddb' => $regdbID));
 			}
 			else if ($action == "update") {
 				// update modification date
-				$wpdb->update( 'ezdb__modifications', array('lastmodified' => date('Y-m-d H:i:s', $remotelastmodified)), array('registereddb' => $regdbID));	
+				$wpdb->update( 'ezdb__modifications', array('lastmodified' => date('Y-m-d H:i:s', $remotelastmodified), 'connector_id' => $_GET['ezdeebee_cid'], 'tablename' => $tablename), array('registereddb' => $regdbID));	
 			}
 		}
 	}
@@ -150,7 +154,7 @@ function initEzdeebeeSettings() {
 	register_setting('ezdeebee_options', 'ezdeebee_options', 'validateSiteID'); 
 	add_settings_section('ezdeebee_main', '', 'ezdeebeeSectionText', 'ezdeebee'); 
 	add_settings_field('ezdeebee_site_id', 'Ezdeebee Site ID', 'renderSiteID', 'ezdeebee', 'ezdeebee_main');
-	add_settings_field('ezdeebee_localcache', 'Cache to Local Database (Advanced)', 'renderLocalCache', 'ezdeebee', 'ezdeebee_main');
+	add_settings_field('ezdeebee_localcache', 'Cache to Local Database<br /><small>(for advanced usage and search engine optimization)</small>', 'renderLocalCache', 'ezdeebee', 'ezdeebee_main');
 }
 
 
@@ -228,18 +232,59 @@ function renderLocalCache() {
 	echo " />";
 }
 
+function cacheTable($table) {
+	global $wpdb;
+	$query = $wpdb->get_results('SELECT tablename FROM ezdb__modifications WHERE connector_id = "' . $table . '"');
+	$tablename = $query[0]->tablename;
+
+	$query = $wpdb->get_results('SELECT * FROM ' . $tablename);
+	if ($wpdb->num_rows) {
+		return $query;
+	}
+	return false;
+}
+
 function ezdeebeeShortcode( $atts ) {
+	global $ezdeebee_options;
 	extract( shortcode_atts( array(
 		'table' => '',
 		'form' => '',
 	), $atts ) );
 	
 	if ($table) {
-		return '<div class="ezdbtemplate" id="ezdbtable_' . $table . '"></div>';
+		$cachetable = cacheTable($table);
+		
+		$html = '<div class="ezdbtemplate" id="ezdbtable_' . $table . '"></div>';
+		
+		if ($ezdeebee_options['ezdeebee_localcache'] && $cachetable) {
+			$fields = get_object_vars($cachetable[0]);
+			
+			$html .= '<div class="cachetable ezdb_displaynone">';
+			$html .= '<table>';
+			foreach ($cachetable as $thisrow) {
+				$html .= '<tr>';
+				foreach ($fields as $thisfield=>$fieldval) {
+					switch ($thisfield) {
+						case 'listorder':
+						case 'updated_at':
+						case 'created_at':
+						break;
+					
+						default:
+						$html .= '<td>' . htmlspecialchars_decode($thisrow->{$thisfield}, ENT_QUOTES) . '</td>';
+						break;
+					}
+				}
+				$html .= '</tr>';
+			}
+			$html .= '</table></div>';	
+		}
 	}
 	else if ($form) {
-		return '<div class="ezdbtemplate" id="ezdbform_' . $form . '"></div>';
+		$html = '<div class="ezdbtemplate" id="ezdbform_' . $form . '"></div>';
 	}
+	
+	return $html;
 }
 
 add_action( 'admin_menu', 'initEzdeebee' );

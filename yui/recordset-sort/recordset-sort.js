@@ -1,4 +1,11 @@
-YUI.add('recordset-sort', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('recordset-sort', function (Y, NAME) {
 
 /**
  * Adds default and custom sorting functionality to the Recordset utility
@@ -202,4 +209,4 @@ Y.namespace("Plugin").RecordsetSort = RecordsetSort;
 
 
 
-}, '@VERSION@' ,{requires:['arraysort','recordset-base','plugin']});
+}, '3.11.0', {"requires": ["arraysort", "recordset-base", "plugin"]});

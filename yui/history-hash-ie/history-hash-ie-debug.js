@@ -1,4 +1,11 @@
-YUI.add('history-hash-ie', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('history-hash-ie', function (Y, NAME) {
 
 /**
  * Improves IE6/7 support in history-hash by using a hidden iframe to create
@@ -135,4 +142,4 @@ if (Y.UA.ie && !Y.HistoryBase.nativeHashChange) {
 }
 
 
-}, '@VERSION@' ,{requires:['history-hash', 'node-base']});
+}, '3.11.0', {"requires": ["history-hash", "node-base"]});

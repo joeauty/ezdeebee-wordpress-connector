@@ -1,4 +1,11 @@
-YUI.add('io-xdr', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('io-xdr', function (Y, NAME) {
 
 /**
 Extends IO to provide an alternate, Flash transport, for making
@@ -7,6 +14,10 @@ cross-domain requests.
 @submodule io-xdr
 @for IO
 **/
+
+// Helpful resources when working with the mess that is XDomainRequest:
+// http://www.cypressnorth.com/blog/web-programming-and-development/internet-explorer-aborting-ajax-requests-fixed/
+// http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx
 
 /**
 Fires when the XDR transport is ready for use.
@@ -144,13 +155,11 @@ Y.mix(Y.IO.prototype, {
             _rS[i] = 4;
             io.xdrResponse('failure', o, c);
         };
-        if (c[t]) {
-            o.c.ontimeout = function() {
-                _rS[i] = 4;
-                io.xdrResponse(t, o, c);
-            };
-            o.c[t] = c[t];
-        }
+        o.c.ontimeout = function() {
+            _rS[i] = 4;
+            io.xdrResponse(t, o, c);
+        };
+        o.c[t] = c[t] || 0;
     },
 
     /**
@@ -186,7 +195,11 @@ Y.mix(Y.IO.prototype, {
         else if (xdr) {
             io._ieEvt(o, c);
             o.c.open(c.method || 'GET', uri);
-            o.c.send(c.data);
+
+            // Make async to protect against IE 8 oddities.
+            setTimeout(function() {
+                o.c.send(c.data);
+            }, 0);
         }
         else {
             o.c.send(uri, o, c);
@@ -308,5 +321,4 @@ event is fired, this value will be set to 0.
 Y.io.xdr = { delay : 100 };
 
 
-
-}, '@VERSION@' ,{requires:['io-base','datatype-xml-parse']});
+}, '3.11.0', {"requires": ["io-base", "datatype-xml-parse"]});

@@ -1,12 +1,17 @@
-YUI.add('querystring-stringify', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('querystring-stringify', function (Y, NAME) {
 
 /**
  * Provides Y.QueryString.stringify method for converting objects to Query Strings.
  *
  * @module querystring
  * @submodule querystring-stringify
- * @for QueryString
- * @static
  */
 
 var QueryString = Y.namespace("QueryString"),
@@ -19,8 +24,8 @@ var QueryString = Y.namespace("QueryString"),
  * the delimiters would not normally be handled properly by the builtin
  * (en|de)codeURIComponent functions.
  * Default: encodeURIComponent
- * @module querystring
- * @submodule querystring-stringify
+ *
+ * @method escape
  * @for QueryString
  * @static
  **/
@@ -32,6 +37,7 @@ QueryString.escape = encodeURIComponent;
  * <p>Objects with cyclical references will trigger an exception.</p>
  *
  * @method stringify
+ * @for QueryString
  * @public
  * @param obj {Variant} any arbitrary value to convert to query string
  * @param cfg {Object} (optional) Configuration object.  The three
@@ -104,4 +110,4 @@ QueryString.stringify = function (obj, c, name) {
 };
 
 
-}, '@VERSION@' ,{requires:['yui-base'], supersedes:['querystring-stringify-simple']});
+}, '3.11.0', {"requires": ["yui-base"]});

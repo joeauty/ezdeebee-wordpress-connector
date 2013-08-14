@@ -1,4 +1,11 @@
-YUI.add('event-mousewheel', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-mousewheel', function (Y, NAME) {
 
 /**
  * Adds mousewheel event support
@@ -26,7 +33,7 @@ var DOM_MOUSE_SCROLL = 'DOMMouseScroll',
 
 /**
  * Mousewheel event.  This listener is automatically attached to the
- * correct target, so one should not be supplied.  Mouse wheel 
+ * correct target, so one should not be supplied.  Mouse wheel
  * direction and velocity is stored in the 'wheelDelta' field.
  * @event mousewheel
  * @param type {string} 'mousewheel'
@@ -47,4 +54,4 @@ Y.Env.evt.plugins.mousewheel = {
 };
 
 
-}, '@VERSION@' ,{requires:['node-base']});
+}, '3.11.0', {"requires": ["node-base"]});

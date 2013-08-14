@@ -1,16 +1,23 @@
-YUI.add('datatype-number-parse', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datatype-number-parse', function (Y, NAME) {
 
 /**
  * Parse number submodule.
  *
- * @module datatype
+ * @module datatype-number
  * @submodule datatype-number-parse
- * @for DataType.Number
+ * @for Number
  */
 
 var LANG = Y.Lang;
 
-Y.mix(Y.namespace("DataType.Number"), {
+Y.mix(Y.namespace("Number"), {
     /**
      * Converts data to type Number.
      *
@@ -20,19 +27,21 @@ Y.mix(Y.namespace("DataType.Number"), {
      * @return {Number} A number, or null.
      */
     parse: function(data) {
-        var number = (data === null) ? data : +data;
+        var number = (data === null || data === "") ? data : +data;
         if(LANG.isNumber(number)) {
             return number;
         }
         else {
-            Y.log("Could not parse data to type Number", "warn", "datatype-number");
+            Y.log("Could not parse data to type Number", "warn", "number");
             return null;
         }
     }
 });
 
 // Add Parsers shortcut
-Y.namespace("Parsers").number = Y.DataType.Number.parse;
+Y.namespace("Parsers").number = Y.Number.parse;
+Y.namespace("DataType");
+Y.DataType.Number = Y.Number;
 
 
-}, '@VERSION@' );
+}, '3.11.0');

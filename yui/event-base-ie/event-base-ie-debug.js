@@ -1,3 +1,10 @@
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
 (function() {
 
 var stateChangeListener,
@@ -38,7 +45,7 @@ if (docElement.doScroll && !GLOBAL_ENV._ieready) {
 }
 
 })();
-YUI.add('event-base-ie', function(Y) {
+YUI.add('event-base-ie', function (Y, NAME) {
 
 /*
  * Custom event engine, DOM event listener abstraction layer, synthetic DOM
@@ -219,7 +226,7 @@ IELazyFacade._lazyProperties = {
         var e = this._event,
             val = e.pageX,
             doc, bodyScroll, docScroll;
-                
+
         if (val === undefined) {
             doc = Y.config.doc;
             bodyScroll = doc.body && doc.body.scrollLeft;
@@ -234,7 +241,7 @@ IELazyFacade._lazyProperties = {
         var e = this._event,
             val = e.pageY,
             doc, bodyScroll, docScroll;
-                
+
         if (val === undefined) {
             doc = Y.config.doc;
             bodyScroll = doc.body && doc.body.scrollTop;
@@ -295,9 +302,9 @@ if (imp && (!imp.hasFeature('Events', '2.0'))) {
             useLazyFacade = false;
         }
     }
-        
+
     Y.DOMEventFacade = (useLazyFacade) ? IELazyFacade : IEEventFacade;
 }
 
 
-}, '@VERSION@' ,{after:['event-base'], requires:['node-base']});
+}, '3.11.0', {"requires": ["node-base"]});

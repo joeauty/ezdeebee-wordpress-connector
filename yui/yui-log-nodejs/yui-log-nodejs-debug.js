@@ -1,4 +1,11 @@
-YUI.add('yui-log-nodejs', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('yui-log-nodejs', function (Y, NAME) {
 
 var sys = require(process.binding('natives').util ? 'util' : 'sys'),
     hasColor = false;
@@ -19,18 +26,18 @@ Y.consoleColor = function(str, num) {
     if (!num) {
         num = '32';
     }
-    return "\033[" + num +"m" + str + "\033[0m"
+    return "\u001b[" + num +"m" + str + "\u001b[0m";
 };
 
 
 var logFn = function(str, t, m) {
-    var id = '';
+    var id = '', lvl, mLvl;
     if (this.id) {
         id = '[' + this.id + ']:';
     }
     t = t || 'info';
     m = (m) ? this.consoleColor(' (' +  m.toLowerCase() + '):', 35) : '';
-    
+
     if (str === null) {
         str = 'null';
     }
@@ -48,7 +55,8 @@ var logFn = function(str, t, m) {
         }
     }
 
-    var lvl = '37;40', mLvl = ((str) ? '' : 31);
+    lvl = '37;40';
+    mLvl = ((str) ? '' : 31);
     t = t+''; //Force to a string..
     switch (t.toLowerCase()) {
         case 'error':
@@ -77,4 +85,4 @@ if (!Y.config.logFn) {
 
 
 
-}, '@VERSION@' ,{requires:['yui-log']});
+}, '3.11.0');

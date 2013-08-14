@@ -1,4 +1,11 @@
-YUI.add('datatable-sort', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datatable-sort', function (Y, NAME) {
 
 /**
 Adds support for sorting the table data by API methods `table.sort(...)` or
@@ -88,7 +95,7 @@ function nameSort(a, b, desc) {
     var aa = a.get('lastName') + a.get('firstName'),
         bb = a.get('lastName') + b.get('firstName'),
         order = (aa > bb) ? 1 : -(aa < bb);
-        
+
     return desc ? -order : order;
 }
 
@@ -226,7 +233,7 @@ Y.mix(Sortable.prototype, {
     @value '<div class="{className}" tabindex="0"><span class="{indicatorClass}"></span></div>'
     @since 3.5.0
     **/
-    SORTABLE_HEADER_TEMPLATE: '<div class="{className}" tabindex="0"><span class="{indicatorClass}"></span></div>',
+    SORTABLE_HEADER_TEMPLATE: '<div class="{className}" tabindex="0" unselectable="on"><span class="{indicatorClass}"></span></div>',
 
     /**
     Reverse the current sort direction of one or more fields currently being
@@ -295,7 +302,7 @@ Y.mix(Sortable.prototype, {
     @protected
     @since 3.5.0
     **/
-    _afterSortByChange: function (e) {
+    _afterSortByChange: function () {
         // Can't use a setter because it's a chicken and egg problem. The
         // columns need to be set up to translate, but columns are initialized
         // from Core's initializer.  So construction-time assignment would
@@ -360,11 +367,16 @@ Y.mix(Sortable.prototype, {
     @since 3.5.0
     **/
     _bindSortUI: function () {
-        this.after(['sortableChange', 'sortByChange', 'columnsChange'],
-            Y.bind('_uiSetSortable', this));
+        var handles = this._eventHandles;
 
-        if (this._theadNode) {
-            this._sortHandle = this.delegate(['click','keydown'],
+        if (!handles.sortAttrs) {
+            handles.sortAttrs = this.after(
+                ['sortableChange', 'sortByChange', 'columnsChange'],
+                Y.bind('_uiSetSortable', this));
+        }
+
+        if (!handles.sortUITrigger && this._theadNode) {
+            handles.sortUITrigger = this.delegate(['click','keydown'],
                 Y.rbind('_onUITriggerSort', this),
                 '.' + this.getClassName('sortable', 'column'));
         }
@@ -383,21 +395,8 @@ Y.mix(Sortable.prototype, {
     },
 
     /**
-    Removes the click subscription from the header for sorting.
-
-    @method destructor
-    @protected
-    @since 3.5.0
-    **/
-    destructor: function () {
-        if (this._sortHandle) {
-            this._sortHandle.detach();
-        }
-    },
-
-    /**
     Getter for the `sortBy` attribute.
-    
+
     Supports the special subattribute "sortBy.state" to get a normalized JSON
     version of the current sort state.  Otherwise, returns the last assigned
     value.
@@ -427,7 +426,7 @@ Y.mix(Sortable.prototype, {
     _getSortBy: function (val, detail) {
         var state, i, len, col;
 
-        // "sortBy." is 7 characters. Used to catch 
+        // "sortBy." is 7 characters. Used to catch
         detail = detail.slice(7);
 
         // TODO: table.get('sortBy.asObject')? table.get('sortBy.json')?
@@ -469,14 +468,16 @@ Y.mix(Sortable.prototype, {
         this._initSortStrings();
 
         this.after({
-            renderHeader  : Y.bind('_renderSortable', this),
-            dataChange    : Y.bind('_afterSortDataChange', this),
-            sortByChange  : Y.bind('_afterSortByChange', this),
-            sortableChange: boundParseSortable,
-            columnsChange : boundParseSortable,
-            "*:change"    : Y.bind('_afterSortRecordChange', this)
+            'table:renderHeader': Y.bind('_renderSortable', this),
+            dataChange          : Y.bind('_afterSortDataChange', this),
+            sortByChange        : Y.bind('_afterSortByChange', this),
+            sortableChange      : boundParseSortable,
+            columnsChange       : boundParseSortable
         });
+        this.data.after(this.data.model.NAME + ":change",
+            Y.bind('_afterSortRecordChange', this));
 
+        // TODO: this event needs magic, allowing async remote sorting
         this.publish('sort', {
             defaultFn: Y.bind('_defSortFn', this)
         });
@@ -501,11 +502,12 @@ Y.mix(Sortable.prototype, {
         // extra function hop during sorting. Lesser of three evils?
         this.data._compare = function (a, b) {
             var cmp = 0,
-                i, len, col, dir, aa, bb;
+                i, len, col, dir, cs, aa, bb;
 
             for (i = 0, len = self._sortBy.length; !cmp && i < len; ++i) {
                 col = self._sortBy[i];
-                dir = col.sortDir;
+                dir = col.sortDir,
+                cs = col.caseSensitive;
 
                 if (col.sortFn) {
                     cmp = col.sortFn(a, b, (dir === -1));
@@ -513,7 +515,10 @@ Y.mix(Sortable.prototype, {
                     // FIXME? Requires columns without sortFns to have key
                     aa = a.get(col.key) || '';
                     bb = b.get(col.key) || '';
-
+                    if (!cs && typeof(aa) === "string" && typeof(bb) === "string"){// Not case sensitive
+                        aa = aa.toLowerCase();
+                        bb = bb.toLowerCase();
+                    }
                     cmp = (aa > bb) ? dir : ((aa < bb) ? -dir : 0);
                 }
             }
@@ -535,14 +540,14 @@ Y.mix(Sortable.prototype, {
 
     /**
     Add the sort related strings to the `strings` map.
-    
+
     @method _initSortStrings
     @protected
     @since 3.5.0
     **/
     _initSortStrings: function () {
         // Not a valueFn because other class extensions will want to add to it
-        this.set('strings', Y.mix((this.get('strings') || {}), 
+        this.set('strings', Y.mix((this.get('strings') || {}),
             Y.Intl.get('datatable-sort')));
     },
 
@@ -557,9 +562,8 @@ Y.mix(Sortable.prototype, {
     **/
     _onUITriggerSort: function (e) {
         var id = e.currentTarget.getAttribute('data-yui3-col-id'),
-            sortBy = e.shiftKey ? this.get('sortBy') : [{}],
             column = id && this.getColumn(id),
-            i, len;
+            sortBy, i, len;
 
         if (e.type === 'keydown' && e.keyCode !== 32) {
             return;
@@ -571,13 +575,15 @@ Y.mix(Sortable.prototype, {
 
         if (column) {
             if (e.shiftKey) {
+                sortBy = this.get('sortBy') || [];
+
                 for (i = 0, len = sortBy.length; i < len; ++i) {
-                    if (id === sortBy[i] || Math.abs(sortBy[i][id] === 1)) {
+                    if (id === sortBy[i]  || Math.abs(sortBy[i][id]) === 1) {
                         if (!isObject(sortBy[i])) {
                             sortBy[i] = {};
                         }
 
-                        sortBy[i][id] = -(column.sortDir|0) || 1;
+                        sortBy[i][id] = -(column.sortDir||0) || 1;
                         break;
                     }
                 }
@@ -586,7 +592,9 @@ Y.mix(Sortable.prototype, {
                     sortBy.push(column._id);
                 }
             } else {
-                sortBy[0][id] = -(column.sortDir|0) || 1;
+                sortBy = [{}];
+
+                sortBy[0][id] = -(column.sortDir||0) || 1;
             }
 
             this.fire('sort', {
@@ -846,10 +854,16 @@ Y.mix(Sortable.prototype, {
                 }
 
                 title = sub(this.getString(
-                    (col.sortDir === 1) ? 'reverseSortBy' : 'sortBy'), {
+                    (col.sortDir === 1) ? 'reverseSortBy' : 'sortBy'), // get string
+                    {
+                        title:  col.title || '',
+                        key:    col.key || '',
+                        abbr:   col.abbr || '',
+                        label:  col.label || '',
                         column: col.abbr || col.label ||
                                 col.key  || ('column ' + i)
-                });
+                    }
+                );
 
                 node.setAttribute('title', title);
                 // To combat VoiceOver from reading the sort title as the
@@ -895,4 +909,4 @@ Y.DataTable.Sortable = Sortable;
 Y.Base.mix(Y.DataTable, [Sortable]);
 
 
-}, '@VERSION@' ,{requires:['datatable-base'], lang:['en']});
+}, '3.11.0', {"requires": ["datatable-base"], "lang": ["en", "fr", "es", "hu"], "skinnable": true});

@@ -1,4 +1,11 @@
-YUI.add('graphics-svg-default', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('graphics-svg-default', function (Y, NAME) {
 
 Y.Graphic = Y.SVGGraphic;
 Y.Shape = Y.SVGShape;
@@ -9,4 +16,4 @@ Y.Path = Y.SVGPath;
 Y.Drawing = Y.SVGDrawing;
 
 
-}, '@VERSION@' ,{skinnable:false});
+}, '3.11.0');

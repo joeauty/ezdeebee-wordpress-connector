@@ -1,4 +1,11 @@
-YUI.add('intl-base', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('intl-base', function (Y, NAME) {
 
 /**
  * The Intl utility provides a central location for managing sets of
@@ -85,4 +92,4 @@ Y.mix(Y.namespace('Intl'), {
 });
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
+}, '3.11.0', {"requires": ["yui-base"]});

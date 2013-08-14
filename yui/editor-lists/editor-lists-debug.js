@@ -1,15 +1,24 @@
-YUI.add('editor-lists', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('editor-lists', function (Y, NAME) {
 
 
     /**
-     * Handles list manipulation inside the Editor. Adds keyboard manipulation and execCommand support. Adds overrides for the <a href="Plugin.ExecCommand.html#method_COMMANDS.insertorderedlist">insertorderedlist</a> and <a href="Plugin.ExecCommand.html#method_COMMANDS.insertunorderedlist">insertunorderedlist</a> execCommands.
+     * Handles list manipulation inside the Editor. Adds keyboard manipulation and execCommand support.
+     * Adds overrides for the <a href="Plugin.ExecCommand.html#method_COMMANDS.insertorderedlist">insertorderedlist</a>
+     * and <a href="Plugin.ExecCommand.html#method_COMMANDS.insertunorderedlist">insertunorderedlist</a> execCommands.
      * @class Plugin.EditorLists
      * @constructor
      * @extends Base
      * @module editor
      * @submodule editor-lists
      */
-    
+
     var EditorLists = function() {
         EditorLists.superclass.constructor.apply(this, arguments);
     }, LI = 'li', OL = 'ol', UL = 'ul', HOST = 'host';
@@ -22,8 +31,8 @@ YUI.add('editor-lists', function(Y) {
         * @param {Event} e The Event facade passed from the host.
         */
         _onNodeChange: function(e) {
-            var inst = this.get(HOST).getInstance(), sel, li, 
-            newLi, newList, sTab, par, moved = false, tag, focusEnd = false;
+            var inst = this.get(HOST).getInstance(), li,
+                newList, sTab, par, moved = false, tag, focusEnd = false;
 
             if (e.changedType === 'tab') {
                 if (e.changedNode.test(LI + ', ' + LI + ' *')) {
@@ -39,7 +48,7 @@ YUI.add('editor-lists', function(Y) {
                         tag = OL;
                     }
                     Y.log('ShiftKey: ' + sTab, 'info', 'editorLists');
-                    
+
                     if (!li.test(LI)) {
                         li = li.ancestor(LI);
                     }
@@ -122,4 +131,4 @@ YUI.add('editor-lists', function(Y) {
 
 
 
-}, '@VERSION@' ,{skinnable:false, requires:['editor-base']});
+}, '3.11.0', {"requires": ["editor-base"]});

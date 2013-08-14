@@ -1,4 +1,11 @@
-YUI.add('async-queue', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('async-queue', function (Y, NAME) {
 
 /**
  * <p>AsyncQueue allows you create a chain of function callbacks executed
@@ -219,13 +226,26 @@ Y.extend(Queue, Y.EventTarget, {
         var callback,
             cont = true;
 
+        if (this._executing) {
+            this._running = true;
+            return this;
+        }
+
         for (callback = this.next();
-            cont && callback && !this.isRunning();
+            callback && !this.isRunning();
             callback = this.next())
         {
             cont = (callback.timeout < 0) ?
                 this._execute(callback) :
                 this._schedule(callback);
+
+            // Break to avoid an extra call to next (final-expression of the
+            // 'for' loop), because the until function of the next callback
+            // in the queue may return a wrong result if it depends on the
+            // not-yet-finished work of the previous callback.
+            if (!cont) {
+                break;
+            }
         }
 
         if (!callback) {
@@ -249,14 +269,17 @@ Y.extend(Queue, Y.EventTarget, {
      * @protected
      */
     _execute : function (callback) {
-        this._running = callback._running = true;
+
+        this._running   = callback._running = true;
+        this._executing = callback;
 
         callback.iterations--;
         this.fire(EXECUTE, { callback: callback });
 
         var cont = this._running && callback.autoContinue;
 
-        this._running = callback._running = false;
+        this._running   = callback._running = false;
+        this._executing = false;
 
         return cont;
     },
@@ -352,7 +375,7 @@ Y.extend(Queue, Y.EventTarget, {
      * @chainable
      */
     pause: function () {
-        if (isObject(this._running)) {
+        if (this._running && isObject(this._running)) {
             this._running.cancel();
         }
 
@@ -369,10 +392,20 @@ Y.extend(Queue, Y.EventTarget, {
      * @return {AsyncQueue} the AsyncQueue instance
      * @chainable
      */
-    stop : function () { 
+    stop : function () {
+
         this._q = [];
 
-        return this.pause();
+        if (this._running && isObject(this._running)) {
+            this._running.cancel();
+            this._running = false;
+        }
+        // otherwise don't systematically set this._running to false, because if
+        // stop has been called from inside a queued callback, the _execute method
+        // currenty running needs to call run() one more time for the 'complete'
+        // event to be fired.
+
+        return this;
     },
 
     /** 
@@ -519,4 +552,4 @@ Y.extend(Queue, Y.EventTarget, {
 
 
 
-}, '@VERSION@' ,{requires:['event-custom']});
+}, '3.11.0', {"requires": ["event-custom"]});

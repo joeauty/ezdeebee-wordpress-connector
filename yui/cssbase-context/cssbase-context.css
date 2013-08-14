@@ -1,3 +1,10 @@
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
 /* base.css, part of YUI's CSS Foundation */
 .yui3-cssbase h1 {
 	/*18px via YUI Fonts CSS foundation*/
@@ -71,5 +78,6 @@
 /* setting a consistent width, 160px; 
    control of type=file still not possible */
 .yui3-cssbase input[type=text],.yui3-cssbase input[type=password],.yui3-cssbase textarea{width:12.25em;*width:11.9em;}
+
 /* YUI CSS Detection Stamp */
 #yui3-css-stamp.cssbase-context { display: none; }

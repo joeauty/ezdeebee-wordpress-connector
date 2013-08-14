@@ -1,4 +1,11 @@
-YUI.add('datasource-xmlschema', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datasource-xmlschema', function (Y, NAME) {
 
 /**
  * Extends DataSource with schema-parsing on XML data.
@@ -83,7 +90,7 @@ Y.extend(DataSourceXMLSchema, Y.Plugin.Base, {
         var schema = this.get('schema'),
             payload = e.details[0],
             // TODO: Do I need to sniff for DS.IO + responseXML.nodeType 9?
-            data = e.data.responseXML || e.data;
+            data = Y.XML.parse(e.data.responseText) || e.data;
 
         payload.response = Y.DataSchema.XML.apply.call(this, schema, data) || {
             meta: {},
@@ -99,4 +106,4 @@ Y.extend(DataSourceXMLSchema, Y.Plugin.Base, {
 Y.namespace('Plugin').DataSourceXMLSchema = DataSourceXMLSchema;
 
 
-}, '@VERSION@' ,{requires:['datasource-local', 'plugin', 'dataschema-xml']});
+}, '3.11.0', {"requires": ["datasource-local", "plugin", "datatype-xml", "dataschema-xml"]});

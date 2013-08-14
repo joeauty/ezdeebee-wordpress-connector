@@ -1,8 +1,15 @@
-YUI.add('attribute-extras', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('attribute-extras', function (Y, NAME) {
 
     /**
-     * The attribute module provides an augmentable Attribute implementation, which 
-     * adds configurable attributes and attribute change events to the class being 
+     * The attribute module provides an augmentable Attribute implementation, which
+     * adds configurable attributes and attribute change events to the class being
      * augmented. It also provides a State class, which is used internally by Attribute,
      * but can also be used independently to provide a name/property/value data structure to
      * store state.
@@ -11,7 +18,7 @@ YUI.add('attribute-extras', function(Y) {
      */
 
     /**
-     * The attribute-extras submodule provides less commonly used attribute methods, and can 
+     * The attribute-extras submodule provides less commonly used attribute methods, and can
      * be augmented/mixed into an implemention which used attribute-core.
      *
      * @module attribute
@@ -29,10 +36,11 @@ YUI.add('attribute-extras', function(Y) {
         };
 
     /**
-     * A augmentable implementation for AttributeCore, providing less frequently used 
-     * methods for Attribute management such as modifyAttrs(), removeAttr and reset()   
+     * A augmentable implementation for AttributeCore, providing less frequently used
+     * methods for Attribute management such as modifyAttrs(), removeAttr and reset()
      *
      * @class AttributeExtras
+     * @extensionfor AttributeCore
      */
     function AttributeExtras() {}
 
@@ -43,7 +51,7 @@ YUI.add('attribute-extras', function(Y) {
          * <p>
          * The properties which can be modified through this interface are limited
          * to the following subset of attributes, which can be safely modified
-         * after a value has already been set on the attribute: readOnly, writeOnce, 
+         * after a value has already been set on the attribute: readOnly, writeOnce,
          * broadcast and getter.
          * </p>
          * @method modifyAttr
@@ -72,7 +80,8 @@ YUI.add('attribute-extras', function(Y) {
                     }
                 }
             }
-
+            /*jshint maxlen:200*/
+            /*jshint maxlen:150 */
         },
 
         /**
@@ -130,7 +139,7 @@ YUI.add('attribute-extras', function(Y) {
                 o = {};
                 Y.each(state.data, function(v, n) {
                     o[n] = state.getAll(n);
-                }); 
+                });
             }
 
             return o;
@@ -140,4 +149,4 @@ YUI.add('attribute-extras', function(Y) {
     Y.AttributeExtras = AttributeExtras;
 
 
-}, '@VERSION@' );
+}, '3.11.0', {"requires": ["oop"]});

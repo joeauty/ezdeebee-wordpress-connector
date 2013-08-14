@@ -1,4 +1,11 @@
-YUI.add('autocomplete-filters', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-filters', function (Y, NAME) {
 
 /**
 Provides pre-built result matching filters for AutoComplete.
@@ -236,4 +243,4 @@ Filters = Y.mix(Y.namespace('AutoCompleteFilters'), {
 });
 
 
-}, '@VERSION@' ,{requires:['array-extras', 'text-wordbreak']});
+}, '3.11.0', {"requires": ["array-extras", "text-wordbreak"]});

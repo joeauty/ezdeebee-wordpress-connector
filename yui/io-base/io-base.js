@@ -1,9 +1,17 @@
-YUI.add('io-base', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('io-base', function (Y, NAME) {
 
 /**
 Base IO functionality. Provides basic XHR transport support.
-@module io-base
-@main io-base
+
+@module io
+@submodule io-base
 @for IO
 **/
 
@@ -114,9 +122,14 @@ IO.prototype = {
             use;
 
         if (alt === 'native') {
-            // Non-IE  can use XHR level 2 and not rely on an
+            // Non-IE and IE >= 10  can use XHR level 2 and not rely on an
             // external transport.
-            alt = Y.UA.ie ? 'xdr' : null;
+            alt = Y.UA.ie && !SUPPORTS_CORS ? 'xdr' : null;
+
+            // Prevent "pre-flight" OPTIONS request by removing the
+            // `X-Requested-With` HTTP header from CORS requests. This header
+            // can be added back on a per-request basis, if desired.
+            io.setHeader('X-Requested-With');
         }
 
         use = alt || form;
@@ -128,7 +141,7 @@ IO.prototype = {
         }
 
         if (!use) {
-            if (win && win.FormData && config.data instanceof FormData) {
+            if (win && win.FormData && config.data instanceof win.FormData) {
                 transaction.c.upload.onprogress = function (e) {
                     io.progress(transaction, e, config);
                 };
@@ -550,6 +563,8 @@ IO.prototype = {
     *       <dt>dataType</dt>
     *         <dd>Set the value to 'XML' if that is the expected response
     *         content type.</dd>
+    *       <dt>credentials</dt>
+    *         <dd>Set the value to 'true' to set XHR.withCredentials property to true.</dd>
     *     </dl></dd>
     *
     *   <dt>form</dt>
@@ -639,10 +654,13 @@ IO.prototype = {
         sync = config.sync;
         data = config.data;
 
-        // Serialize an map object into a key-value string using
+        // Serialize a map object into a key-value string using
         // querystring-stringify-simple.
         if ((Y.Lang.isObject(data) && !data.nodeType) && !transaction.upload) {
-            data = Y.QueryString.stringify(data);
+            if (Y.QueryString && Y.QueryString.stringify) {
+                config.data = data = Y.QueryString.stringify(data);
+            } else {
+            }
         }
 
         if (config.form) {
@@ -655,6 +673,10 @@ IO.prototype = {
                 data = io._serialize(config.form, data);
             }
         }
+
+        // Convert falsy values to an empty string. This way IE can't be
+        // rediculous and translate `undefined` to "undefined".
+        data || (data = '');
 
         if (data) {
             switch (method) {
@@ -700,10 +722,8 @@ IO.prototype = {
 
             // Will work only in browsers that implement the
             // Cross-Origin Resource Sharing draft.
-            if (config.xdr && config.xdr.credentials) {
-                if (!Y.UA.ie) {
-                    transaction.c.withCredentials = true;
-                }
+            if (config.xdr && config.xdr.credentials && SUPPORTS_CORS) {
+                transaction.c.withCredentials = true;
             }
 
             // Using "null" with HTTP POST will result in a request
@@ -900,7 +920,11 @@ Y.IO = IO;
 Y.io._map = {};
 var XHR = win && win.XMLHttpRequest,
     XDR = win && win.XDomainRequest,
-    AX = win && win.ActiveXObject;
+    AX = win && win.ActiveXObject,
+
+    // Checks for the presence of the `withCredentials` in an XHR instance
+    // object, which will be present if the environment supports CORS.
+    SUPPORTS_CORS = XHR && 'withCredentials' in (new XMLHttpRequest());
 
 
 Y.mix(Y.IO, {
@@ -988,4 +1012,4 @@ Y.mix(Y.IO.prototype, {
 
 
 
-}, '@VERSION@' ,{requires:['event-custom-base', 'querystring-stringify-simple']});
+}, '3.11.0', {"requires": ["event-custom-base", "querystring-stringify-simple"]});

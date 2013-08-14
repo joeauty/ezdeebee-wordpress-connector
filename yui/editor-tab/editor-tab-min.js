@@ -1,1 +1,8 @@
-YUI.add("editor-tab",function(c){var b=function(){b.superclass.constructor.apply(this,arguments);},a="host";c.extend(b,c.Base,{_onNodeChange:function(f){var d="indent";if(f.changedType==="tab"){if(!f.changedNode.test("li, li *")){f.changedEvent.halt();f.preventDefault();if(f.changedEvent.shiftKey){d="outdent";}this.get(a).execCommand(d,"");}}},initializer:function(){this.get(a).on("nodeChange",c.bind(this._onNodeChange,this));}},{NAME:"editorTab",NS:"tab",ATTRS:{host:{value:false}}});c.namespace("Plugin");c.Plugin.EditorTab=b;},"@VERSION@",{skinnable:false,requires:["editor-base"]});
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add("editor-tab",function(e,t){var n=function(){n.superclass.constructor.apply(this,arguments)},r="host";e.extend(n,e.Base,{_onNodeChange:function(e){var t="indent";e.changedType==="tab"&&(e.changedNode.test("li, li *")||(e.changedEvent.halt(),e.preventDefault(),e.changedEvent.shiftKey&&(t="outdent"),this.get(r).execCommand(t,"")))},initializer:function(){this.get(r).on("nodeChange",e.bind(this._onNodeChange,this))}},{NAME:"editorTab",NS:"tab",ATTRS:{host:{value:!1}}}),e.namespace("Plugin"),e.Plugin.EditorTab=n},"3.11.0",{requires:["editor-base"]});

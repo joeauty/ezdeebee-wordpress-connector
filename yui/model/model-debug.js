@@ -1,4 +1,11 @@
-YUI.add('model', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('model', function (Y, NAME) {
 
 /**
 Attribute-based data model with APIs for getting, setting, validating, and
@@ -419,7 +426,7 @@ Y.Model = Y.extend(Model, Y.Base, {
                     });
                 }
 
-                parsed = facade.parsed = self.parse(response);
+                parsed = facade.parsed = self._parse(response);
 
                 self.setAttrs(parsed, options);
                 self.changed = {};
@@ -534,7 +541,7 @@ Y.Model = Y.extend(Model, Y.Base, {
                     }
 
                     if (response) {
-                        parsed = facade.parsed = self.parse(response);
+                        parsed = facade.parsed = self._parse(response);
                         self.setAttrs(parsed, options);
                     }
 
@@ -596,7 +603,9 @@ Y.Model = Y.extend(Model, Y.Base, {
         var idAttribute = this.idAttribute,
             changed, e, key, lastChange, transaction;
 
-        options || (options = {});
+        // Makes a shallow copy of the `options` object before adding the
+        // `_transaction` object to it so we don't modify someone else's object.
+        options     = Y.merge(options);
         transaction = options._transaction = {};
 
         // When a custom id attribute is in use, always keep the default `id`
@@ -644,7 +653,9 @@ Y.Model = Y.extend(Model, Y.Base, {
                     });
                 }
 
-                this.fire(EVT_CHANGE, Y.merge(options, {changed: lastChange}));
+                options.changed = lastChange;
+
+                this.fire(EVT_CHANGE, options);
             }
         }
 
@@ -655,7 +666,10 @@ Y.Model = Y.extend(Model, Y.Base, {
     Override this method to provide a custom persistence implementation for this
     model. The default just calls the callback without actually doing anything.
 
-    This method is called internally by `load()`, `save()`, and `destroy()`.
+    This method is called internally by `load()`, `save()`, and `destroy()`, and
+    their implementations rely on the callback being called. This effectively
+    means that when a callback is provided, it must be called at some point for
+    the class to operate correctly.
 
     @method sync
     @param {String} action Sync action to perform. May be one of the following:
@@ -860,6 +874,24 @@ Y.Model = Y.extend(Model, Y.Base, {
     },
 
     /**
+    Calls the public, overrideable `parse()` method and returns the result.
+
+    Override this method to provide a custom pre-parsing implementation. This
+    provides a hook for custom persistence implementations to "prep" a response
+    before calling the `parse()` method.
+
+    @method _parse
+    @param {Any} response Server response.
+    @return {Object} Attribute hash.
+    @protected
+    @see Model.parse()
+    @since 3.7.0
+    **/
+    _parse: function (response) {
+        return this.parse(response);
+    },
+
+    /**
     Calls the public, overridable `validate()` method and fires an `error` event
     if validation fails.
 
@@ -898,31 +930,45 @@ Y.Model = Y.extend(Model, Y.Base, {
         }
     },
 
-    // -- Protected Event Handlers ---------------------------------------------
+    // -- Private Methods ----------------------------------------------------
 
     /**
-    Duckpunches the `_defAttrChangeFn()` provided by `Y.Attribute` so we can
-    have a single global notification when a change event occurs.
+     Overrides AttributeCore's `_setAttrVal`, to register the changed value if it's part
+     of a Model `setAttrs` transaction.
 
-    @method _defAttrChangeFn
-    @param {EventFacade} e
-    @protected
-    **/
-    _defAttrChangeFn: function (e) {
-        var attrName = e.attrName;
+     NOTE: AttributeCore's `_setAttrVal` is currently private, but until we support coalesced
+     change events in attribute, we need this override.
 
-        if (!this._setAttrVal(attrName, e.subAttrName, e.prevVal, e.newVal)) {
-            Y.log('State not updated and stopImmediatePropagation called for attribute: ' + attrName + ' , value:' + e.newVal, 'warn', 'attribute');
-            // Prevent "after" listeners from being invoked since nothing changed.
-            e.stopImmediatePropagation();
-        } else {
-            e.newVal = this.get(attrName);
+     @method _setAttrVal
+     @private
+     @param {String} attrName The attribute name.
+     @param {String} subAttrName The sub-attribute name, if setting a sub-attribute property ("x.y.z").
+     @param {Any} prevVal The currently stored value of the attribute.
+     @param {Any} newVal The value which is going to be stored.
+     @param {Object} [opts] Optional data providing the circumstances for the change.
+     @param {Object} [attrCfg] Optional config hash for the attribute. This is added for performance along the critical path,
+     where the calling method has already obtained the config from state.
 
-            if (e._transaction) {
-                e._transaction[attrName] = e;
-            }
+     @return {boolean} true if the new attribute value was stored, false if not.
+     **/
+    _setAttrVal : function(attrName, subAttrName, prevVal, newVal, opts, attrCfg) {
+
+        var didChange = Model.superclass._setAttrVal.apply(this, arguments),
+            transaction = opts && opts._transaction,
+            initializing = attrCfg && attrCfg.initializing;
+
+        // value actually changed inside a model setAttrs transaction
+        if (didChange && transaction && !initializing) {
+            transaction[attrName] = {
+                newVal: this.get(attrName), // newVal may be impacted by getter
+                prevVal: prevVal,
+                src: opts.src || null
+            };
         }
+
+        return didChange;
     }
+
 }, {
     NAME: 'model',
 
@@ -966,4 +1012,4 @@ Y.Model = Y.extend(Model, Y.Base, {
 });
 
 
-}, '@VERSION@' ,{requires:['base-build', 'escape', 'json-parse']});
+}, '3.11.0', {"requires": ["base-build", "escape", "json-parse"]});

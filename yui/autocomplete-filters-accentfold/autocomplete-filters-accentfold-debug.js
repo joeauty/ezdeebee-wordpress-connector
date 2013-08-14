@@ -1,4 +1,11 @@
-YUI.add('autocomplete-filters-accentfold', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-filters-accentfold', function (Y, NAME) {
 
 /**
 Provides pre-built accent-folding result matching filters for AutoComplete.
@@ -133,4 +140,4 @@ Y.mix(Y.namespace('AutoCompleteFilters'), {
 });
 
 
-}, '@VERSION@' ,{requires:['array-extras', 'text-accentfold', 'text-wordbreak']});
+}, '3.11.0', {"requires": ["array-extras", "text-accentfold", "text-wordbreak"]});

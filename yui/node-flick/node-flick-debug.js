@@ -1,4 +1,11 @@
-YUI.add('node-flick', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('node-flick', function (Y, NAME) {
 
 /**
  * Provide a simple Flick plugin, which can be used along with the "flick" gesture event, to 
@@ -114,11 +121,11 @@ YUI.add('node-flick', function(Y) {
         },
 
         /**
-         * The constraining box relative to which the flick animation and bounds should be calculated.
+         * Time between flick animation frames.
          *
-         * @attribute boundingBox
-         * @type Node
-         * @default parentNode
+         * @attribute step
+         * @type Number
+         * @default 10
          */
         step : {
             value:10
@@ -521,4 +528,4 @@ YUI.add('node-flick', function(Y) {
     Y.Plugin.Flick = Flick;
 
 
-}, '@VERSION@' ,{requires:['classnamemanager', 'transition', 'event-flick', 'plugin']});
+}, '3.11.0', {"requires": ["classnamemanager", "transition", "event-flick", "plugin"], "skinnable": true});

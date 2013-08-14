@@ -1,4 +1,11 @@
-YUI.add('datatable-message', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datatable-message', function (Y, NAME) {
 
 /**
 Adds support for a message container to appear in the table.  This can be used
@@ -92,7 +99,7 @@ Y.mix(Message.prototype, {
             if (content) {
                 this._messageNode.one(
                     '.' + this.getClassName('message', 'content'))
-                    .setContent(content);
+                    .setHTML(content);
 
                 this.get('boundingBox').addClass(
                     this.getClassName('message','visible'));
@@ -117,7 +124,7 @@ Y.mix(Message.prototype, {
     @protected
     @since 3.5.0
     **/
-    _afterMessageColumnsChange: function (e) {
+    _afterMessageColumnsChange: function () {
         var contentNode;
 
         if (this._messageNode) {
@@ -125,6 +132,8 @@ Y.mix(Message.prototype, {
                 '.' + this.getClassName('message', 'content'));
 
             if (contentNode) {
+                // FIXME: This needs to become a class extension plus a view or
+                // plugin for the table view.
                 contentNode.set('colSpan', this._displayColumns.length);
             }
         }
@@ -138,7 +147,7 @@ Y.mix(Message.prototype, {
     @protected
     @since 3.5.0
     **/
-    _afterMessageDataChange: function (e) {
+    _afterMessageDataChange: function () {
         this._uiSetMessage();
     },
 
@@ -193,7 +202,7 @@ Y.mix(Message.prototype, {
         this._initMessageStrings();
 
         if (this.get('showMessages')) {
-            this.after('renderBody', Y.bind('_initMessageNode', this));
+            this.after('table:renderBody', Y.bind('_initMessageNode', this));
         }
 
         this.after(Y.bind('_bindMessageUI', this), this, 'bindUI');
@@ -223,14 +232,14 @@ Y.mix(Message.prototype, {
 
     /**
     Add the messaging related strings to the `strings` map.
-    
+
     @method _initMessageStrings
     @protected
     @since 3.5.0
     **/
     _initMessageStrings: function () {
         // Not a valueFn because other class extensions will want to add to it
-        this.set('strings', Y.mix((this.get('strings') || {}), 
+        this.set('strings', Y.mix((this.get('strings') || {}),
             Y.Intl.get('datatable-message')));
     },
 
@@ -285,4 +294,4 @@ if (Y.Lang.isFunction(Y.DataTable)) {
 }
 
 
-}, '@VERSION@' ,{requires:['datatable-base'], skinnable:true, lang:['en']});
+}, '3.11.0', {"requires": ["datatable-base"], "lang": ["en", "fr", "es", "hu", "it"], "skinnable": true});

@@ -1,4 +1,11 @@
-YUI.add('event-resize', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-resize', function (Y, NAME) {
 
 /**
  * Adds a window resize event that has its behavior normalized to fire at the
@@ -11,7 +18,7 @@ YUI.add('event-resize', function(Y) {
 /**
  * Old firefox fires the window resize event once when the resize action
  * finishes, other browsers fire the event periodically during the
- * resize.  This code uses timeout logic to simulate the Firefox 
+ * resize.  This code uses timeout logic to simulate the Firefox
  * behavior in other browsers.
  * @event windowresize
  * @for YUI
@@ -50,4 +57,4 @@ Y.Event.define('windowresize', {
 });
 
 
-}, '@VERSION@' ,{requires:['event-synthetic']});
+}, '3.11.0', {"requires": ["node-base", "event-synthetic"]});

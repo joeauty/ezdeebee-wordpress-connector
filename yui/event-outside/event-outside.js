@@ -1,4 +1,11 @@
-YUI.add('event-outside', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-outside', function (Y, NAME) {
 
 /**
  * Outside events are synthetic DOM events that fire when a corresponding native
@@ -30,8 +37,14 @@ YUI.add('event-outside', function(Y) {
  * a different name for the created Event, pass it as a second argument like so:
  * <code>Y.Event.defineOutside(eventType, "yonderclick")</code>.
  *
+ * This module was contributed by Brett Stimmerman, promoted from his
+ * gallery-outside-events module at
+ * http://yuilibrary.com/gallery/show/outside-events
+ *
  * @module event
  * @submodule event-outside
+ * @author brettstimmerman
+ * @since 3.4.0
  */
 
 // Outside events are pre-defined for each of these native DOM events
@@ -49,16 +62,17 @@ var nativeEvents = [
  * a different name for the created Event, pass it as a second argument like so:
  * <code>Y.Event.defineOutside(eventType, "yonderclick")</code>.
  *
- * @method Y.Event.defineOutside
+ * @method defineOutside
  * @param {String} event DOM event
  * @param {String} name (optional) custom outside event name
  * @static
+ * @for Event
  */
 Y.Event.defineOutside = function (event, name) {
     name = name || (event + 'outside');
 
     var config = {
-    
+
         on: function (node, sub, notifier) {
             sub.handle = Y.one('doc').on(event, function(e) {
                 if (this.isOutside(node, e.target)) {
@@ -67,11 +81,11 @@ Y.Event.defineOutside = function (event, name) {
                 }
             }, this);
         },
-        
+
         detach: function (node, sub, notifier) {
             sub.handle.detach();
         },
-        
+
         delegate: function (node, sub, notifier, filter) {
             sub.handle = Y.one('doc').delegate(event, function (e) {
                 if (this.isOutside(node, e.target)) {
@@ -79,7 +93,7 @@ Y.Event.defineOutside = function (event, name) {
                 }
             }, filter, this);
         },
-        
+
         isOutside: function (node, target) {
             return target !== node && !target.ancestor(function (p) {
                     return p === node;
@@ -97,4 +111,4 @@ Y.Array.each(nativeEvents, function (event) {
 });
 
 
-}, '@VERSION@' ,{requires:['event-synthetic']});
+}, '3.11.0', {"requires": ["event-synthetic"]});

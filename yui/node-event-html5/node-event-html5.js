@@ -1,4 +1,11 @@
-YUI.add('node-event-html5', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('node-event-html5', function (Y, NAME) {
 
 /**
  * Adds HTML5 event support to Node.
@@ -49,4 +56,4 @@ Y.mix(Y.Node.DOM_EVENTS, {
 });
 
 
-}, '@VERSION@' ,{requires:['node-base']});
+}, '3.11.0', {"requires": ["node-base"]});

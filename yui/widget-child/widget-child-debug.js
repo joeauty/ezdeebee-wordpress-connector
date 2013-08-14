@@ -1,4 +1,11 @@
-YUI.add('widget-child', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('widget-child', function (Y, NAME) {
 
 /**
  * Extension enabling a Widget to be a child of another Widget.
@@ -373,5 +380,4 @@ Child.prototype = {
 
 Y.WidgetChild = Child;
 
-
-}, '@VERSION@' ,{requires:['base-build', 'widget']});
+}, '3.11.0', {"requires": ["base-build", "widget"]});

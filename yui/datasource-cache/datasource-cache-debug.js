@@ -1,4 +1,11 @@
-YUI.add('datasource-cache', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datasource-cache', function (Y, NAME) {
 
 /**
  * Plugs DataSource with caching functionality.
@@ -163,4 +170,4 @@ Y.mix(DataSourceCache, {
 Y.namespace("Plugin").DataSourceCache = DataSourceCache;
 
 
-}, '@VERSION@' ,{requires:['datasource-local', 'cache-base', 'plugin']});
+}, '3.11.0', {"requires": ["datasource-local", "plugin", "cache-base"]});

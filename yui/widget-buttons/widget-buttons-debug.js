@@ -1,4 +1,11 @@
-YUI.add('widget-buttons', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('widget-buttons', function (Y, NAME) {
 
 /**
 Provides header/body/footer button support for Widgets that use the
@@ -44,11 +51,6 @@ from those which already exist in its DOM.
 @since 3.4.0
 **/
 function WidgetButtons() {
-    // Require `Y.WidgetStdMod`.
-    if (!this._stdModNode) {
-        Y.error('WidgetStdMod must be added to a Widget before WidgetButtons.');
-    }
-
     // Has to be setup before the `initializer()`.
     this._buttonsHandles = {};
 }
@@ -256,12 +258,20 @@ WidgetButtons.prototype = {
     // -- Lifecycle Methods ----------------------------------------------------
 
     initializer: function () {
+        // Require `Y.WidgetStdMod`.
+        if (!this._stdModNode) {
+            Y.error('WidgetStdMod must be added to a Widget before WidgetButtons.');
+        }
+
         // Creates button mappings and sets the `defaultButton`.
         this._mapButtons(this.get('buttons'));
         this._updateDefaultButton();
 
         // Bound with `Y.bind()` to make more extensible.
-        this.after('buttonsChange', Y.bind('_afterButtonsChange', this));
+        this.after({
+            buttonsChange      : Y.bind('_afterButtonsChange', this),
+            defaultButtonChange: Y.bind('_afterDefaultButtonChange', this)
+        });
 
         Y.after(this._bindUIButtons, this, 'bindUI');
         Y.after(this._syncUIButtons, this, 'syncUI');
@@ -502,11 +512,9 @@ WidgetButtons.prototype = {
     **/
     _bindUIButtons: function () {
         // Event handlers are bound with `bind()` to make them more extensible.
-
         var afterContentChange = Y.bind('_afterContentChangeButtons', this);
 
         this.after({
-            defaultButtonChange: Y.bind('_afterDefaultButtonChange', this),
             visibleChange      : Y.bind('_afterVisibleChangeButtons', this),
             headerContentChange: afterContentChange,
             bodyContentChange  : afterContentChange,
@@ -966,7 +974,10 @@ WidgetButtons.prototype = {
             handle  = handles[yuid],
             buttonContainer, buttonClassName;
 
-        handle && handle.detach();
+        if (handle) {
+            handle.detach();
+        }
+
         delete handles[yuid];
 
         button.remove();
@@ -1026,7 +1037,7 @@ WidgetButtons.prototype = {
 
             for (i = 0; i < numButtons; i += 1) {
                 button      = sectionButtons[i];
-                buttonIndex = oldNodes ? oldNodes.indexOf(button) : -1;
+                buttonIndex = oldNodes.indexOf(button);
 
                 // Buttons already rendered in the Widget should remain there or
                 // moved to their new index. New buttons will be added to the
@@ -1085,8 +1096,8 @@ WidgetButtons.prototype = {
     _uiSetDefaultButton: function (newButton, oldButton) {
         var primaryClassName = WidgetButtons.CLASS_NAMES.primary;
 
-        newButton && newButton.addClass(primaryClassName);
-        oldButton && oldButton.removeClass(primaryClassName);
+        if (newButton) { newButton.addClass(primaryClassName); }
+        if (oldButton) { oldButton.removeClass(primaryClassName); }
     },
 
     /**
@@ -1287,4 +1298,4 @@ WidgetButtons.prototype = {
 Y.WidgetButtons = WidgetButtons;
 
 
-}, '@VERSION@' ,{requires:['button-plugin', 'cssbutton', 'widget-stdmod']});
+}, '3.11.0', {"requires": ["button-plugin", "cssbutton", "widget-stdmod"]});

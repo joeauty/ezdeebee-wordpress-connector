@@ -1,4 +1,11 @@
-YUI.add('yui-throttle', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('yui-throttle', function (Y, NAME) {
 
 /**
 Throttles a call to a method based on the time between calls. This method is attached
@@ -34,21 +41,21 @@ Y.throttle = function(fn, ms) {
     ms = (ms) ? ms : (Y.config.throttleTime || 150);
 
     if (ms === -1) {
-        return (function() {
-            fn.apply(null, arguments);
-        });
+        return function() {
+            fn.apply(this, arguments);
+        };
     }
 
     var last = Y.Lang.now();
 
-    return (function() {
+    return function() {
         var now = Y.Lang.now();
         if (now - last > ms) {
             last = now;
-            fn.apply(null, arguments);
+            fn.apply(this, arguments);
         }
-    });
+    };
 };
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
+}, '3.11.0', {"requires": ["yui-base"]});

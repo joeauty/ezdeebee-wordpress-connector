@@ -1,1 +1,8 @@
-YUI.add("dataschema-base",function(b){var a=b.Lang,c={apply:function(d,e){return e;},parse:function(d,e){if(e.parser){var f=(a.isFunction(e.parser))?e.parser:b.Parsers[e.parser+""];if(f){d=f.call(this,d);}else{}}return d;}};b.namespace("DataSchema").Base=c;b.namespace("Parsers");},"@VERSION@",{requires:["base"]});
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add("dataschema-base",function(e,t){var n=e.Lang,r={apply:function(e,t){return t},parse:function(t,r){if(r.parser){var i=n.isFunction(r.parser)?r.parser:e.Parsers[r.parser+""];i&&(t=i.call(this,t))}return t}};e.namespace("DataSchema").Base=r,e.namespace("Parsers")},"3.11.0",{requires:["base"]});

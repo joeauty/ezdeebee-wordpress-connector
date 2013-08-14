@@ -1,4 +1,11 @@
-YUI.add('node-focusmanager', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('node-focusmanager', function (Y, NAME) {
 
 /**
 * <p>The Focus Manager Node Plugin makes it easy to manage focus among
@@ -28,7 +35,11 @@ YUI.add('node-focusmanager', function(Y) {
 * styling focus.
 * </p>
 *
+
+DEPRECATED: The FocusManager Node Plugin has been deprecated as of YUI 3.9.0. This module will be removed from the library in a future version. If you require functionality similar to the one provided by this  module, consider taking a look at the various modules in the YUI Gallery <http://yuilibrary.com/gallery/>. 
+
 * @module node-focusmanager
+* @deprecated 3.9.0
 */
 
 	//	Frequently used strings
@@ -108,7 +119,7 @@ NodeFocusManager.ATTRS = {
 	descendants: {
 
 		getter: function (value) {
-
+			
 			return this.get(HOST).all(value);
 
 		}
@@ -186,6 +197,7 @@ NodeFocusManager.ATTRS = {
 
 			}
 
+			
 			return returnValue;
 
 		}
@@ -915,13 +927,12 @@ Y.extend(NodeFocusManager, Y.Plugin.Base, {
 	//	Public methods
 
     initializer: function (config) {
-
 		this.start();
 
     },
 
 	destructor: function () {
-
+		
 		this.stop();
 		this.get(HOST).focusManager = null;
 
@@ -938,7 +949,7 @@ Y.extend(NodeFocusManager, Y.Plugin.Base, {
 	* descendant to be set as the active descendant.
 	*/
 	focus: function (index) {
-
+		
 		if (Lang.isUndefined(index)) {
 			index = this.get(ACTIVE_DESCENDANT);
 		}
@@ -973,9 +984,9 @@ Y.extend(NodeFocusManager, Y.Plugin.Base, {
 	* <code>focused</code> attribute to false.
 	*/
 	blur: function () {
-
+		
 		var oNode;
-
+		
 		if (this.get(FOCUSED)) {
 
 			oNode = this._descendants.item(this.get(ACTIVE_DESCENDANT));
@@ -1005,7 +1016,7 @@ Y.extend(NodeFocusManager, Y.Plugin.Base, {
 	* @description Enables the Focus Manager.
 	*/
 	start: function () {
-
+		
 		if (this._stopped) {
 
 			this._initDescendants();
@@ -1023,7 +1034,7 @@ Y.extend(NodeFocusManager, Y.Plugin.Base, {
 	* @description Disables the Focus Manager by detaching all event handlers.
 	*/
 	stop: function () {
-
+		
 		if (!this._stopped) {
 
 			this._detachEventHandlers();
@@ -1044,7 +1055,7 @@ Y.extend(NodeFocusManager, Y.Plugin.Base, {
 	* CSS selector query specified by the <code>descendants</code> attribute.
 	*/
 	refresh: function () {
-
+		
 		this._initDescendants();
 
 		if (!this._eventHandlers) {
@@ -1063,4 +1074,4 @@ Y.namespace("Plugin");
 Y.Plugin.NodeFocusManager = NodeFocusManager;
 
 
-}, '@VERSION@' ,{requires:['attribute', 'node', 'plugin', 'node-event-simulate', 'event-key', 'event-focus']});
+}, '3.11.0', {"requires": ["attribute", "node", "plugin", "node-event-simulate", "event-key", "event-focus"]});

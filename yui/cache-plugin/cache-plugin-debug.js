@@ -1,4 +1,11 @@
-YUI.add('cache-plugin', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('cache-plugin', function (Y, NAME) {
 
 /**
  * Provides support to use Cache as a Plugin to a Base-based class.
@@ -50,4 +57,4 @@ Y.mix(CachePlugin, {
 Y.namespace("Plugin").Cache = CachePlugin;
 
 
-}, '@VERSION@' ,{requires:['plugin','cache-base']});
+}, '3.11.0', {"requires": ["plugin", "cache-base"]});

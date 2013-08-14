@@ -1,4 +1,11 @@
-YUI.add('autocomplete-highlighters', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-highlighters', function (Y, NAME) {
 
 /**
 Provides pre-built result highlighters for AutoComplete.
@@ -196,4 +203,4 @@ Highlighters = Y.mix(Y.namespace('AutoCompleteHighlighters'), {
 });
 
 
-}, '@VERSION@' ,{requires:['array-extras', 'highlight-base']});
+}, '3.11.0', {"requires": ["array-extras", "highlight-base"]});

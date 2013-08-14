@@ -1,4 +1,11 @@
-YUI.add('dataschema-json', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('dataschema-json', function (Y, NAME) {
 
 /**
 Provides a DataSchema implementation which can be used to work with JSON data.
@@ -440,4 +447,4 @@ SchemaJSON = {
 Y.DataSchema.JSON = Y.mix(SchemaJSON, Base);
 
 
-}, '@VERSION@' ,{requires:['dataschema-base','json']});
+}, '3.11.0', {"requires": ["dataschema-base", "json"]});

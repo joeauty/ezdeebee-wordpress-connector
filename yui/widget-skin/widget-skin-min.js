@@ -1,1 +1,8 @@
-YUI.add("widget-skin",function(e){var d="boundingBox",b="contentBox",a="skin",c=e.ClassNameManager.getClassName;e.Widget.prototype.getSkinName=function(){var f=this.get(b)||this.get(d),h=new RegExp("\\b"+c(a)+"-(\\S+)"),g;if(f){f.ancestor(function(i){g=i.get("className").match(h);return g;});}return(g)?g[1]:null;};},"@VERSION@",{requires:["widget-base"]});
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add("widget-skin",function(e,t){var n="boundingBox",r="contentBox",i="skin",s=e.ClassNameManager.getClassName;e.Widget.prototype.getSkinName=function(e){var t=this.get(r)||this.get(n),o,u;return e=e||s(i,""),u=new RegExp("\\b"+e+"(\\S+)"),t&&t.ancestor(function(e){return o=e.get("className").match(u),o}),o?o[1]:null}},"3.11.0",{requires:["widget-base"]});

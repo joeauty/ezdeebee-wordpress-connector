@@ -1,4 +1,11 @@
-YUI.add('event-mouseenter', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-mouseenter', function (Y, NAME) {
 
 /**
  * <p>Adds subscription and delegation support for mouseenter and mouseleave
@@ -91,7 +98,7 @@ var domEventProxies = Y.Env.evt.dom_wrappers,
 
             if (currentTarget) {
                 currentTarget = toArray(currentTarget);
-                
+
                 for (i = 0, len = currentTarget.length && (!e || !e.stopped); i < len; ++i) {
                     ct = currentTarget[0];
                     if (!contains(ct, related)) {
@@ -126,4 +133,4 @@ Y.Event.define("mouseleave", Y.merge(config, {
 }), true);
 
 
-}, '@VERSION@' ,{requires:['event-synthetic']});
+}, '3.11.0', {"requires": ["event-synthetic"]});

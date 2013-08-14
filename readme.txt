@@ -4,7 +4,7 @@ Donate link: http://ezdeebee.com
 Tags: database, database admin, custom, form, table, Ezdeebee
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.1-beta
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,11 +37,21 @@ See [Ezdeebee support](http://ezdeebee.com/support)
 
 == Changelog ==
 
-* 1.0.1: use local Yahoo User Interface (YUI) library
-* 1.0.0: initial Ezdeebee WordPress connector release for Ezdeebee beta
+= 1.1.0 =
+
+* when "Cache to Local Database" is checked output a table on initial page load hidden via CSS display:none for improved SEO
+* upgrade to YUI 3.11.0
+
+= 1.0.1 =
+
+* use local Yahoo User Interface (YUI) library
+
+= 1.0.0 =
+
+* initial Ezdeebee WordPress connector release for Ezdeebee beta
 
 == Upgrade notice ==
 
-Initial release, N/A
+= 1.0.1 -> 1.1.0 =
 
-
+* for the local database feature some new fields have been added to the ezdb__modifications table which should be automatically added to this table, and the cache automatically regenerated

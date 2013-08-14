@@ -1,4 +1,11 @@
-YUI.add('imageloader', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('imageloader', function (Y, NAME) {
 
 /**
  * The ImageLoader Utility is a framework to dynamically load images according to certain triggers,
@@ -618,7 +625,7 @@ YUI.add('imageloader', function(Y) {
 		/**
 		 * Gets the object (as a <code>Y.Node</code>) of the DOM element indicated by "<code>domId</code>".
 		 * @method _getImgEl
-		 * @returns {Object} DOM element of the image as a <code>Y.Node</code> object
+		 * @return {Object} DOM element of the image as a <code>Y.Node</code> object
 		 * @private
 		 */
 		_getImgEl: function() {
@@ -632,7 +639,7 @@ YUI.add('imageloader', function(Y) {
 		 * Gets the Y position of the node in page coordinates.
 		 * Expects that the page-coordinate position of the image won't change.
 		 * @method _getYPos
-		 * @returns {Object} The Y position of the image
+		 * @return {Object} The Y position of the image
 		 * @private
 		 */
 		_getYPos: function() {
@@ -650,4 +657,4 @@ YUI.add('imageloader', function(Y) {
 
 
 
-}, '@VERSION@' ,{requires:['base-base', 'node-style', 'node-screen']});
+}, '3.11.0', {"requires": ["base-base", "node-style", "node-screen"]});

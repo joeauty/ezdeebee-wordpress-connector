@@ -1,7 +1,14 @@
-YUI.add('io-upload-iframe', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('io-upload-iframe', function (Y, NAME) {
 
 /**
-Extends the IO  to enable file uploads, with HTML forms 
+Extends the IO  to enable file uploads, with HTML forms
 using an iframe as the transport medium.
 @module io
 @submodule io-upload-iframe
@@ -11,7 +18,8 @@ using an iframe as the transport medium.
 var w = Y.config.win,
     d = Y.config.doc,
     _std = (d.documentMode && d.documentMode >= 8),
-    _d = decodeURIComponent;
+    _d = decodeURIComponent,
+    _end = Y.IO.prototype.end;
 
 /**
  * Creates the iframe transported used in file upload
@@ -34,7 +42,7 @@ function _cFrame(o, c, io) {
 }
 
 /**
- * Removes the iframe transport used in the file upload 
+ * Removes the iframe transport used in the file upload
  * transaction.
  *
  * @method _dFrame
@@ -107,6 +115,12 @@ Y.mix(Y.IO.prototype, {
     * @param {Object} uri Qualified path to transaction resource.
     */
     _setAttrs: function(f, id, uri) {
+        // Track original HTML form attribute values.
+        this._originalFormAttrs = {
+            action: f.getAttribute('action'),
+            target: f.getAttribute('target')
+        };
+
         f.setAttribute('action', uri);
         f.setAttribute('method', 'POST');
         f.setAttribute('target', 'io_iframe' + id );
@@ -223,11 +237,6 @@ Y.mix(Y.IO.prototype, {
     _upload: function(o, uri, c) {
         var io = this,
             f = (typeof c.form.id === 'string') ? d.getElementById(c.form.id) : c.form.id,
-            // Track original HTML form attribute values.
-            attr = {
-                action: f.getAttribute('action'),
-                target: f.getAttribute('target')
-            },
             fields;
 
         // Initialize the HTML form properties in case they are
@@ -249,8 +258,6 @@ Y.mix(Y.IO.prototype, {
         if (c.data) {
             io._removeData(f, fields);
         }
-        // Restore HTML form attributes to their original values.
-        io._resetAttrs(f, attr);
 
         return {
             id: o.id,
@@ -276,8 +283,26 @@ Y.mix(Y.IO.prototype, {
     upload: function(o, uri, c) {
         _cFrame(o, c, this);
         return this._upload(o, uri, c);
+    },
+
+    end: function(transaction, config) {
+        var form, io;
+
+        if (config) {
+            form = config.form;
+
+            if (form && form.upload) {
+                io = this;
+
+                // Restore HTML form attributes to their original values.
+                form = (typeof form.id === 'string') ? d.getElementById(form.id) : form.id;
+
+                io._resetAttrs(form, this._originalFormAttrs);
+            }
+        }
+
+        return _end.call(this, transaction, config);
     }
-});
+}, true);
 
-
-}, '@VERSION@' ,{requires:['io-base','node-base']});
+}, '3.11.0', {"requires": ["io-base", "node-base"]});

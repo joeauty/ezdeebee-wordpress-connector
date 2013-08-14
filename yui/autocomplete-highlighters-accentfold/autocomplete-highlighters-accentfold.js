@@ -1,4 +1,11 @@
-YUI.add('autocomplete-highlighters-accentfold', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-highlighters-accentfold', function (Y, NAME) {
 
 /**
 Provides pre-built accent-folding result highlighters for AutoComplete.
@@ -104,4 +111,4 @@ Y.mix(Y.namespace('AutoCompleteHighlighters'), {
 });
 
 
-}, '@VERSION@' ,{requires:['array-extras', 'highlight-accentfold']});
+}, '3.11.0', {"requires": ["array-extras", "highlight-accentfold"]});

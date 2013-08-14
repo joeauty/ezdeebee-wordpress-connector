@@ -1,4 +1,11 @@
-YUI.add('stylesheet', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('stylesheet', function (Y, NAME) {
 
 /**
  * The StyleSheet component is a module for creating and modifying CSS
@@ -635,4 +642,4 @@ NOTES
 
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
+}, '3.11.0', {"requires": ["yui-base"]});

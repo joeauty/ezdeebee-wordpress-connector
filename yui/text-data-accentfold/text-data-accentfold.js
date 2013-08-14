@@ -1,4 +1,11 @@
-YUI.add('text-data-accentfold', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('text-data-accentfold', function (Y, NAME) {
 
 // The following tool was very helpful in creating these mappings:
 // http://unicode.org/cldr/utility/list-unicodeset.jsp?a=[:toNFKD%3D/^a/:]&abb=on
@@ -43,4 +50,4 @@ Y.namespace('Text.Data').AccentFold = {
 };
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
+}, '3.11.0', {"requires": ["yui-base"]});

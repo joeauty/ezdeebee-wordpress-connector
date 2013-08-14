@@ -1,7 +1,15 @@
-YUI.add('yui-later', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('yui-later', function (Y, NAME) {
 
 /**
- * Provides a setTimeout/setInterval wrapper. This module is a `core` YUI module, <a href="../classes/YUI.html#method_later">it's documentation is located under the YUI class</a>.
+ * Provides a setTimeout/setInterval wrapper. This module is a `core` YUI module,
+ * <a href="../classes/YUI.html#method_later">it's documentation is located under the YUI class</a>.
  *
  * @module yui
  * @submodule yui-later
@@ -74,4 +82,4 @@ Y.Lang.later = Y.later;
 
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
+}, '3.11.0', {"requires": ["yui-base"]});

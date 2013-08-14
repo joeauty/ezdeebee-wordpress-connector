@@ -1,4 +1,11 @@
-YUI.add('selector-css3', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('selector-css3', function (Y, NAME) {
 
 /**
  * The selector css3 module provides support for css3 selectors.
@@ -149,4 +156,4 @@ Y.Selector.combinators['~'] = {
 };
 
 
-}, '@VERSION@' ,{requires:['selector-native', 'selector-css2']});
+}, '3.11.0', {"requires": ["selector-native", "selector-css2"]});

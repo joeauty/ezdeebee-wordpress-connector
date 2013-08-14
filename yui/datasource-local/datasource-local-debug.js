@@ -1,4 +1,11 @@
-YUI.add('datasource-local', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('datasource-local', function (Y, NAME) {
 
 /**
  * The DataSource utility provides a common configurable interface for widgets to
@@ -354,7 +361,7 @@ Y.extend(DSLocal, Y.Base, {
      * property described below.
      *
      * @method sendRequest
-     * @param request {Object} An object literal with the following properties:
+     * @param [request] {Object} An object literal with the following properties:
      *     <dl>
      *     <dt><code>request</code></dt>
      *     <dd>The request to send to the live data source, if any.</dd>
@@ -399,4 +406,4 @@ Y.extend(DSLocal, Y.Base, {
 Y.namespace("DataSource").Local = DSLocal;
 
 
-}, '@VERSION@' ,{requires:['base']});
+}, '3.11.0', {"requires": ["base"]});

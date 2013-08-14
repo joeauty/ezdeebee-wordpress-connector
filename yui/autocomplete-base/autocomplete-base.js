@@ -1,4 +1,11 @@
-YUI.add('autocomplete-base', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-base', function (Y, NAME) {
 
 /**
 Provides automatic input completion or suggestions for text input fields and
@@ -1535,4 +1542,15 @@ AutoCompleteBase.UI_SRC = (Y.Widget && Y.Widget.UI_SRC) || 'ui';
 Y.AutoCompleteBase = AutoCompleteBase;
 
 
-}, '@VERSION@' ,{optional:['autocomplete-sources'], requires:['array-extras', 'base-build', 'escape', 'event-valuechange', 'node-base']});
+}, '3.11.0', {
+    "optional": [
+        "autocomplete-sources"
+    ],
+    "requires": [
+        "array-extras",
+        "base-build",
+        "escape",
+        "event-valuechange",
+        "node-base"
+    ]
+});

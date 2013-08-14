@@ -1,4 +1,11 @@
-YUI.add('event-synthetic', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-synthetic', function (Y, NAME) {
 
 /**
  * Define new DOM events that can be subscribed to from Nodes.
@@ -6,7 +13,8 @@ YUI.add('event-synthetic', function(Y) {
  * @module event
  * @submodule event-synthetic
  */
-var DOMMap   = Y.Env.evt.dom_map,
+var CustomEvent = Y.CustomEvent,
+    DOMMap   = Y.Env.evt.dom_map,
     toArray  = Y.Array,
     YLang    = Y.Lang,
     isObject = YLang.isObject,
@@ -104,7 +112,9 @@ Notifier.prototype.fire = function (e) {
 };
 
 /**
- * Manager object for synthetic event subscriptions to aggregate multiple synths on the same node without colliding with actual DOM subscription entries in the global map of DOM subscriptions.  Also facilitates proper cleanup on page unload.
+ * Manager object for synthetic event subscriptions to aggregate multiple synths on the
+ * same node without colliding with actual DOM subscription entries in the global map of
+ * DOM subscriptions.  Also facilitates proper cleanup on page unload.
  *
  * @class SynthRegistry
  * @constructor
@@ -234,7 +244,7 @@ Y.mix(SyntheticEvent, {
             yuid   = Y.stamp(el),
             key    = 'event:' + yuid + type + '_synth',
             events = DOMMap[yuid];
-            
+
         if (create) {
             if (!events) {
                 events = DOMMap[yuid] = {};
@@ -261,8 +271,11 @@ Y.mix(SyntheticEvent, {
             var synth = this.eventDef,
                 method = (sub.filter) ? 'detachDelegate' : 'detach';
 
-            this.subscribers = {};
-            this.subCount = 0;
+            this._subscribers = [];
+
+            if (CustomEvent.keepDeprecatedSubs) {
+                this.subscribers = {};
+            }
 
             synth[method](sub.node, sub, this.notifier, sub.filter);
             this.registry.unregister(sub);
@@ -825,4 +838,4 @@ Y.Event.define = function (type, config, force) {
 };
 
 
-}, '@VERSION@' ,{requires:['node-base', 'event-custom-complex']});
+}, '3.11.0', {"requires": ["node-base", "event-custom-complex"]});

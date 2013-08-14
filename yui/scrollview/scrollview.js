@@ -1,10 +1,17 @@
-YUI.add('scrollview', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('scrollview', function (Y, NAME) {
 
 /**
  * <p>
- * The scrollview module does not add any new classes. It simply plugs the ScrollViewScrollbars plugin into the 
- * base ScrollView class implementation provided by the scrollview-base module, so that all scrollview instances 
- * have scrollbars enabled.
+ * The scrollview module does not add any new classes. It simply plugs the ScrollViewScrollbars plugin into the
+ *  base ScrollView class implementation provided by the scrollview-base module, so that all scrollview instances
+ *  have scrollbars enabled.
  * </p>
  *
  * <ul>
@@ -18,4 +25,4 @@ YUI.add('scrollview', function(Y) {
 Y.Base.plug(Y.ScrollView, Y.Plugin.ScrollViewScrollbars);
 
 
-}, '@VERSION@' ,{requires:['scrollview-base', 'scrollview-scrollbars']});
+}, '3.11.0', {"requires": ["scrollview-base", "scrollview-scrollbars"]});

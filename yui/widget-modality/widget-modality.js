@@ -1,4 +1,11 @@
-YUI.add('widget-modality', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('widget-modality', function (Y, NAME) {
 
 /**
  * Provides modality support for Widgets, though an extension
@@ -140,42 +147,36 @@ var WIDGET       = 'widget',
      */
     WidgetModal._GET_MASK = function() {
 
-        var mask = Y.one(".yui3-widget-mask") || null,
-        win = Y.one('window');
+        var mask = Y.one('.' + MODAL_CLASSES.mask),
+            win  = Y.one('win');
 
         if (mask) {
             return mask;
         }
-        else {
 
-            mask = Y.Node.create('<div></div>');
-            mask.addClass(MODAL_CLASSES.mask);
-            if (supportsPosFixed) {
-                mask.setStyles({
-                    position    : 'fixed',
-                    width       : '100%',
-                    height      : '100%',
-                    top         : '0',
-                    left        : '0',
-                    display     : 'block'
-                });
-            }
-            else {
-                mask.setStyles({
-                    position    : 'absolute',
-                    width       : win.get('winWidth') +'px',
-                    height      : win.get('winHeight') + 'px',
-                    top         : '0',
-                    left        : '0',
-                    display     : 'block'
-                });
-            }
+        mask = Y.Node.create('<div></div>').addClass(MODAL_CLASSES.mask);
 
-
-
-            return mask;
+        if (supportsPosFixed) {
+            mask.setStyles({
+                position: 'fixed',
+                width   : '100%',
+                height  : '100%',
+                top     : '0',
+                left    : '0',
+                display : 'block'
+            });
+        } else {
+            mask.setStyles({
+                position: 'absolute',
+                width   : win.get('winWidth') +'px',
+                height  : win.get('winHeight') + 'px',
+                top     : '0',
+                left    : '0',
+                display : 'block'
+            });
         }
 
+        return mask;
     };
 
     /**
@@ -270,7 +271,6 @@ var WIDGET       = 'widget',
             //var host = this.get(HOST);
 
             this._uiSetHostVisibleModal(this.get(VISIBLE));
-            this._uiSetHostZIndexModal(this.get(Z_INDEX));
 
         },
 
@@ -569,4 +569,4 @@ var WIDGET       = 'widget',
 
 
 
-}, '@VERSION@' ,{requires:['base-build', 'event-outside', 'widget'], skinnable:true});
+}, '3.11.0', {"requires": ["base-build", "event-outside", "widget"], "skinnable": true});

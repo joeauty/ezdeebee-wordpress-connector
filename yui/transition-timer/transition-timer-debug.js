@@ -1,11 +1,13 @@
-YUI.add('transition-timer', function(Y) {
-
 /*
-* The Transition Utility provides an API for creating advanced transitions.
-* @module transition
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
 */
 
-/*
+YUI.add('transition-timer', function (Y, NAME) {
+
+/**
 * Provides the base Transition class, for animating numeric properties.
 *
 * @module transition
@@ -87,7 +89,7 @@ Y.mix(Transition.prototype, {
 
                 if (!delay || time >= delay) {
                     setter(anim, name, attribute.from, attribute.to, t - delay, d - delay,
-                        attribute.easing, attribute.unit); 
+                        attribute.easing, attribute.unit);
 
                     if (done) {
                         delete attrs[name];
@@ -196,7 +198,7 @@ Y.mix(Y.Transition, {
     DEFAULT_UNIT: 'px',
 
     /*
-     * Time in milliseconds passed to setInterval for frame processing 
+     * Time in milliseconds passed to setInterval for frame processing
      *
      * @property intervalTime
      * @default 20
@@ -276,7 +278,7 @@ Y.mix(Y.Transition, {
      * @method _runFrame
      * @private
      * @static
-     */    
+     */
     _runFrame: function() {
         var done = true,
             anim;
@@ -329,11 +331,11 @@ Y.mix(Y.Transition, {
     _timer: null,
 
     RE_UNITS: /^(-?\d*\.?\d*){1}(em|ex|px|in|cm|mm|pt|pc|%)*$/
-}, true); 
+}, true);
 
 Transition.behaviors.top = Transition.behaviors.bottom = Transition.behaviors.right = Transition.behaviors.left;
 
 Y.Transition = Transition;
 
 
-}, '@VERSION@' ,{requires:['transition']});
+}, '3.11.0', {"requires": ["transition"]});

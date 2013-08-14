@@ -1,4 +1,11 @@
-YUI.add('app-transitions-native', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('app-transitions-native', function (Y, NAME) {
 
 /**
 Provides the implementation of view transitions for `Y.App.Transitions` in
@@ -19,6 +26,7 @@ When this module is used, `Y.App.TransitionsNative` will automatically mix
 itself in to `Y.App`.
 
 @class App.TransitionsNative
+@extensionfor App
 @since 3.5.0
 **/
 function AppTransitionsNative() {}
@@ -222,7 +230,7 @@ AppTransitionsNative.prototype = {
         this._transitioning = true;
 
         container     = this.get('container');
-        transitioning = AppTransitions.CLASS_NAMES.transitioning;
+        transitioning = Y.App.CLASS_NAMES.transitioning;
 
         container.addClass(transitioning);
 
@@ -349,4 +357,4 @@ Y.App.TransitionsNative = AppTransitionsNative;
 Y.Base.mix(Y.App, [AppTransitionsNative]);
 
 
-}, '@VERSION@' ,{requires:['app-transitions', 'app-transitions-css', 'parallel', 'transition']});
+}, '3.11.0', {"requires": ["app-transitions", "app-transitions-css", "parallel", "transition"]});

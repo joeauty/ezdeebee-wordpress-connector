@@ -1,4 +1,11 @@
-YUI.add('widget-autohide', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('widget-autohide', function (Y, NAME) {
 
 /**
  * A widget-level extension that provides ability to hide widget when
@@ -234,4 +241,4 @@ WidgetAutohide.prototype = {
 Y.WidgetAutohide = WidgetAutohide;
 
 
-}, '@VERSION@' ,{requires:['base-build','widget','event-outside','event-key']});
+}, '3.11.0', {"requires": ["base-build", "event-key", "event-outside", "widget"]});

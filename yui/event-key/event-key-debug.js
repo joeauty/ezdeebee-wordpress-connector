@@ -1,4 +1,11 @@
-YUI.add('event-key', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-key', function (Y, NAME) {
 
 /**
  * Functionality to listen for one or more specific key combinations.
@@ -134,7 +141,7 @@ eventDef.detachDelegate = eventDef.detach;
  * <p>Add a key listener.  The listener will only be notified if the
  * keystroke detected meets the supplied specification.  The
  * specification is a string that is defined as:</p>
- * 
+ *
  * <dl>
  *   <dt>spec</dt>
  *   <dd><code>[{type}:]{code}[,{code}]*</code></dd>
@@ -151,10 +158,10 @@ eventDef.detachDelegate = eventDef.detach;
  * <p>Examples:</p>
  * <ul>
  *   <li><code>Y.on("key", callback, "press:12,65+shift+ctrl", "#my-input");</code></li>
- *   <li><code>Y.delegate("key", preventSubmit, "enter", "#forms", "input[type=text]");</code></li>
+ *   <li><code>Y.delegate("key", preventSubmit, "#forms", "enter", "input[type=text]");</code></li>
  *   <li><code>Y.one("doc").on("key", viNav, "j,k,l,;");</code></li>
  * </ul>
- *   
+ *
  * @event key
  * @for YUI
  * @param type {string} 'key'
@@ -168,4 +175,4 @@ eventDef.detachDelegate = eventDef.detach;
 Y.Event.define('key', eventDef, true);
 
 
-}, '@VERSION@' ,{requires:['event-synthetic']});
+}, '3.11.0', {"requires": ["event-synthetic"]});

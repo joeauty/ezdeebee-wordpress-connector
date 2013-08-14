@@ -1,14 +1,21 @@
-YUI.add('event-valuechange', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('event-valuechange', function (Y, NAME) {
 
 /**
-Adds a synthetic `valueChange` event that fires when the `value` property of an
+Adds a synthetic `valuechange` event that fires when the `value` property of an
 `<input>` or `<textarea>` node changes as a result of a keystroke, mouse
 operation, or input method editor (IME) input event.
 
 Usage:
 
     YUI().use('event-valuechange', function (Y) {
-        Y.one('#my-input').on('valueChange', function (e) {
+        Y.one('#my-input').on('valuechange', function (e) {
             Y.log('previous value: ' + e.prevVal);
             Y.log('new value: ' + e.newVal);
         });
@@ -18,13 +25,13 @@ Usage:
 **/
 
 /**
-Provides the implementation for the synthetic `valueChange` event. This class
+Provides the implementation for the synthetic `valuechange` event. This class
 isn't meant to be used directly, but is public to make monkeypatching possible.
 
 Usage:
 
     YUI().use('event-valuechange', function (Y) {
-        Y.one('#my-input').on('valueChange', function (e) {
+        Y.one('#my-input').on('valuechange', function (e) {
             Y.log('previous value: ' + e.prevVal);
             Y.log('new value: ' + e.newVal);
         });
@@ -45,7 +52,7 @@ VC = {
 
     /**
     Interval (in milliseconds) at which to poll for changes to the value of an
-    element with one or more `valueChange` subscribers when the user is likely
+    element with one or more `valuechange` subscribers when the user is likely
     to be interacting with it.
 
     @property POLL_INTERVAL
@@ -87,7 +94,8 @@ VC = {
             event   = options.e,
             newVal  = domNode && domNode.value,
             vcData  = node._data && node._data[DATA_KEY], // another perf cheat
-            facade, prevVal;
+            stopped = 0,
+            facade, prevVal, stopElement;
 
         if (!domNode || !vcData) {
             Y.log('_poll: node #' + node.get('id') + ' disappeared; stopping polling and removing all notifiers.', 'warn', 'event-valuechange');
@@ -108,8 +116,35 @@ VC = {
                 target       : (event && event.target) || node
             };
 
-            Y.Object.each(vcData.notifiers, function (notifier) {
-                notifier.fire(facade);
+            Y.Object.some(vcData.notifiers, function (notifier) {
+                var evt = notifier.handle.evt,
+                    newStopped;
+
+                // support e.stopPropagation()
+                if (stopped !== 1) {
+                    notifier.fire(facade);
+                } else if (evt.el === stopElement) {
+                    notifier.fire(facade);
+                }
+
+                newStopped = evt && evt._facade ? evt._facade.stopped : 0;
+
+                // need to consider the condition in which there are two
+                // listeners on the same element:
+                // listener 1 calls e.stopPropagation()
+                // listener 2 calls e.stopImmediatePropagation()
+                if (newStopped > stopped) {
+                    stopped = newStopped;
+
+                    if (stopped === 1) {
+                        stopElement = evt.el;
+                    }
+                }
+
+                // support e.stopImmediatePropagation()
+                if (stopped === 2) {
+                    return true;
+                }
             });
 
             VC._refreshTimeout(node);
@@ -198,7 +233,7 @@ VC = {
         vcData.notifiers[Y.stamp(notifier)] = notifier;
 
         vcData.interval = setInterval(function () {
-            VC._poll(node, vcData, options);
+            VC._poll(node, options);
         }, VC.POLL_INTERVAL);
 
         Y.log('_startPolling: #' + node.get('id'), 'info', 'event-valuechange');
@@ -442,7 +477,7 @@ programmatic value changes on nodes that don't have focus won't be detected.
 @example
 
     YUI().use('event-valuechange', function (Y) {
-        Y.one('#my-input').on('valueChange', function (e) {
+        Y.one('#my-input').on('valuechange', function (e) {
             Y.log('previous value: ' + e.prevVal);
             Y.log('new value: ' + e.newVal);
         });
@@ -472,4 +507,4 @@ Y.Event.define('valueChange', config); // deprecated, but supported for backcomp
 Y.ValueChange = VC;
 
 
-}, '@VERSION@' ,{requires:['event-focus', 'event-synthetic']});
+}, '3.11.0', {"requires": ["event-focus", "event-synthetic"]});

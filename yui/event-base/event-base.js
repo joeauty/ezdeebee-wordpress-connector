@@ -1,3 +1,10 @@
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
 (function () {
 var GLOBAL_ENV = YUI.Env;
 
@@ -10,7 +17,7 @@ if (!GLOBAL_ENV._ready) {
     GLOBAL_ENV.add(YUI.config.doc, 'DOMContentLoaded', GLOBAL_ENV._ready);
 }
 })();
-YUI.add('event-base', function(Y) {
+YUI.add('event-base', function (Y, NAME) {
 
 /*
  * DOM event listener abstraction layer
@@ -157,7 +164,7 @@ Y.extend(DOMEventFacade, Object, {
         // Webkit and IE9+? duplicate charCode in keyCode.
         // Opera never sets charCode, always keyCode (though with the charCode).
         // IE6-8 don't set charCode or which.
-        // All browsers other than IE6-8 set which=keyCode in keydown, keyup, and 
+        // All browsers other than IE6-8 set which=keyCode in keydown, keyup, and
         // which=charCode in keypress.
         //
         // Moral of the story: (e.which || e.keyCode) will always return the
@@ -376,6 +383,7 @@ Y.DOMEventFacade = DOMEventFacade;
      * on the current target will not be executed
      */
 (function() {
+
 /**
  * The event utility provides functions to add and remove event listeners,
  * event cleansing.  It also tries to automatically remove listeners it
@@ -419,12 +427,11 @@ var _eventenv = Y.Env.evt,
 
     shouldIterate = function(o) {
         try {
-            return (o && typeof o !== "string" && Y.Lang.isNumber(o.length) &&
-                    !o.tagName && !o.alert);
+            // TODO: See if there's a more performant way to return true early on this, for the common case
+            return (o && typeof o !== "string" && Y.Lang.isNumber(o.length) && !o.tagName && !Y.DOM.isWindow(o));
         } catch(ex) {
             return false;
         }
-
     },
 
     // aliases to support DOM event subscription clean up when the last
@@ -434,7 +441,7 @@ var _eventenv = Y.Env.evt,
     _deleteAndClean = function(s) {
         var ret = _ceProtoDelete.apply(this, arguments);
 
-        if (!this.subCount && !this.afterCount) {
+        if (!this.hasSubs()) {
             Y.Event._clean(this);
         }
 
@@ -704,6 +711,7 @@ Event._interval = setInterval(Event._poll, Event.POLL_INTERVAL);
                 cewrapper = Y.publish(key, {
                     silent: true,
                     bubbles: false,
+                    emitFacade:false,
                     contextFn: function() {
                         if (compat) {
                             return cewrapper.el;
@@ -1151,9 +1159,8 @@ Event._interval = setInterval(Event._poll, Event.POLL_INTERVAL);
             if (recurse && oEl) {
                 lis = lis || [];
                 children = Y.Selector.query('*', oEl);
-                i = 0;
                 len = children.length;
-                for (; i < len; ++i) {
+                for (i = 0; i < len; ++i) {
                     child = Event.getListeners(children[i], type);
                     if (child) {
                         lis = lis.concat(child);
@@ -1298,7 +1305,11 @@ if (Y.UA.ie) {
     Y.on(EVENT_READY, Event._poll);
 }
 
-add(win, "unload", onUnload);
+try {
+    add(win, "unload", onUnload);
+} catch(e) {
+    /*jshint maxlen:300*/
+}
 
 Event.Custom = Y.CustomEvent;
 Event.Subscriber = Y.Subscriber;
@@ -1308,7 +1319,7 @@ Event.Facade = Y.EventFacade;
 
 Event._poll();
 
-})();
+}());
 
 /**
  * DOM event listener abstraction layer
@@ -1363,4 +1374,4 @@ Y.Env.evt.plugins.contentready = {
 };
 
 
-}, '@VERSION@' ,{requires:['event-custom-base']});
+}, '3.11.0', {"requires": ["event-custom-base"]});

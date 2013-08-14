@@ -1,4 +1,11 @@
-YUI.add('autocomplete-plugin', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-plugin', function (Y, NAME) {
 
 /**
 Binds an AutoCompleteList instance to a Node instance.
@@ -45,4 +52,4 @@ Plugin.AutoComplete     = ACListPlugin;
 Plugin.AutoCompleteList = ACListPlugin;
 
 
-}, '@VERSION@' ,{requires:['autocomplete-list', 'node-pluginhost']});
+}, '3.11.0', {"requires": ["autocomplete-list", "node-pluginhost"]});

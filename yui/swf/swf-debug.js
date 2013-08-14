@@ -1,4 +1,11 @@
-YUI.add('swf', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('swf', function (Y, NAME) {
 
 /**
  * Embed a Flash applications in a standard manner and communicate with it
@@ -19,7 +26,7 @@ YUI.add('swf', function(Y) {
         FLASH_VER = "10.0.22",
         EXPRESS_INSTALL_URL = "http://fpdownload.macromedia.com/pub/flashplayer/update/current/swf/autoUpdater.swf?" + Math.random(),
         EVENT_HANDLER = "SWF.eventHandler",
-        possibleAttributes = {align:"", allowFullScreen:"", allowNetworking:"", allowScriptAccess:"", base:"", bgcolor:"", menu:"", name:"", quality:"", salign:"", scale:"", tabindex:"", wmode:""};
+        possibleAttributes = {align:"", allowFullScreen:"", allowNetworking:"", allowScriptAccess:"", base:"", bgcolor:"", loop:"", menu:"", name:"", play: "", quality:"", salign:"", scale:"", tabindex:"", wmode:""};
 
         /**
          * The SWF utility is a tool for embedding Flash applications in HTML pages.
@@ -32,7 +39,7 @@ YUI.add('swf', function(Y) {
          * Creates the SWF instance and keeps the configuration data
          *
          * @class SWF
-         * @augments Y.Event.Target
+         * @uses Y.Event.Target
          * @constructor
          * @param {String|HTMLElement} id The id of the element, or the element itself that the SWF will be inserted into.
          *        The width and height of the SWF will be set to the width and height of this container element.
@@ -106,8 +113,9 @@ function SWF (p_oElement /*:String*/, swfURL /*:String*/, p_oAttributes /*:Objec
         }
 
         objstring += "</object>";
-        oElement.setContent(objstring);
-
+        //using innerHTML as setHTML/setContent causes some issues with ExternalInterface for IE versions of the player
+        oElement.set("innerHTML", objstring);
+        
         this._swf = Node.one("#" + _id);
     } else {
         /**
@@ -199,4 +207,4 @@ Y.augment(SWF, Y.EventTarget);
 Y.SWF = SWF;
 
 
-}, '@VERSION@' ,{requires:['event-custom','node','swfdetect','escape']});
+}, '3.11.0', {"requires": ["event-custom", "node", "swfdetect", "escape"]});

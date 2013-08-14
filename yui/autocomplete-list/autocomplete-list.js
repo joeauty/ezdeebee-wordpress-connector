@@ -1,4 +1,11 @@
-YUI.add('autocomplete-list', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('autocomplete-list', function (Y, NAME) {
 
 /**
 Traditional autocomplete dropdown list widget, just like Mom used to make.
@@ -149,12 +156,6 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
         if (useShim) {
             boundingBox.plug(Y.Plugin.Shim);
         }
-
-        // Force position: absolute on the boundingBox. This works around a
-        // potential CSS loading race condition in Gecko that can cause the
-        // boundingBox to become relatively positioned, which is all kinds of
-        // no good.
-        boundingBox.setStyle('position', 'absolute');
 
         this._ariaNode    = ariaNode;
         this._boundingBox = boundingBox;
@@ -330,7 +331,7 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
         }
 
         // Attach inputNode events.
-        this._listEvents.concat([
+        this._listEvents = this._listEvents.concat([
             inputNode.after('blur',  this._afterListInputBlur, this),
             inputNode.after('focus', this._afterListInputFocus, this)
         ]);
@@ -343,7 +344,7 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
     @protected
     **/
     _bindList: function () {
-        this._listEvents.concat([
+        this._listEvents = this._listEvents.concat([
             Y.one('doc').after('click', this._afterDocClick, this),
             Y.one('win').after('windowresize', this._syncPosition, this),
 
@@ -502,7 +503,11 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
     @protected
     **/
     _syncShim: useShim ? function () {
-        this._boundingBox.shim.sync();
+        var shim = this._boundingBox.shim;
+
+        if (shim) {
+            shim.sync();
+        }
     } : function () {},
 
     /**
@@ -542,6 +547,10 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
         // becomes visible. Toggling a bogus class on the body forces a repaint
         // that fixes the issue.
         if (Y.UA.ie === 7) {
+            // Note: We don't actually need to use ClassNameManager here. This
+            // class isn't applying any actual styles; it's just frobbing the
+            // body element to force a repaint. The actual class name doesn't
+            // really matter.
             Y.one('body')
                 .addClass('yui3-ie7-sucks')
                 .removeClass('yui3-ie7-sucks');
@@ -611,9 +620,8 @@ List = Y.Base.create('autocompleteList', Y.Widget, [
         var boundingBox = this._boundingBox,
             target      = e.target;
 
-        if (target !== this._inputNode && target !== boundingBox &&
-                !boundingBox.one(target.get('id'))) {
-
+        if(target !== this._inputNode && target !== boundingBox &&
+                target.ancestor('#' + boundingBox.get('id'), true)){
             this.hide();
         }
     },
@@ -884,4 +892,22 @@ for API docs.
 Y.AutoComplete = List;
 
 
-}, '@VERSION@' ,{requires:['autocomplete-base', 'event-resize', 'node-screen', 'selector-css3', 'shim-plugin', 'widget', 'widget-position', 'widget-position-align'], skinnable:true, after:['autocomplete-sources'], lang:['en']});
+}, '3.11.0', {
+    "lang": [
+        "en",
+        "es",
+        "hu",
+        "it"
+    ],
+    "requires": [
+        "autocomplete-base",
+        "event-resize",
+        "node-screen",
+        "selector-css3",
+        "shim-plugin",
+        "widget",
+        "widget-position",
+        "widget-position-align"
+    ],
+    "skinnable": true
+});

@@ -1,4 +1,11 @@
-YUI.add('querystring-stringify-simple', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('querystring-stringify-simple', function (Y, NAME) {
 
 /*global Y */
 /**
@@ -12,29 +19,12 @@ YUI.add('querystring-stringify-simple', function(Y) {
  *
  * @module querystring
  * @submodule querystring-stringify-simple
- * @for QueryString
- * @static
  */
 
 var QueryString = Y.namespace("QueryString"),
     EUC = encodeURIComponent;
 
-/**
- * <p>Converts a simple object to a Query String representation.</p>
- * <p>Nested objects, Arrays, and so on, are not supported.</p>
- *
- * @method stringify
- * @for QueryString
- * @public
- * @submodule querystring-stringify-simple
- * @param obj {Object} A single-level object to convert to a querystring.
- * @param cfg {Object} (optional) Configuration object.  In the simple
- *                                module, only the arrayKey setting is
- *                                supported.  When set to true, the key of an
- *                                array will have the '[]' notation appended
- *                                to the key;.
- * @static
- */
+
 QueryString.stringify = function (obj, c) {
     var qs = [],
         // Default behavior is false; standard key notation.
@@ -58,4 +48,4 @@ QueryString.stringify = function (obj, c) {
 };
 
 
-}, '@VERSION@' ,{requires:['yui-base']});
+}, '3.11.0', {"requires": ["yui-base"]});

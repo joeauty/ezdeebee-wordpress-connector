@@ -1,4 +1,11 @@
-YUI.add('graphics-vml-default', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('graphics-vml-default', function (Y, NAME) {
 
 Y.Graphic = Y.VMLGraphic;
 Y.Shape = Y.VMLShape;
@@ -9,4 +16,4 @@ Y.Path = Y.VMLPath;
 Y.Drawing = Y.VMLDrawing;
 
 
-}, '@VERSION@' ,{skinnable:false});
+}, '3.11.0');

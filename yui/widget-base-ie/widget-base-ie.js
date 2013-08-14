@@ -1,4 +1,11 @@
-YUI.add('widget-base-ie', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('widget-base-ie', function (Y, NAME) {
 
 /**
  * IE specific support for the widget-base module.
@@ -23,7 +30,7 @@ Y.Widget.prototype._uiSizeCB = function(expand) {
         borderBoxSupported = this._bbs;
 
     if (borderBoxSupported === undefined) {
-        this._bbs = borderBoxSupported = !(IE && IE < 8 && bb.get("ownerDocument").get("compatMode") != "BackCompat"); 
+        this._bbs = borderBoxSupported = !(IE && IE < 8 && bb.get("ownerDocument").get("compatMode") != "BackCompat");
     }
 
     if (borderBoxSupported) {
@@ -46,4 +53,4 @@ Y.Widget.prototype._uiSizeCB = function(expand) {
 };
 
 
-}, '@VERSION@' ,{requires:['widget-base']});
+}, '3.11.0', {"requires": ["widget-base"]});

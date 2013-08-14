@@ -1,4 +1,11 @@
-YUI.add('dataschema-xml', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('dataschema-xml', function (Y, NAME) {
 
 /**
 Provides a DataSchema implementation which can be used to work with XML data.
@@ -149,7 +156,7 @@ SchemaXML = {
         try {
             result = SchemaXML._getXPathResult(locator, context, xmldoc);
             while ((res = result.iterateNext())) {
-                value = res.textContent || res.value || res.text || res.innerHTML || null;
+                value = res.textContent || res.value || res.text || res.innerHTML || res.innerText || null;
             }
 
             // FIXME: Why defer to a method that is mixed into this object?
@@ -183,6 +190,7 @@ SchemaXML = {
         // Standards mode
         if (! Lang.isUndefined(xmldoc.evaluate)) {
             return xmldoc.evaluate(locator, context, xmldoc.createNSResolver(context.ownerDocument ? context.ownerDocument.documentElement : context.documentElement), 0, null);
+          
         }
         // IE mode
         else {
@@ -191,7 +199,10 @@ SchemaXML = {
             // XPath is supported
             try {
                 // this fixes the IE 5.5+ issue where childnode selectors begin at 0 instead of 1
-                xmldoc.setProperty("SelectionLanguage", "XPath");
+                try {
+                   xmldoc.setProperty("SelectionLanguage", "XPath");
+                } catch (e) {}
+                
                 values = context.selectNodes(locator);
             }
             // Fallback for DOM nodes and fragments
@@ -378,4 +389,4 @@ SchemaXML = {
 Y.DataSchema.XML = Y.mix(SchemaXML, Y.DataSchema.Base);
 
 
-}, '@VERSION@' ,{requires:['dataschema-base']});
+}, '3.11.0', {"requires": ["dataschema-base"]});

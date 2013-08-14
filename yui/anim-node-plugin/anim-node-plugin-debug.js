@@ -1,10 +1,17 @@
-YUI.add('anim-node-plugin', function(Y) {
+/*
+YUI 3.11.0 (build d549e5c)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+YUI.add('anim-node-plugin', function (Y, NAME) {
 
 /**
  *  Binds an Anim instance to a Node instance
  * @module anim
  * @class Plugin.NodeFX
- * @extends Base
+ * @extends Anim
  * @submodule anim-node-plugin
  */
 
@@ -23,4 +30,4 @@ Y.namespace('Plugin');
 Y.Plugin.NodeFX = NodeFX;
 
 
-}, '@VERSION@' ,{requires:['node-pluginhost', 'anim-base']});
+}, '3.11.0', {"requires": ["node-pluginhost", "anim-base"]});
