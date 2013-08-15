@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Ezdeebee WordPress Connector
-Plugin URI: http://wordpress.org/plugins/ezdeebee-wp-connector
+Plugin URI: http://ezdeebee.com/wordpress
 Description: Ezdeebee WordPress Connector Plugin
-Version: 1.1.0
+Version: 1.1.1
 Author: Ezdeebee
 Author URI: http://ezdeebee.com
 License: GPL2
@@ -110,9 +110,11 @@ if ($_GET['ezdb_initconnector']) {
 			// add ezdb prefix to insert table commands
 			$sql = preg_replace('/INSERT INTO (.+)?\s\(/','INSERT INTO ezdb_$1 (', $sql);
 			
-			$sqlarray = explode("\n", $sql);
+			$createtablesql = preg_replace('/(.+)?INSERT INTO.+/m', '$1', $sql);
+			$inserttablesql = explode("\n", str_replace($createtablesql, '', $sql));
 			
-			dbDelta($sqlarray);
+			dbDelta($createtablesql);
+			dbDelta($inserttablesql);
 			
 			// update local last modified
 			if ($action == "insert") {

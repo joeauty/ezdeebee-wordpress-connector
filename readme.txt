@@ -4,7 +4,7 @@ Donate link: http://ezdeebee.com
 Tags: database, database admin, custom, form, table, Ezdeebee
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,10 @@ See [Ezdeebee support](http://ezdeebee.com/support)
 1. Sample custom table view of data from media library data collection, displayed on a WordPress site using this plugin
 
 == Changelog ==
+
+= 1.1.1 =
+
+* fix local cache creation bug
 
 = 1.1.0 =
 
