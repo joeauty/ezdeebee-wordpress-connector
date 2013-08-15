@@ -132,7 +132,7 @@ if ($_GET['ezdb_initconnector']) {
 
 $yuisrc = plugins_url('ezdeebee_wpconnector') . '/yui/yui/yui-min.js';
 
-wp_enqueue_script('YUI3.5.1', $yuisrc);
+wp_enqueue_script('YUI3.11.0', $yuisrc);
 
 $jsconfigsrc = $ezdbdomain . "/dbmanager/" . $ezdeebee_options['ezdeebee_site_id'] . "/seedfile/" . $cachebuster;
 wp_enqueue_script('ezdeebee_seedfile', $jsconfigsrc);
